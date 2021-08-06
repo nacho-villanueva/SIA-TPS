@@ -1,5 +1,4 @@
 import enum
-from pprint import pprint
 
 from TP1.GameState import GameState
 from TP1.Position import Position
@@ -33,7 +32,11 @@ class Sokoban:
 
     def is_valid_movement(self, movement: Movement):
         move_to = movement.value + self.state.player_position
-        if self.is_walkable_block(move_to):  # TODO: add out of bounds
+
+        if self.state.is_out_of_bound(move_to):
+            return False
+
+        if self.is_walkable_block(move_to):
             return True
 
         if self.state.get_dynamic_block(move_to) == GameState.ICE:

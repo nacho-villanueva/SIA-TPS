@@ -103,6 +103,9 @@ class GameState:
         self.update_dynamic_block(self.player_position, GameState.EMPTY)
         self.player_position = move_to
 
+    def is_out_of_bound(self, pos: Position):
+        return pos.x < 0 or pos.x > self.dimensions[0] or pos.y < 0 or pos.y > self.dimensions[1]
+
     def __str__(self):
         string = ""
 
