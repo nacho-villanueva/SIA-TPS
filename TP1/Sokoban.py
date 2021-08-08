@@ -45,6 +45,9 @@ class Sokoban:
 
         return False
 
+    def is_game_over(self):
+        return False
+
     def get_possible_movements(self):
         possible_movements = []
         for m in Movement:

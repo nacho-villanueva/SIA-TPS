@@ -106,6 +106,12 @@ class GameState:
     def is_out_of_bound(self, pos: Position):
         return pos.x < 0 or pos.x > self.dimensions[0] or pos.y < 0 or pos.y > self.dimensions[1]
 
+    def save_state(self):
+        return None
+
+    def load_state(self):
+        pass
+
     def __str__(self):
         string = ""
 
