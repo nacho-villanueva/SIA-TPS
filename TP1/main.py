@@ -52,8 +52,6 @@ class SokobanApplication(arcade.Window):
                         BLOCK_WIDTH - SPACING,BLOCK_HEIGHT - SPACING,
                         arcade.color.TEA_GREEN
                         )
-        arcade.draw_rectangle_filled(0,0,10,10,arcade.color.BLUE)
-
 
     def on_resize(self, width: float, height: float):
         self.window_width = width
@@ -95,7 +93,8 @@ def get_code(config_path):
     for i in range(len(lines)):
         if len(lines[i]) < max_len:
             lines[i] = lines[i] + " " * (max_len - len(lines[i]))
-        lines[i] = lines[i] + "\n"
+        if max_len - 1 > i:
+            lines[i] = lines[i] + "\n"
     if max_len > len(lines):
         for _ in range( max_len - len(lines) - 1 ):
             lines.append(" " * max_len + "\n")
