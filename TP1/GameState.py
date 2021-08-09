@@ -9,7 +9,7 @@ class GameState:
     """
 
     # Static Blocks
-    BLOCK_WALL = "#"
+    WALL = "#"
     END = "."
 
     # Dynamic Blocks
@@ -43,7 +43,7 @@ class GameState:
             dynamic_row = []
 
             for b in row:
-                if b == GameState.BLOCK_WALL or b == GameState.END:
+                if b == GameState.WALL or b == GameState.END:
                     static_row.append(b)
                     dynamic_row.append(GameState.EMPTY)
                 elif b == GameState.ICE or b == GameState.PLAYER:
@@ -107,10 +107,56 @@ class GameState:
         return pos.x < 0 or pos.x > self.dimensions[0] or pos.y < 0 or pos.y > self.dimensions[1]
 
     def save_state(self):
-        return None
+        state = {"ice": [],
+                 "player": (self.player_position.x, self.player_position.y)}
 
-    def load_state(self):
-        pass
+        for y, row in enumerate(self.dynamic_state):
+            for x, value in enumerate(row):
+                if value == GameState.ICE:
+                    state["ice"].append((x, y))
+        return state
+
+    def load_state(self, load_state):
+        for y in range(self.dimensions[1]):
+            for x in range(self.dimensions[0]):
+                self.update_dynamic_block(Position(x, y), GameState.EMPTY)
+
+        for i in load_state["ice"]:
+            self.update_dynamic_block(Position(i[0], i[1]), GameState.ICE)
+
+        player_position = Position(load_state["player"][0], load_state["player"][1])
+        self.update_dynamic_block(player_position, GameState.PLAYER)
+        self.player_position = player_position
+
+# TODO: CAN BE OPTIMIZED BY USING A DICTIONARY/ARRAY OF POSITIONS INSTEAD OF A MATRIX FOR DYNAMIC_STATE
+    def is_ice_on_corner(self):
+        for y, row in enumerate(self.dynamic_state):
+            for x, value in enumerate(row):
+                if value == GameState.ICE:
+                    walls = [
+                        self.get_static_block(Position(x - 1, y)) == GameState.WALL,  # Left
+                        self.get_static_block(Position(x, y - 1)) == GameState.WALL,  # Top
+                        self.get_static_block(Position(x + 1, y)) == GameState.WALL,  # Right
+                        self.get_static_block(Position(x, y + 1)) == GameState.WALL  # Bottom
+                    ]
+
+                    is_adjacent_wall = False
+                    for i in range(5):
+                        if walls[i % 4]:
+                            if is_adjacent_wall:
+                                return True
+                        is_adjacent_wall = walls[i % 4]
+        return False
+
+# TODO: ES TARDE, NO QUIERO PENSAR EN UN MEJOR NOMBRE...
+    def is_all_ice_on_end(self):
+        for y, row in enumerate(self.dynamic_state):
+            for x, value in enumerate(row):
+                if value == GameState.ICE and self.get_static_block(Position(x, y)) != GameState.END:
+                    return False
+        return True
+
+
 
     def __str__(self):
         string = ""

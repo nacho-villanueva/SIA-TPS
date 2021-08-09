@@ -46,7 +46,10 @@ class Sokoban:
         return False
 
     def is_game_over(self):
-        return False
+        return self.state.is_ice_on_corner()
+
+    def is_game_won(self):
+        return self.state.is_all_ice_on_end()
 
     def get_possible_movements(self):
         possible_movements = []
