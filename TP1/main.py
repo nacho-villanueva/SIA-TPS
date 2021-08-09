@@ -82,43 +82,11 @@ class SokobanApplication(arcade.Window):
             self.close()
 
 
-def get_code(config_path):
-    # Check if file exists or raise and error
-    if not os.path.isfile(config_path):
-        raise Exception("File not found")
-
-    # Open file and read all lines
-    f = open(config_path, "r")
-    lines = f.readlines()
-
-    # Remove spaces at the end and get the longest legnth or the 
-    # ammout of lines, whichever is greatest
-    lines = list(map(lambda line: line.rstrip(), lines))
-    max_len = reduce(lambda acc, el: len(el) if len(el) > acc else acc, lines, 0)
-    max_len = max_len if max_len > len(lines) else len(lines)
-
-    # Append spaces at the end and empty lines to form a square
-    for i in range(len(lines)):
-        if len(lines[i]) < max_len:
-            lines[i] = lines[i] + " " * (max_len - len(lines[i]))
-        if max_len - 1 > i:
-            lines[i] = lines[i] + "\n"
-    if max_len > len(lines):
-        for _ in range(max_len - len(lines) - 1):
-            lines.append(" " * max_len + "\n")
-        lines.append(" " * max_len)
-
-    # Join lines into a single string, close file and return string
-    lines = "".join(line for line in lines)
-    f.close()
-    return lines
-
-
 def main(initial_state):
     if not isfile(initial_state):
         print(f"Config file not found: {initial_state}")
         exit(1)
-    state = GameState.from_code(get_code(initial_state))
+    state = GameState.from_filepath(initial_state)
     sokoban = Sokoban(state)
 
     sokoban_app = SokobanApplication(sokoban=sokoban)
