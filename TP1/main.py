@@ -29,33 +29,40 @@ class SokobanApplication(arcade.Window):
         arcade.start_render()
         for i in range(state.dimensions[0]):
             for j in range(state.dimensions[1]):
-                val = ' '
-                if state.dynamic_state[i][j] != GameState.EMPTY:
-                    val = state.dynamic_state[i][j]
-                else:
-                    val = state.static_state[i][j]
+                dyn_val = state.get_dynamic_block((j, i))
+                sta_val = state.static_state[i][j]
 
-                if val == GameState.WALL:
+                if sta_val == GameState.WALL:
                     arcade.draw_rectangle_filled(
                         BLOCK_WIDTH * j + BLOCK_WIDTH / 2,
                         self.window_height - BLOCK_HEIGHT * i - BLOCK_HEIGHT / 2,
                         BLOCK_WIDTH - SPACING, BLOCK_HEIGHT - SPACING,
                         arcade.color.WOOD_BROWN
                     )
-                elif val == GameState.ICE or val == GameState.ICE_ON_END:
+                elif sta_val == GameState.END:
+                    color = arcade.color.AMARANTH_PURPLE
+                    if dyn_val == GameState.ICE:
+                        color = arcade.color.APPLE_GREEN
+                    arcade.draw_rectangle_filled(
+                        BLOCK_WIDTH * j + BLOCK_WIDTH / 2,
+                        self.window_height - BLOCK_HEIGHT * i - BLOCK_HEIGHT / 2,
+                        BLOCK_WIDTH, BLOCK_HEIGHT,
+                        color
+                    )
+
+                if dyn_val == GameState.ICE:
                     arcade.draw_rectangle_filled(
                         BLOCK_WIDTH * j + BLOCK_WIDTH / 2,
                         self.window_height - BLOCK_HEIGHT * i - BLOCK_HEIGHT / 2,
                         BLOCK_WIDTH - SPACING, BLOCK_HEIGHT - SPACING,
                         arcade.color.LIGHT_BLUE
                     )
-                elif val == GameState.PLAYER or val == GameState.PLAYER_ON_END:
-                    arcade.draw_rectangle_filled(
-                        BLOCK_WIDTH * j + BLOCK_WIDTH / 2,
-                        self.window_height - BLOCK_HEIGHT * i - BLOCK_HEIGHT / 2,
-                        BLOCK_WIDTH - SPACING, BLOCK_HEIGHT - SPACING,
-                        arcade.color.TEA_GREEN
-                    )
+                arcade.draw_circle_filled(
+                    BLOCK_WIDTH * state.player_position.x + BLOCK_WIDTH / 2,
+                    self.window_height - BLOCK_HEIGHT * state.player_position.y - BLOCK_HEIGHT / 2,
+                    BLOCK_WIDTH / 2,
+                    arcade.color.BLUE_VIOLET
+                )
 
     def on_resize(self, width: float, height: float):
         self.window_width = width

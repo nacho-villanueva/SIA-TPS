@@ -20,15 +20,13 @@ class Sokoban:
         self.state = initial_state
 
     def is_empty_block(self, pos: Position):
-        return self.state.get_dynamic_block(pos) == self.state.get_static_block(pos) == GameState.EMPTY
+        return self.state.get_dynamic_block((pos.x, pos.y)) == self.state.get_static_block((pos.x, pos.y)) == GameState.EMPTY
 
     def is_empty_end_block(self, pos: Position):
-        return self.state.get_dynamic_block(pos) == GameState.EMPTY and self.state.get_static_block(
-            pos) == GameState.END
+        return self.state.get_dynamic_block((pos.x, pos.y)) == GameState.EMPTY and self.state.get_static_block((pos.x, pos.y)) == GameState.END
 
     def is_walkable_block(self, pos: Position):
-        return self.state.get_dynamic_block(pos) == GameState.EMPTY and (
-                self.state.get_static_block(pos) in [GameState.EMPTY, GameState.END])
+        return self.state.get_dynamic_block((pos.x, pos.y)) == GameState.EMPTY and (self.state.get_static_block((pos.x, pos.y)) in [GameState.EMPTY, GameState.END])
 
     def is_valid_movement(self, movement: Movement):
         move_to = movement.value + self.state.player_position
@@ -63,7 +61,9 @@ class Sokoban:
 
         if self.is_valid_movement(movement):
             if self.state.get_dynamic_block(move_to) == GameState.ICE:
-                self.state.update_dynamic_block(move_to + movement.value, GameState.ICE)
+                new_ice_pos = move_to + movement.value
+                self.state.add_dynamic_block(new_ice_pos.x, new_ice_pos.y, GameState.ICE)
+                self.state.remove_dynamic_block(move_to.x, move_to.y)
             self.state.move_player(move_to)
         else:
             print("Invalid Movement. State unchanged.")

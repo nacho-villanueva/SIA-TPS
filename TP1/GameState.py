@@ -1,6 +1,9 @@
 from pprint import pprint
 from typing import Union
 
+from django.conf.locale import pl
+from line_profiler_pycharm import profile
+
 from TP1.Position import Position
 
 
@@ -27,72 +30,61 @@ class GameState:
     @staticmethod
     def from_code(code: str):
 
+        player_position = Position(-1, -1)
+
         static_state = []
-        dynamic_state = []
+        dynamic_state = {}
 
         state = code.split("\n")
         dim = (len(state[0]), len(state))
 
-        y = 0
-
-        for row in state:
-            x = 0
+        for y, row in enumerate(state):
             if len(row) != dim[0]:
+                print(repr(row), repr(state[0]))
                 raise Exception("Malformed Code. Code is not square.")
 
             static_row = []
-            dynamic_row = []
 
-            for b in row:
+            for x, b in enumerate(row):
                 if b == GameState.WALL or b == GameState.END:
                     static_row.append(b)
-                    dynamic_row.append(GameState.EMPTY)
-                elif b == GameState.ICE or b == GameState.PLAYER:
+                elif b == GameState.ICE:
                     static_row.append(GameState.EMPTY)
-                    dynamic_row.append(b)
+                    dynamic_state[(x, y)] = GameState.ICE
+                elif b == GameState.PLAYER:
+                    static_row.append(GameState.EMPTY)
+                    player_position = Position(x, y)
                 elif b == GameState.EMPTY:
                     static_row.append(GameState.EMPTY)
-                    dynamic_row.append(GameState.EMPTY)
                 elif b == GameState.PLAYER_ON_END:
                     static_row.append(GameState.END)
-                    dynamic_row.append(GameState.PLAYER)
+                    player_position = Position(x, y)
                 elif b == GameState.ICE_ON_END:
                     static_row.append(GameState.END)
-                    dynamic_row.append(GameState.ICE)
+                    dynamic_state[(x, y)] = GameState.ICE
                 else:
                     raise Exception(f"Malformed Code. Invalid simbol at ({x},{y}): {repr(b)}")
-                x += 1
 
             static_state.append(static_row)
-            dynamic_state.append(dynamic_row)
-            y += 1
-        return GameState(static_state, dynamic_state)
 
-    def get_player_position(self):
-        for y in range(len(self.dynamic_state)):
-            for x in range(len(self.dynamic_state[y])):
-                if self.dynamic_state[y][x] == GameState.PLAYER:
-                    return Position(x, y)
+        if player_position.x == -1:
+            raise Exception("Malformed Code. Player not found")
+        return GameState(static_state, dynamic_state, player_position)
 
-    def __init__(self, static_state: list[list[str]], initial_dynamic_state: list[list[str]]):
-
-        if len(static_state) != len(initial_dynamic_state) or len(static_state[0]) != len(initial_dynamic_state[0]):
-            raise Exception("Static State and Dynamic State have different sizes")
-
+    def __init__(self, static_state: list[list[str]], initial_dynamic_state: dict[tuple[int, int], str], initial_player_position: Position):
         self.dimensions = (len(static_state[0]), len(static_state))
         self.dynamic_state = initial_dynamic_state
         self.static_state = static_state
-        self.player_position = self.get_player_position()
+        self.player_position = initial_player_position
 
-    def get_static_block(self, pos: Union[Position, tuple[int, int]]):
-        position = pos
-        if type(pos) == tuple:
-            position = Position(pos[0], pos[1])
-        if position.x < 0 or position.x > self.dimensions[0] or position.y < 0 or position.y > self.dimensions[1]:
+# TODO: IMPROVE
+    def get_static_block(self, pos: tuple[int, int]):
+        if pos[0] < 0 or pos[0] > self.dimensions[0] or pos[1] < 0 or pos[1] > self.dimensions[1]:
             # If block is out of bound
             return GameState.EMPTY
-        return self.static_state[position.y][position.x]
+        return self.static_state[pos[1]][pos[0]]
 
+# TODO: IMPROVE
     def get_dynamic_block(self, pos: Union[Position, tuple[int, int]]):
         position = pos
         if type(pos) == tuple:
@@ -100,72 +92,57 @@ class GameState:
         if position.x < 0 or position.x > self.dimensions[0] or position.y < 0 or position.y > self.dimensions[1]:
             # If block is out of bound
             return GameState.EMPTY
-        return self.dynamic_state[position.y][position.x]
+        if (position.x, position.y) not in self.dynamic_state:
+            return GameState.EMPTY
+        return self.dynamic_state[(position.x, position.y)]
 
-    def update_dynamic_block(self, pos: Union[Position, tuple[int, int]], value: str):
-        position = pos
-        if type(pos) == tuple:
-            position = Position(pos[0], pos[1])
+    def add_dynamic_block(self, x: int, y: int, value: str):
+        self.dynamic_state[(x, y)] = value
 
-        self.dynamic_state[position.y][position.x] = value
+    def remove_dynamic_block(self, x: int, y: int):
+        self.dynamic_state.pop((x, y))
 
     def move_player(self, move_to: Position):
-        self.update_dynamic_block(move_to, GameState.PLAYER)
-        self.update_dynamic_block(self.player_position, GameState.EMPTY)
         self.player_position = move_to
 
     def is_out_of_bound(self, pos: Position):
         return pos.x < 0 or pos.x > self.dimensions[0] or pos.y < 0 or pos.y > self.dimensions[1]
 
     def save_state(self):
-        ices = []
-
-        for y, row in enumerate(self.dynamic_state):
-            for x, value in enumerate(row):
-                if value == GameState.ICE:
-                    ices.append((x, y))
-
-        state = ((self.player_position.x, self.player_position.y), tuple(ices))
+        state = ((self.player_position.x, self.player_position.y), tuple(self.dynamic_state.keys()))
         return state
 
     def load_state(self, load_state):
-        for y in range(self.dimensions[1]):
-            for x in range(self.dimensions[0]):
-                self.update_dynamic_block((x, y), GameState.EMPTY)
+        self.dynamic_state = {}
 
         for i in load_state[1]:
-            self.update_dynamic_block(i, GameState.ICE)
-
-        player_position = Position(load_state[0][0], load_state[0][1])
-        self.update_dynamic_block(player_position, GameState.PLAYER)
-        self.player_position = player_position
+            self.add_dynamic_block(i[0], i[1], GameState.ICE)
+        self.player_position = Position(load_state[0][0], load_state[0][1])
 
     # TODO: CAN BE OPTIMIZED BY USING A DICTIONARY/ARRAY OF POSITIONS INSTEAD OF A MATRIX FOR DYNAMIC_STATE
     def is_ice_on_corner(self):
-        for y, row in enumerate(self.dynamic_state):
-            for x, value in enumerate(row):
-                if value == GameState.ICE:
-                    walls = [
-                        self.get_static_block((x - 1, y)) == GameState.WALL,  # Left
-                        self.get_static_block((x, y - 1)) == GameState.WALL,  # Top
-                        self.get_static_block((x + 1, y)) == GameState.WALL,  # Right
-                        self.get_static_block((x, y + 1)) == GameState.WALL  # Bottom
-                    ]
-
-                    is_adjacent_wall = False
-                    for i in range(5):
-                        if walls[i % 4]:
-                            if is_adjacent_wall:
-                                return True
-                        is_adjacent_wall = walls[i % 4]
+        for db in self.dynamic_state:
+            if self.dynamic_state[db] == GameState.ICE:
+                x, y = db
+                walls = [
+                    self.get_static_block((x - 1, y)) == GameState.WALL,  # Left
+                    self.get_static_block((x, y - 1)) == GameState.WALL,  # Top
+                    self.get_static_block((x + 1, y)) == GameState.WALL,  # Right
+                    self.get_static_block((x, y + 1)) == GameState.WALL  # Bottom
+                ]
+                is_adjacent_wall = False
+                for i in range(5):
+                    if walls[i % 4]:
+                        if is_adjacent_wall:
+                            return True
+                    is_adjacent_wall = walls[i % 4]
         return False
 
     # TODO: ES TARDE, NO QUIERO PENSAR EN UN MEJOR NOMBRE...
     def is_all_ice_on_end(self):
-        for y, row in enumerate(self.dynamic_state):
-            for x, value in enumerate(row):
-                if value == GameState.ICE and self.get_static_block((x, y)) != GameState.END:
-                    return False
+        for db in self.dynamic_state:
+            if self.dynamic_state[db] == GameState.ICE and self.get_static_block(db) != GameState.END:
+                return False
         return True
 
     def __str__(self):
