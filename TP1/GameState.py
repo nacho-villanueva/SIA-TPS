@@ -86,7 +86,7 @@ class GameState:
 
     def get_static_block(self, pos: Union[Position, tuple[int, int]]):
         position = pos
-        if type(pos) == tuple[int, int]:
+        if type(pos) == tuple:
             position = Position(pos[0], pos[1])
         if position.x < 0 or position.x > self.dimensions[0] or position.y < 0 or position.y > self.dimensions[1]:
             # If block is out of bound
@@ -95,7 +95,7 @@ class GameState:
 
     def get_dynamic_block(self, pos: Union[Position, tuple[int, int]]):
         position = pos
-        if type(pos) == tuple[int, int]:
+        if type(pos) == tuple:
             position = Position(pos[0], pos[1])
         if position.x < 0 or position.x > self.dimensions[0] or position.y < 0 or position.y > self.dimensions[1]:
             # If block is out of bound
@@ -104,7 +104,7 @@ class GameState:
 
     def update_dynamic_block(self, pos: Union[Position, tuple[int, int]], value: str):
         position = pos
-        if type(pos) == tuple[int, int]:
+        if type(pos) == tuple:
             position = Position(pos[0], pos[1])
 
         self.dynamic_state[position.y][position.x] = value
@@ -118,13 +118,14 @@ class GameState:
         return pos.x < 0 or pos.x > self.dimensions[0] or pos.y < 0 or pos.y > self.dimensions[1]
 
     def save_state(self):
-        state = {"ice": [],
-                 "player": (self.player_position.x, self.player_position.y)}
+        ices = []
 
         for y, row in enumerate(self.dynamic_state):
             for x, value in enumerate(row):
                 if value == GameState.ICE:
-                    state["ice"].append((x, y))
+                    ices.append((x, y))
+
+        state = ((self.player_position.x, self.player_position.y), tuple(ices))
         return state
 
     def load_state(self, load_state):
@@ -132,10 +133,10 @@ class GameState:
             for x in range(self.dimensions[0]):
                 self.update_dynamic_block((x, y), GameState.EMPTY)
 
-        for i in load_state["ice"]:
+        for i in load_state[1]:
             self.update_dynamic_block(i, GameState.ICE)
 
-        player_position = Position(load_state["player"][0], load_state["player"][1])
+        player_position = Position(load_state[0][0], load_state[0][1])
         self.update_dynamic_block(player_position, GameState.PLAYER)
         self.player_position = player_position
 
@@ -190,4 +191,4 @@ class GameState:
                     else:
                         string += GameState.EMPTY
             string += "\n"
-        return string
+        return string[:-1]
