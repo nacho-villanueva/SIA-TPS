@@ -1,8 +1,10 @@
 from pprint import pprint
 from typing import Union
+import os
+from functools import reduce
 
-from django.conf.locale import pl
-from line_profiler_pycharm import profile
+# from django.conf.locale import pl
+# from line_profiler_pycharm import profile
 
 from TP1.Position import Position
 
@@ -71,6 +73,40 @@ class GameState:
             raise Exception("Malformed Code. Player not found")
         return GameState(static_state, dynamic_state, player_position)
 
+    def from_filepath(file_path):
+        """
+        Get GameState from file path
+        """
+        # Check if file exists or raise and error
+        if not os.path.isfile(file_path):
+            raise Exception("File not found")
+
+        # Open file and read all lines
+        f = open(file_path, "r")
+        lines = f.readlines()
+
+        # Remove spaces at the end and get the longest legnth or the 
+        # ammout of lines, whichever is greatest
+        lines = list(map(lambda line: line.rstrip(), lines))
+        max_len = reduce(lambda acc, el: len(el) if len(el) > acc else acc, lines, 0)
+        max_len = max_len if max_len > len(lines) else len(lines)
+
+        # Append spaces at the end and empty lines to form a square
+        for i in range(len(lines)):
+            if len(lines[i]) < max_len:
+                lines[i] = lines[i] + " " * (max_len - len(lines[i]))
+            if max_len - 1 > i:
+                lines[i] = lines[i] + "\n"
+        if max_len > len(lines):
+            for _ in range(max_len - len(lines) - 1):
+                lines.append(" " * max_len + "\n")
+            lines.append(" " * max_len)
+
+        # Join lines into a single string, close file and return string
+        lines = "".join(line for line in lines)
+        f.close()
+        return GameState.from_code(lines)
+
     def __init__(self, static_state: list[list[str]], initial_dynamic_state: dict[tuple[int, int], str], initial_player_position: Position):
         self.dimensions = (len(static_state[0]), len(static_state))
         self.dynamic_state = initial_dynamic_state
@@ -120,9 +156,9 @@ class GameState:
         self.player_position = Position(load_state[0][0], load_state[0][1])
 
     # TODO: CAN BE OPTIMIZED BY USING A DICTIONARY/ARRAY OF POSITIONS INSTEAD OF A MATRIX FOR DYNAMIC_STATE
-    def is_ice_on_corner(self):
+    def is_ice_on_corner_and_not_in_end(self):
         for db in self.dynamic_state:
-            if self.dynamic_state[db] == GameState.ICE:
+            if self.dynamic_state[db] == GameState.ICE and self.get_static_block(db) != GameState.END:
                 x, y = db
                 walls = [
                     self.get_static_block((x - 1, y)) == GameState.WALL,  # Left
