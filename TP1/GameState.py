@@ -73,6 +73,7 @@ class GameState:
             raise Exception("Malformed Code. Player not found")
         return GameState(static_state, dynamic_state, player_position)
 
+    @staticmethod
     def from_filepath(file_path):
         """
         Get GameState from file path
@@ -107,20 +108,20 @@ class GameState:
         f.close()
         return GameState.from_code(lines)
 
-    def __init__(self, static_state: list[list[str]], initial_dynamic_state: dict[tuple[int, int], str], initial_player_position: Position):
+    def __init__(self, static_state: list[list[str]], initial_dynamic_state: dict[tuple[int, int], str],
+                 initial_player_position: Position):
         self.dimensions = (len(static_state[0]), len(static_state))
         self.dynamic_state = initial_dynamic_state
         self.static_state = static_state
         self.player_position = initial_player_position
 
-# TODO: IMPROVE
     def get_static_block(self, pos: tuple[int, int]):
         if pos[0] < 0 or pos[0] > self.dimensions[0] or pos[1] < 0 or pos[1] > self.dimensions[1]:
             # If block is out of bound
             return GameState.EMPTY
         return self.static_state[pos[1]][pos[0]]
 
-# TODO: IMPROVE
+    # TODO: IMPROVE
     def get_dynamic_block(self, pos: Union[Position, tuple[int, int]]):
         position = pos
         if type(pos) == tuple:
@@ -155,7 +156,6 @@ class GameState:
             self.add_dynamic_block(i[0], i[1], GameState.ICE)
         self.player_position = Position(load_state[0][0], load_state[0][1])
 
-    # TODO: CAN BE OPTIMIZED BY USING A DICTIONARY/ARRAY OF POSITIONS INSTEAD OF A MATRIX FOR DYNAMIC_STATE
     def is_ice_on_corner_and_not_in_end(self):
         for db in self.dynamic_state:
             if self.dynamic_state[db] == GameState.ICE and self.get_static_block(db) != GameState.END:
@@ -174,7 +174,6 @@ class GameState:
                     is_adjacent_wall = walls[i % 4]
         return False
 
-    # TODO: ES TARDE, NO QUIERO PENSAR EN UN MEJOR NOMBRE...
     def is_all_ice_on_end(self):
         for db in self.dynamic_state:
             if self.dynamic_state[db] == GameState.ICE and self.get_static_block(db) != GameState.END:
