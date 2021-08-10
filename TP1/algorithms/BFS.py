@@ -1,3 +1,4 @@
+from TP1.Sokoban import Sokoban
 from TP1.algorithms.algorithm import Algorithm
 
 class BFS(Algorithm):
@@ -27,6 +28,7 @@ class BFS(Algorithm):
         # Check if already solved
         if self.solved:
             return self.solution
+        initial_state = self.sokoban.state.save_state()
         # To save previous states to avoid loops
         prev_states = set()
         # Create queue based on the initial available movements
@@ -68,5 +70,5 @@ class BFS(Algorithm):
                         self.sokoban.get_possible_movements()
                     ))
                 )
-
+        self.sokoban.state.load_state(initial_state)
         return self.solution

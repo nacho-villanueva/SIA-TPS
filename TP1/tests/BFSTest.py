@@ -1,9 +1,9 @@
+import arcade
+from TP1.tests.algorithmShower import AlgorithmShowerApplication
 from os.path import isfile
 
 from TP1.GameState import GameState
-from TP1.Sokoban import Sokoban, Movement
-import os
-import arcade
+from TP1.Sokoban import Sokoban
 import sys
 from functools import reduce
 from TP1.algorithms.BFS import BFS
@@ -14,9 +14,10 @@ def main(initial_state):
         exit(1)
     state = GameState.from_filepath(initial_state)
     sokoban = Sokoban(state)
-    algo = BFS(sokoban)
-    print(algo.run())
-
+    algorithm = BFS(sokoban)
+    algorithm.run()
+    shower_app = AlgorithmShowerApplication(sokoban,algorithm.run())
+    arcade.run()
 
 if __name__ == "__main__":
     config_file = "./config.txt"
