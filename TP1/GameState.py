@@ -148,13 +148,15 @@ class GameState:
     def __str__(self):
         string = ""
 
+        print(self.player_position)
+
         for y in range(self.dimensions[1]):
             for x in range(self.dimensions[0]):
                 db = self.get_dynamic_block((x, y))
                 sb = self.get_static_block((x, y))
 
                 if sb == GameState.END:
-                    if db == GameState.PLAYER:
+                    if self.player_position.x == x and self.player_position == y:
                         string += GameState.PLAYER_ON_END
                     elif db == GameState.ICE:
                         string += GameState.ICE_ON_END
@@ -166,6 +168,9 @@ class GameState:
                     elif db != GameState.EMPTY:
                         string += db
                     else:
-                        string += GameState.EMPTY
+                        if self.player_position.x == x and self.player_position.y == y:
+                            string += GameState.PLAYER
+                        else:
+                            string += GameState.EMPTY
             string += "\n"
         return string[:-1]
