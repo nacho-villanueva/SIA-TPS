@@ -67,3 +67,17 @@ class Sokoban:
             self.state.move_player(move_to)
         else:
             print("Invalid Movement. State unchanged.")
+
+    # útil para chequear si un array de movimientos realmente lleva a una solucion sin pasar por estado repetidos
+    @staticmethod
+    def check_if_movements_lead_to_repeated_state(movement_array, initial_state):
+        new_sokoban = Sokoban(initial_state)
+        array_de_estados_sin_repetir = [new_sokoban.state.save_state()]
+        for mov in movement_array:
+            new_sokoban.move(mov)
+            new_state = new_sokoban.state.save_state()
+            if new_state not in array_de_estados_sin_repetir:
+                array_de_estados_sin_repetir.append(new_sokoban.state.save_state())
+            else:
+                print("El array de movimientos está mal, ya que en un momento te hace ir a un estado repetido")
+        print("El array de movimientos genera una secuencia correcta de estados sin repetir")
