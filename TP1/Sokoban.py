@@ -44,7 +44,7 @@ class Sokoban:
         return False
 
     def is_game_over(self):
-        return self.state.is_ice_on_corner()
+        return self.state.is_ice_on_corner_and_not_in_end()
 
     def is_game_won(self):
         return self.state.is_all_ice_on_end()

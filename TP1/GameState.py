@@ -156,9 +156,9 @@ class GameState:
         self.player_position = Position(load_state[0][0], load_state[0][1])
 
     # TODO: CAN BE OPTIMIZED BY USING A DICTIONARY/ARRAY OF POSITIONS INSTEAD OF A MATRIX FOR DYNAMIC_STATE
-    def is_ice_on_corner(self):
+    def is_ice_on_corner_and_not_in_end(self):
         for db in self.dynamic_state:
-            if self.dynamic_state[db] == GameState.ICE:
+            if self.dynamic_state[db] == GameState.ICE and self.get_static_block(db) != GameState.END:
                 x, y = db
                 walls = [
                     self.get_static_block((x - 1, y)) == GameState.WALL,  # Left
