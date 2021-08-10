@@ -6,7 +6,19 @@ import arcade
 import sys
 
 class SokobanApplication(SokobanBasicApplication):
-   def on_key_press(self, key, modifiers):
+    def on_draw(self):
+        ret = super().on_draw()
+        gameisover = ""
+        if self.sokoban.is_game_over(): 
+            gameisover += "Game over" 
+        elif self.sokoban.is_game_won():
+            gameisover += " Game won"
+        arcade.draw_text(
+            gameisover,self.window_height/2,self.window_width/2 - len(gameisover) * 15,
+            arcade.color.RED,30)
+        return ret
+
+    def on_key_press(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
             self.sokoban.move(Movement.UP)
         elif key == arcade.key.DOWN or key == arcade.key.S:

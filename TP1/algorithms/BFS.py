@@ -61,14 +61,15 @@ class BFS(Algorithm):
                 new_prev_movs = state.prev_movs.copy()
                 new_prev_movs.append(state.mov)
                 state_queue.extend(
-                    list(map(
+                    map(
                         lambda mov: BFS.SavedState(
                             self.sokoban.state.save_state(),
                             mov,
                             new_prev_movs
                         ),
                         self.sokoban.get_possible_movements()
-                    ))
+                    )
                 )
         self.sokoban.state.load_state(initial_state)
+        self.solved = True
         return self.solution
