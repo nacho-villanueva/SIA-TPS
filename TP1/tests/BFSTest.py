@@ -16,6 +16,7 @@ def main(initial_state):
     sokoban = Sokoban(state)
     algorithm = BFS(sokoban)
     algorithm.run()
+    print(algorithm.statistics)
     shower_app = AlgorithmShowerApplication(sokoban,algorithm.run())
     arcade.run()
 
