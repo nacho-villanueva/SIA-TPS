@@ -6,7 +6,7 @@ import arcade
 import sys
 
 class SokobanApplication(SokobanBasicApplication):
-   def on_key_press(self, key, modifiers):
+    def on_key_press(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
             self.sokoban.move(Movement.UP)
         elif key == arcade.key.DOWN or key == arcade.key.S:
