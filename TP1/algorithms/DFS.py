@@ -9,9 +9,10 @@ class DFS(Algorithm):
         self.passed_nodes = set()
         self.movements_made = []
         self.solution_found = False
-        self.current_node = None
-        self.fr = []
+        self.current_node = None   # es una tupla de la forma ( (1,2), ((3,3),(4,4)) )
         self.statistics = Statistics(0, 0, 0, 0, 0)
+        # Frontera, cada nodo tiene la forma (self.current_node, last_movement, deepness)
+        self.fr = []
 
     def run(self):
         root_node = self.sokoban.state.save_state()
@@ -30,22 +31,22 @@ class DFS(Algorithm):
             new_node_inserted = False
             last_valid_movement = None
             for movement in possible_movements:
-                self.statistics.expanded_nodes += 1
                 # Lleno la frontera Fr con los hijos
-                if self.sokoban.is_valid_movement(movement):
-                    self.sokoban.move(movement)
-                    node_to_insert = self.sokoban.state.save_state()
-                    if node_to_insert not in self.passed_nodes and not self.sokoban.is_game_over():
-                        new_node_inserted = True
-                        self.fr.append((node_to_insert, movement, self.statistics.deepness))
-                        last_valid_movement = movement
-                        if self.sokoban.is_game_won():
-                            self.solution_found = True
-                            break
-                    self.sokoban.state.load_state(self.current_node[0])
+                self.sokoban.move(movement)
+                node_to_insert = self.sokoban.state.save_state()
+                if node_to_insert not in self.passed_nodes and not self.sokoban.is_game_over():
+                    new_node_inserted = True
+                    self.fr.append((node_to_insert, movement, self.statistics.deepness))
+                    last_valid_movement = movement
+                    if self.sokoban.is_game_won():
+                        self.solution_found = True
+                        break
+                self.sokoban.state.load_state(self.current_node[0])
 
             if new_node_inserted:
                 self.movements_made.append(last_valid_movement)
+                # Si tengo al menos un hijo, significa que me expandí
+                self.statistics.expanded_nodes += 1
             else:
                 aux = self.fr.pop()
                 for i in range(aux[2], self.statistics.deepness):

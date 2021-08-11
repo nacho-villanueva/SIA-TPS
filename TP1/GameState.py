@@ -146,7 +146,7 @@ class GameState:
         return pos.x < 0 or pos.x > self.dimensions[0] or pos.y < 0 or pos.y > self.dimensions[1]
 
     def save_state(self):
-        state = ((self.player_position.x, self.player_position.y), tuple(self.dynamic_state.keys()))
+        state = ((self.player_position.x, self.player_position.y), tuple(sorted(self.dynamic_state.keys())))
         return state
 
     def load_state(self, load_state):
