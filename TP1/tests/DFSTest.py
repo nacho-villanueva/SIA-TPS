@@ -24,7 +24,7 @@ def main(initial_state):
 
 
 if __name__ == "__main__":
-    config_file = "../tablerosQueSeBancaMendez/2.txt"
+    config_file = "../testGames/testGame3.txt"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
