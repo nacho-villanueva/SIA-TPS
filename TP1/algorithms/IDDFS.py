@@ -6,12 +6,13 @@ from TP1.algorithms.statistics import Statistics
 
 
 class IDDFS(Algorithm):
-    def __init__(self, sokoban: Sokoban, max_depth=500):
+    def __init__(self, sokoban: Sokoban, max_depth=500, test_deadlocks=True):
         super().__init__(sokoban)
         self.repeated_states = {}
         self.max_depth = max_depth
         self.statistics = Statistics(0, 0, 0, 0, 0)
         self.start_time = time()
+        self.test_deadlocks = test_deadlocks
 
     def _DLS(self, depth, limit, movements):
         if depth >= limit:
@@ -30,8 +31,9 @@ class IDDFS(Algorithm):
             self.statistics.frontier_nodes += 1
             return True, []
 
-        if self.sokoban.is_game_over():
-            return False, []
+        if self.test_deadlocks:
+            if self.sokoban.is_game_over():
+                return False, []
 
         possible_movements = self.sokoban.get_possible_movements()
 
