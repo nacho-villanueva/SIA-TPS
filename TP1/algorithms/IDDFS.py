@@ -1,5 +1,8 @@
+from time import time
+
 from TP1.Sokoban import Sokoban, Movement
 from TP1.algorithms.algorithm import Algorithm
+from TP1.algorithms.statistics import Statistics
 
 
 class IDDFS(Algorithm):
@@ -7,19 +10,24 @@ class IDDFS(Algorithm):
         super().__init__(sokoban)
         self.repeated_states = {}
         self.max_depth = max_depth
+        self.statistics = Statistics(0, 0, 0, 0, 0)
+        self.start_time = time()
 
     def _DLS(self, depth, limit, movements):
         if depth >= limit:
             return False, []
 
         current_state = self.sokoban.state.save_state()
+        self.statistics.expanded_nodes += 1
 
         if current_state in self.repeated_states and self.repeated_states[current_state] <= depth:
+            self.statistics.frontier_nodes += 1
             return False, []
 
         self.repeated_states[current_state] = depth
 
         if self.sokoban.is_game_won():
+            self.statistics.frontier_nodes += 1
             return True, []
 
         if self.sokoban.is_game_over():
@@ -30,7 +38,7 @@ class IDDFS(Algorithm):
         for m in possible_movements:
             self.sokoban.move(m)
 
-            solution = self._DLS(depth + 1, limit,  movements + [m])
+            solution = self._DLS(depth + 1, limit, movements + [m])
             if solution[0]:
                 solution[1].append(m)
                 return True, solution[1]
@@ -44,7 +52,9 @@ class IDDFS(Algorithm):
             self.repeated_states = {}
             solution = self._DLS(0, i, [])
             if solution[0]:
+                self.statistics.deepness = len(solution[1])
                 solution[1].reverse()
+                self.statistics.time_spent = time() - self.start_time
                 return solution[1]
         print("Max depth reached.")
         return []
