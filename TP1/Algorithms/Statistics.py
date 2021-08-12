@@ -1,5 +1,5 @@
 class Statistics:
-    def __init__(self, deepness, cost, expanded_nodes, frontier_nodes, time_spent):
+    def __init__(self, deepness=0, cost=0, expanded_nodes=0, frontier_nodes=0, time_spent=0):
         # Agregar aca todos los statistics de la corrida del algoritmo
         self.deepness = deepness
         self.cost = cost
