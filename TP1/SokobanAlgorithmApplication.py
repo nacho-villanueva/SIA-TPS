@@ -1,4 +1,4 @@
-from TP1.SokobanBasicApplication import SokobanBasicApplication
+from TP1.SokobanBasicDisplay import SokobanBasicApplication
 from os.path import isfile
 
 from TP1.GameState import GameState

@@ -1,7 +1,7 @@
 from os.path import isfile
 from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban, Movement
-from SokobanBasicApplication import SokobanBasicApplication
+from SokobanBasicDisplay import SokobanBasicApplication
 import arcade
 import sys
 

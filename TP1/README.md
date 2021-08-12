@@ -48,8 +48,8 @@ Permite a los algoritmos guardar y cargar estados fácilmente.
     - **** 
     - ****
     
-- **SokobanBasicApplication:** Esta clase permite ser extendida, y fácilmente mostrar y actualizar el display grafico del juego. Las clases de algoritmos que extienden a la misma son:
-    - **SokobanMain:** Esta clase extiende SokobanBasicApplication y permite, usando las flechas, jugar al juego.
+- **SokobanBasicDisplay:** Esta clase permite ser extendida, y fácilmente mostrar y actualizar el display grafico del juego. Las clases de algoritmos que extienden a la misma son:
+    - **SokobanMainApplication:** Esta clase permite usando las flechas jugar al juego.
     - **SokobanAlgorithmApplication:** Esta clase es instanciada por los tests de cada algoritmo, para que al pasar un array de movimientos correspondientes a la solución, esta pueda mostrar paso por paso. El mismo puede ser controlado con las siguientes teclas:
         - A: Avanzar automáticamente cada movimiento
         - Espacio: Avanzar un paso
