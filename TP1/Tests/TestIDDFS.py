@@ -4,14 +4,14 @@ import arcade
 
 from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban
-from TP1.Algorithms.IDDFS3 import IDDFS
+from TP1.Algorithms.IDDFS import IDDFS
 from TP1.SokobanAlgorithmApplication import AlgorithmShowerApplication
 
 
 def main(file):
     state = GameState.from_filepath(file)
     game = Sokoban(state)
-    iddfs = IDDFS(game, 500, 50, 10)
+    iddfs = IDDFS(game, 500, 5, 5)
     solution = iddfs.run()
 
     if solution:
@@ -24,7 +24,7 @@ def main(file):
 
 
 if __name__ == "__main__":
-    config_file = "../TestCodes/testGame6.txt"
+    config_file = "../TestCodes/testGame5.txt"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
