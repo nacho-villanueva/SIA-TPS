@@ -5,8 +5,8 @@ import arcade
 
 from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban
-from TP1.algorithms.DFS import DFS
-from TP1.tests.algorithmShower import AlgorithmShowerApplication
+from TP1.Algorithms.DFS import DFS
+from TP1.SokobanAlgorithmApplication import AlgorithmShowerApplication
 
 
 def main(initial_state):
@@ -24,7 +24,7 @@ def main(initial_state):
 
 
 if __name__ == "__main__":
-    config_file = "../testGames/testGame3.txt"
+    config_file = "../TestCodes/testGame3.txt"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:

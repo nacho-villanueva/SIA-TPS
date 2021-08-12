@@ -2,15 +2,16 @@ import arcade
 from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban
 
+
 class SokobanBasicApplication(arcade.Window):
     def __init__(
-                self, sokoban:Sokoban, window_height=600, window_width=600, 
-                window_title="SIA Sokoban", update_rate=1,
-                resizable=True
-        ):
-        
+            self, sokoban: Sokoban, window_height=600, window_width=600,
+            window_title="SIA Sokoban", update_rate=1,
+            resizable=True
+    ):
+
         super().__init__(
-            window_width, window_height, 
+            window_width, window_height,
             window_title, resizable=resizable,
             update_rate=update_rate
         )

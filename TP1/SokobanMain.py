@@ -1,9 +1,10 @@
 from os.path import isfile
 from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban, Movement
-from sokobanBasicApplication import SokobanBasicApplication
+from SokobanBasicApplication import SokobanBasicApplication
 import arcade
 import sys
+
 
 class SokobanApplication(SokobanBasicApplication):
     def on_key_press(self, key, modifiers):
@@ -17,6 +18,7 @@ class SokobanApplication(SokobanBasicApplication):
             self.sokoban.move(Movement.RIGHT)
         elif key == arcade.key.Q:
             self.close()
+
 
 def main(initial_state):
     if not isfile(initial_state):

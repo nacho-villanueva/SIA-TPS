@@ -1,8 +1,8 @@
 from time import time
 
 from TP1.Sokoban import Sokoban, Movement
-from TP1.algorithms.algorithm import Algorithm
-from TP1.algorithms.statistics import Statistics
+from TP1.Algorithms.Algorithm import Algorithm
+from TP1.Algorithms.Statistics import Statistics
 
 
 class IDDFS(Algorithm):
