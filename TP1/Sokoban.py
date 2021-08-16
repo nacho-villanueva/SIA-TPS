@@ -81,3 +81,21 @@ class Sokoban:
             else:
                 print("El array de movimientos está mal, ya que en un momento te hace ir a un estado repetido")
         print("El array de movimientos genera una secuencia correcta de estados sin repetir")
+
+    def get_nearest_ice_from_player(self):
+        state = self.state.save_state()
+        player_position = state[0]
+        nearest_ice = None
+        for ice_position in state[1]:
+            if nearest_ice is None or abs(ice_position[0]-player_position[0]) + abs(ice_position[1]-player_position[1]) \
+                    < abs(nearest_ice[0]-player_position[0]) + abs(nearest_ice[1]-player_position[1]):
+                nearest_ice = ice_position
+        return nearest_ice
+
+    def get_nearest_end_from_ice(self, ice: tuple[int, int]):
+        nearest_end = None
+        for end_position in self.state.end_positions:
+            if nearest_end is None or abs(end_position[0] - ice[0]) + abs(end_position[1] - ice[1]) \
+                    < abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1]):
+                nearest_end = end_position
+        return nearest_end
