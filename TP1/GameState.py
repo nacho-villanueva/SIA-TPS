@@ -32,6 +32,7 @@ class GameState:
     @staticmethod
     def from_code(code: str):
 
+        end_positions = []
         player_position = Position(-1, -1)
 
         static_state = []
@@ -48,7 +49,10 @@ class GameState:
             static_row = []
 
             for x, b in enumerate(row):
-                if b == GameState.WALL or b == GameState.END:
+                if b == GameState.WALL:
+                    static_row.append(b)
+                elif b == GameState.END:
+                    end_positions.append((x, y))
                     static_row.append(b)
                 elif b == GameState.ICE:
                     static_row.append(GameState.EMPTY)
@@ -71,7 +75,7 @@ class GameState:
 
         if player_position.x == -1:
             raise Exception("Malformed Code. Player not found")
-        return GameState(static_state, dynamic_state, player_position)
+        return GameState(static_state, dynamic_state, player_position, end_positions)
 
     @staticmethod
     def from_filepath(file_path):
@@ -109,11 +113,12 @@ class GameState:
         return GameState.from_code(lines)
 
     def __init__(self, static_state: list[list[str]], initial_dynamic_state: dict[tuple[int, int], str],
-                 initial_player_position: Position):
+                 initial_player_position: Position, end_positions: list[tuple[int, int]]):
         self.dimensions = (len(static_state[0]), len(static_state))
         self.dynamic_state = initial_dynamic_state
         self.static_state = static_state
         self.player_position = initial_player_position
+        self.end_positions = end_positions
 
     def get_static_block(self, pos: tuple[int, int]):
         if pos[0] < 0 or pos[0] > self.dimensions[0] or pos[1] < 0 or pos[1] > self.dimensions[1]:
