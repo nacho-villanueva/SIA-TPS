@@ -15,7 +15,7 @@ def main(initial_state):
         exit(1)
     state = GameState.from_filepath(initial_state)
     sokoban = Sokoban(state)
-    algorithm = DFS(sokoban)
+    algorithm = DFS(sokoban, test_deadlocks=True)
     movements = algorithm.run()
     shower_app = AlgorithmShowerApplication(sokoban, movements, update_rate=0.01)
     print(algorithm.statistics)

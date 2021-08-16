@@ -33,7 +33,7 @@ def main(initial_state):
         exit(1)
     state = GameState.from_filepath(initial_state)
     sokoban = Sokoban(state)
-    algorithm = AStar(sokoban, heuristic)
+    algorithm = AStar(sokoban, heuristic, test_deadlocks=True)
     movements = algorithm.run()
     shower_app = AlgorithmShowerApplication(sokoban, movements, update_rate=0.01, move_automatically=False)
     print(algorithm.statistics)

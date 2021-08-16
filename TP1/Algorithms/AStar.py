@@ -10,7 +10,7 @@ def sort_state(state):
 
 
 class AStar(Algorithm):
-    def __init__(self, sokoban, heuristic):
+    def __init__(self, sokoban, heuristic, test_deadlocks):
         super(AStar, self).__init__(sokoban)
         self.passed_nodes = set()
         self.solution_found = False
@@ -19,6 +19,7 @@ class AStar(Algorithm):
         self.fr = SortedList(key=sort_state)
         self.heuristic = heuristic
         self.winning_node = None
+        self.test_deadlocks = test_deadlocks
 
     def run(self):
         if self.sokoban.is_game_won():
@@ -54,14 +55,15 @@ class AStar(Algorithm):
                 # Lleno la frontera Fr con los hijos
                 self.sokoban.move(movement)
                 node_to_insert = self.sokoban.state.save_state()
-                if node_to_insert not in self.passed_nodes and not self.sokoban.is_game_over():
-                    new_node_inserted = True
-                    new_fr_element = (node_to_insert, movement, self.current_node, self.statistics.deepness, self.heuristic(self.sokoban))
-                    self.fr.add(new_fr_element)
-                    if self.sokoban.is_game_won():
-                        self.solution_found = True
-                        self.winning_node = (new_fr_element, movement)
-                        break
+                if node_to_insert not in self.passed_nodes:
+                    if not (self.test_deadlocks and self.sokoban.is_game_over()):
+                        new_node_inserted = True
+                        new_fr_element = (node_to_insert, movement, self.current_node, self.statistics.deepness, self.heuristic(self.sokoban))
+                        self.fr.add(new_fr_element)
+                        if self.sokoban.is_game_won():
+                            self.solution_found = True
+                            self.winning_node = (new_fr_element, movement)
+                            break
                 self.sokoban.state.load_state(self.current_node[0])
 
             if new_node_inserted:

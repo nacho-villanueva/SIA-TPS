@@ -4,15 +4,15 @@ from time import time
 
 
 class DFS(Algorithm):
-    def __init__(self, sokoban):
+    def __init__(self, sokoban, test_deadlocks=True):
         super(DFS, self).__init__(sokoban)
         self.passed_nodes = set()
         self.movements_made = []
         self.solution_found = False
-        self.current_node = None   # es una tupla de la forma ( (1,2), ((3,3),(4,4)) )
+        self.current_node = None
         self.statistics = Statistics(0, 0, 0, 0, 0)
-        # Frontera, cada nodo tiene la forma (self.current_node, last_movement, deepness)
         self.fr = []
+        self.test_deadlocks = test_deadlocks
 
     def run(self):
         if self.sokoban.is_game_won():
@@ -47,13 +47,14 @@ class DFS(Algorithm):
                 # Lleno la frontera Fr con los hijos
                 self.sokoban.move(movement)
                 node_to_insert = self.sokoban.state.save_state()
-                if node_to_insert not in self.passed_nodes and not self.sokoban.is_game_over():
-                    new_node_inserted = True
-                    self.fr.append((node_to_insert, movement, self.statistics.deepness))
-                    last_valid_movement = movement
-                    if self.sokoban.is_game_won():
-                        self.solution_found = True
-                        break
+                if node_to_insert not in self.passed_nodes:
+                    if not (self.test_deadlocks and self.sokoban.is_game_over()):
+                        new_node_inserted = True
+                        self.fr.append((node_to_insert, movement, self.statistics.deepness))
+                        last_valid_movement = movement
+                        if self.sokoban.is_game_won():
+                            self.solution_found = True
+                            break
                 self.sokoban.state.load_state(self.current_node[0])
 
             if new_node_inserted:
