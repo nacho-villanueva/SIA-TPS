@@ -7,13 +7,7 @@ from TP1.Sokoban import Sokoban
 import sys
 from TP1.Algorithms.IDAStar import IDAStar
 
-def distance(x,y):
-    return abs(x[0]-y[0]) + abs(x[1]-y[1])
-
-def heuristic(state):
-    return distance(state[0],state[1][0]) - 1
     
-
 
 def main(initial_state):
     if not isfile(initial_state):
@@ -21,6 +15,45 @@ def main(initial_state):
         exit(1)
     state = GameState.from_filepath(initial_state)
     sokoban = Sokoban(state)
+    objectives = []
+    for i,r in enumerate(state.static_state):
+        for j, e in enumerate(r):
+            if e == GameState.END:
+                objectives.append((i,j))
+    def distance(x,y):
+        return abs(x[0]-y[0]) + abs(x[1]-y[1])
+    global runs
+    runs = 0
+    def heuristic(state, g):
+        global runs
+        h = 0
+        p_setted = False
+        p_dist_min = 0
+        for ice in state[1]:
+            p_dist = distance(state[0],ice)
+            if not p_setted:
+                p_dist_min = p_dist
+            else:
+                if p_dist_min > p_dist:
+                    p_dist_min = p_dist
+            min_dist = 0
+            setted = False
+            for o in objectives:
+                dist = distance(ice,o)
+                if not setted:
+                    min_dist = dist
+                    setted = True
+                else:
+                    if min_dist > dist:
+                        min_dist = dist
+            if setted:
+                h += min_dist
+        h += p_dist_min - 1
+        return h + g
+
+
+
+
     algorithm = IDAStar(sokoban,heuristic)
     algorithm.run()
     print(algorithm.statistics)

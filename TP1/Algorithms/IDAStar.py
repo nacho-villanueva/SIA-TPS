@@ -1,106 +1,86 @@
+from collections import deque
+from time import time
+from TP1.Sokoban import Sokoban
+from sortedcontainers.sortedlist import SortedList
 from TP1.Algorithms.Algorithm import Algorithm
 from TP1.Algorithms.Statistics import Statistics
-from queue import PriorityQueue
 
 
 class IDAStar(Algorithm):
-    class SavedState:
-        def __init__(self, f_result ,state, prev_movs):
-            self.f_result = f_result
-            self.state = state
-            self.prev_movs = prev_movs
-        def __repr__(self):
-            return f"SavedState( {self.state} )"
-        def __eq__(self, other):
-            if isinstance(other, IDAStar.SavedState):
-                return (self.state == other.state)
-            else:
-                return False
-        def __lt__(self,other):
-            return self.f_result < other.f_result
-        def __ne__(self, other):
-            return (not self.__eq__(other))
-        def __hash__(self):
-            return hash(self.__repr__())
-
-    def __init__(self, sokoban, f):
+    def __init__(self, sokoban: Sokoban, f , test_deadlocks=True):
         super().__init__(sokoban)
         self.f = f
-        self.solution = []
-        self.solved = False
-        self.statistics = Statistics(0,0,0,0,0)
-        
+
+        self.repeated_states = {}
+        self.frontier_nodes = SortedList(key=lambda x:x[0])
+        self.frontier_nodes.add((self.f(self.sokoban.state.save_state(),0), self.sokoban.state.save_state(), []))
+
+        self.test_deadlocks = test_deadlocks
+
+        self.statistics = Statistics()
+
+        self.start_time = None
+        self.solution = None
+
+    def _DLS(self, node, limit):
+        # Initiate stack
+        node_stack = deque()
+        node_stack.append(node)
+
+        # While there are elements in the stack
+        while node_stack:
+            # Get last and load it
+            current_node = node_stack.pop()
+            self.sokoban.state.load_state(current_node[1])
+
+            # If won return it
+            if self.sokoban.is_game_won():
+                return current_node
+            # Else get possible movemnets and test them
+            posible_movements = self.sokoban.get_possible_movements()
+            for m in posible_movements:
+                # move and save state
+                self.sokoban.move(m)
+                new_state = self.sokoban.state.save_state()
+                new_node = (self.f(new_state,len(current_node[2]) + 1), new_state, current_node[2] + [m])
+
+                # If state is not repeated or, if repeated, has less cost
+                if not (new_state in self.repeated_states and self.repeated_states[new_state] <= new_node[0]):
+                    # If it's not in deadlock or we arent testing for deadlocks save it
+                    # if over limit save it in frontier, else save it in stack
+                    if not (self.test_deadlocks and self.sokoban.is_game_over()):
+                        if new_node[0] > limit:
+                            self.frontier_nodes.add(new_node)
+                        else:
+                            self.statistics.expanded_nodes += 1
+                            self.repeated_states[new_state] = new_node[0]
+                            node_stack.append(new_node)
+                # Reload state to make moves again
+                self.sokoban.state.load_state(current_node[1])
+        return False
+
+    def _IDAStar(self):
+        # While elements in frontier
+        while self.frontier_nodes:
+            # Get the one with least f value
+            current_node = self.frontier_nodes.pop(0)
+
+            # Run limited depth search
+            solution_node = self._DLS(current_node, current_node[0])
+            # If solution found set statistics and return it
+            if solution_node:
+                self.statistics.cost = self.statistics.deepness = len(solution_node[2])
+                self.statistics.time_spent = time() - self.start_time
+                self.statistics.frontier_nodes = len(self.frontier_nodes)
+                return solution_node[2]
+        return False
 
     def run(self):
-        # If the solution has already been found then return that
-        if self.solved:
+        if(self.solution != None):
             return self.solution
-
-        # To restore it at the end
         initial_state = self.sokoban.state.save_state()
-        # So as to not repeat ourselves
-        prev_states = set()
-        # Start the priority queue
-        frontier = PriorityQueue()
-        frontier.put(IDAStar.SavedState(self.f(initial_state),initial_state,[]))
-        # While not solved and items in queue
-        while not self.solved and frontier.qsize() > 0:
-            # Pop first unique state, add to prev_states,
-            # load state and make move
-            found = False
-            while not found and frontier.qsize() > 0:
-                start_state = frontier.get()
-                if not start_state in prev_states:
-                    found = True
-            if not found:
-                break
-            prev_states.add(start_state)
-            self.sokoban.state.load_state(start_state.state)
-            dfs_stack = [start_state]
-            dfs_prev_states = set()
-
-            # TODO: check if < or <=
-            while not self.solved and len(dfs_stack) > 0:
-                dfs_found = False
-                while not dfs_found and len(dfs_stack) != 0 :
-                    state = dfs_stack.pop()
-                    if not state in dfs_prev_states:
-                        dfs_found = True
-                if not dfs_found:
-                    break
-                if state.f_result > start_state.f_result:
-                    break
-                dfs_prev_states.add(state)
-                self.sokoban.state.load_state(state.state)
-                for move in self.sokoban.get_possible_movements():
-                    self.sokoban.move(move)
-                    if self.sokoban.is_game_won():
-                        self.solved = True
-                        self.solution =  state.prev_movs.copy()
-                        self.solution.append(move)
-                        break
-                    elif not self.sokoban.is_game_over():
-                        prev_movs = state.prev_movs.copy()
-                        prev_movs.append(move)
-                        state_to_save = self.sokoban.state.save_state()
-                        dfs_stack.append(IDAStar.SavedState(self.f(state_to_save),state_to_save,prev_movs))
-                    self.sokoban.state.load_state(state.state)
-            if not self.solved:
-                for s in dfs_stack:
-                    frontier.put(s)
-
-
-        self.statistics.deepness = len(self.solution)
-        self.statistics.cost = self.statistics.deepness
-        # Already set by this point
-        # self.statistics.expanded_nodes
-        self.statistics.frontier_nodes = frontier.qsize()
-        # self.statistics.time_spent = t1 - t0
-
-        # Load initial state and set solved to true
-        # Solved indicates if the algorithm has been
-        # not wether or not it found a solution
-        self.sokoban.state.load_state(initial_state)
-        self.solved = True
+        self.start_time = time()
+        self.solution = self._IDAStar()
         self.sokoban.state.load_state(initial_state)
         return self.solution
+    
