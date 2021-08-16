@@ -21,9 +21,9 @@ class IDDFS(Algorithm):
         self.test_deadlocks = test_deadlocks
 
         self.statistics = Statistics()
-        self.start_time = time()
 
         self.current_depth = 0
+        self.start_time = None
 
     def _DLS(self, node, limit):
         node_stack = deque()
@@ -79,4 +79,5 @@ class IDDFS(Algorithm):
         return False
 
     def run(self):
+        self.start_time = time()
         return self._IDDFS()

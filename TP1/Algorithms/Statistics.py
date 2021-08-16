@@ -8,4 +8,4 @@ class Statistics:
         self.time_spent = time_spent
 
     def __repr__(self) -> str:
-        return f" Stats:( deepness: {self.deepness}, cost: {self.cost},expanded_nodes: {self.expanded_nodes},frontier_nodes: {self.frontier_nodes},time_spent: {self.time_spent})"
+        return f"Depth: {self.deepness}    Cost: {self.cost}    Expanded Nodes: {self.expanded_nodes}    Frontier Nodes: {self.frontier_nodes}    Time Spent: {self.time_spent:.5f}s"
