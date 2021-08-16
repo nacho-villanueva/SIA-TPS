@@ -9,15 +9,12 @@ from functools import reduce
 
 class AlgorithmShowerApplication(SokobanBasicApplication):
     def __init__(
-            self, sokoban: Sokoban, solution: list[Movement],
-            window_height=600, window_width=600, window_title="SIA Sokoban",
+            self, sokoban: Sokoban, solution: list[Movement], window_title="SIA Sokoban",
             update_rate=1, resizable=True, move_automatically=True
     ):
 
         super().__init__(
-            sokoban=sokoban,
-            window_width=window_width, window_height=window_height,
-            window_title=window_title, resizable=resizable, update_rate=update_rate
+            sokoban=sokoban, window_title=window_title, resizable=resizable, update_rate=update_rate
         )
 
         self.initial_state = sokoban.state.save_state()

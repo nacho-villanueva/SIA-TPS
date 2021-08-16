@@ -5,33 +5,33 @@ from TP1.Sokoban import Sokoban
 
 class SokobanBasicApplication(arcade.Window):
     def __init__(
-            self, sokoban: Sokoban, window_height=600, window_width=600,
+            self, sokoban: Sokoban,
             window_title="SIA Sokoban", update_rate=1,
             resizable=True
     ):
 
+        self.sokoban = sokoban
+        self.window_height = 50 * sokoban.state.dimensions[0]
+        self.window_width = 50 * sokoban.state.dimensions[1]
+
         super().__init__(
-            window_width, window_height,
+            self.window_height, self.window_width,
             window_title, resizable=resizable,
             update_rate=update_rate
         )
 
-        self.sokoban = sokoban
-        self.window_height = window_height
-        self.window_width = window_width
-
     def on_draw(self):
         # Iterate through the states and draw
         state = self.sokoban.state
-        BLOCK_WIDTH = int(self.window_width / state.dimensions[1])
-        BLOCK_HEIGHT = int(self.window_height / state.dimensions[0])
+        BLOCK_WIDTH = int(self.window_width / state.dimensions[0])
+        BLOCK_HEIGHT = int(self.window_height / state.dimensions[1])
         SPACING = 10
 
         arcade.start_render()
-        for i in range(state.dimensions[0]):
-            for j in range(state.dimensions[1]):
+        for i in range(state.dimensions[1]):
+            for j in range(state.dimensions[0]):
                 dyn_val = state.get_dynamic_block((j, i))
-                sta_val = state.static_state[i][j]
+                sta_val = state.get_static_block((j, i))
 
                 if sta_val == GameState.WALL:
                     arcade.draw_rectangle_filled(

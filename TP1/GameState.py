@@ -43,7 +43,6 @@ class GameState:
 
         for y, row in enumerate(state):
             if len(row) != dim[0]:
-                print(repr(row), repr(state[0]))
                 raise Exception("Malformed Code. Code is not square.")
 
             static_row = []
@@ -94,18 +93,13 @@ class GameState:
         # ammout of lines, whichever is greatest
         lines = list(map(lambda line: line.rstrip(), lines))
         max_len = reduce(lambda acc, el: len(el) if len(el) > acc else acc, lines, 0)
-        max_len = max_len if max_len > len(lines) else len(lines)
 
         # Append spaces at the end and empty lines to form a square
         for i in range(len(lines)):
             if len(lines[i]) < max_len:
                 lines[i] = lines[i] + " " * (max_len - len(lines[i]))
-            if max_len - 1 > i:
+            if max_len - 1 > i != len(lines) - 1:
                 lines[i] = lines[i] + "\n"
-        if max_len > len(lines):
-            for _ in range(max_len - len(lines) - 1):
-                lines.append(" " * max_len + "\n")
-            lines.append(" " * max_len)
 
         # Join lines into a single string, close file and return string
         lines = "".join(line for line in lines)
