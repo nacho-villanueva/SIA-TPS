@@ -15,11 +15,24 @@ class DFS(Algorithm):
         self.fr = []
 
     def run(self):
+        if self.sokoban.is_game_won():
+            # Caso especial: el juego estaba ganado desde el comienzo
+            print(f"Solution found = {True}")
+            self.statistics.time_spent = 0
+            return []
+
+        if self.sokoban.is_game_over():
+            # Caso especial: el juego estaba perdido desde el comienzo
+            print(f"Solution found = {False}")
+            self.statistics.time_spent = 0
+            return []
+
+        t0 = time()
+
         root_node = self.sokoban.state.save_state()
         self.current_node = root_node
         self.fr.append((self.current_node, None, 0))
 
-        t0 = time()
         while not self.solution_found and len(self.fr) > 0:
             self.statistics.deepness += 1
             self.current_node = self.fr.pop()
