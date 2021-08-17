@@ -19,7 +19,6 @@ def main(initial_state):
     movements = algorithm.run()
     shower_app = AlgorithmShowerApplication(sokoban, movements, update_rate=0.01)
     print(algorithm.statistics)
-    # Sokoban.check_if_movements_lead_to_repeated_state(movements, GameState.from_filepath(initial_state))
     arcade.run()
 
 
