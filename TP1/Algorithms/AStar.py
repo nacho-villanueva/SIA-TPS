@@ -9,6 +9,11 @@ def sort_state(state):
     return state[4]  # Ordena por heurística
 
 
+# f(n) = g(n) + h(n)
+def f(cost, heuristic):
+    return cost + heuristic
+
+
 class AStar(Algorithm):
     def __init__(self, sokoban, heuristic, test_deadlocks):
         super(AStar, self).__init__(sokoban)
@@ -38,7 +43,7 @@ class AStar(Algorithm):
 
         root_node = self.sokoban.state.save_state()
         self.current_node = root_node
-        self.fr.add((self.current_node, None, None, 0, self.heuristic(self.sokoban)))
+        self.fr.add((self.current_node, None, None, 0, f(self.statistics.deepness, self.heuristic(self.sokoban))))
 
         while not self.solution_found and len(self.fr) > 0:
             self.statistics.deepness += 1
@@ -58,7 +63,7 @@ class AStar(Algorithm):
                 if node_to_insert not in self.passed_nodes:
                     if not (self.test_deadlocks and self.sokoban.is_game_over()):
                         new_node_inserted = True
-                        new_fr_element = (node_to_insert, movement, self.current_node, self.statistics.deepness, self.heuristic(self.sokoban))
+                        new_fr_element = (node_to_insert, movement, self.current_node, self.statistics.deepness, f(self.statistics.deepness, self.heuristic(self.sokoban)))
                         self.fr.add(new_fr_element)
                         if self.sokoban.is_game_won():
                             self.solution_found = True
@@ -70,8 +75,9 @@ class AStar(Algorithm):
                 # Si tengo al menos un hijo, significa que me expandí
                 self.statistics.expanded_nodes += 1
 
-            aux = self.fr.__getitem__(index=0)
-            self.statistics.deepness = aux[3]
+            if not self.sokoban.is_game_won():
+                aux = self.fr.__getitem__(index=0)
+                self.statistics.deepness = aux[3]
 
         t1 = time()
         self.statistics.time_spent = t1 - t0
