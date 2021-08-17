@@ -12,7 +12,7 @@ class DFS(Algorithm):
         self.movements_made = []
         self.solution_found = False
         self.current_node = None
-        self.statistics = Statistics(0, 0, 0, 0, 0)
+        self.statistics = Statistics()
         self.fr = []
         self.test_deadlocks = test_deadlocks
         self.random_choose = random_choose
@@ -77,7 +77,7 @@ class DFS(Algorithm):
 
         t1 = time()
 
-        print(f"Solution found = {self.solution_found}")
         self.statistics.time_spent = t1 - t0
-        self.sokoban.state.load_state(root_node)
+        self.statistics.frontier_nodes = len(self.fr)
+        self.statistics.cost = self.statistics.deepness
         return self.movements_made

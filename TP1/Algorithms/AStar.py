@@ -82,10 +82,9 @@ class AStar(Algorithm):
         t1 = time()
         self.statistics.time_spent = t1 - t0
 
-        print(f"Solution found = {self.solution_found}")
-
         if self.winning_node is not None:
-            self.sokoban.state.load_state(root_node)
+            self.statistics.cost = self.statistics.deepness
+            self.statistics.frontier_nodes = len(self.fr)
             movements_to_win = [self.winning_node[1]]
             parent = self.winning_node[0][2]
             while parent is not None and parent[1] is not None:
