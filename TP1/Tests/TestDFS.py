@@ -14,14 +14,11 @@ def main(file):
     algorithm = DFS(sokoban, test_deadlocks=True, random_choose=False)
     solution = algorithm.run()
 
-    if solution:
-        print("Solution found!")
-        print(algorithm.statistics)
-        state = GameState.from_filepath(file)
-        shower_app = AlgorithmShowerApplication(Sokoban(state), solution, update_rate=0.01)
-        arcade.run()
-    else:
-        print("No solution found.")
+    print(f"Solution found = {len(solution) > 0}")
+    print(algorithm.statistics)
+    state = GameState.from_filepath(file)
+    shower_app = AlgorithmShowerApplication(Sokoban(state), solution, update_rate=0.01)
+    arcade.run()
 
 
 if __name__ == "__main__":
