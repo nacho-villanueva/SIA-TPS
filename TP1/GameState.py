@@ -98,8 +98,8 @@ class GameState:
         for i in range(len(lines)):
             if len(lines[i]) < max_len:
                 lines[i] = lines[i] + " " * (max_len - len(lines[i]))
-            if max_len - 1 > i != len(lines) - 1:
-                lines[i] = lines[i] + "\n"
+            if i != len(lines) - 1:
+                lines[i] += "\n"
 
         # Join lines into a single string, close file and return string
         lines = "".join(line for line in lines)

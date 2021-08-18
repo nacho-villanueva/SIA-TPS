@@ -105,6 +105,24 @@ class Sokoban:
                     nearest_ice = ice_position
         return nearest_ice
 
+    def get_sum_of_distance_to_non_finished_ice_from_player(self):
+        total_dist = 0
+        for ice_position in self.state.dynamic_state:
+            if self.state.get_static_block(ice_position) != GameState.END:
+                total_dist += abs(ice_position[0] - self.state.player_position.x) + abs(ice_position[1] - self.state.player_position.y)
+        return total_dist
+
+    def get_furthest_non_finished_ice_from_player(self):
+        furthest_ice = None
+        furthest_dist = 0
+        for ice_position in self.state.dynamic_state:
+            if self.state.get_static_block(ice_position) != GameState.END:
+                ice_dist = abs(ice_position[0] - self.state.player_position.x) + abs(ice_position[1] - self.state.player_position.y)
+                if  ice_dist > furthest_dist:
+                    furthest_ice = ice_position
+                    furthest_dist = ice_dist
+        return furthest_ice
+
     def get_nearest_end_from_ice(self, ice: tuple[int, int]):
         nearest_end = None
         for end_position in self.state.end_positions:
