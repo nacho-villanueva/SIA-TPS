@@ -10,7 +10,7 @@ from itertools import permutations
 
 def heuristic_1(sokoban: Sokoban):
     to_return = 0
-    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban)
+    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban) - 1
     ice = sokoban.get_nearest_non_finished_ice_from_player()
     if ice is not None:
         end = sokoban.get_nearest_end_from_ice(ice)
@@ -26,10 +26,11 @@ def heuristic_1(sokoban: Sokoban):
 
 def heuristic_2(sokoban: Sokoban):
     to_return = 0
-    for ice in sokoban.state.save_state()[1]:
+    state = sokoban.state.save_state()
+    for ice in state[1]:
         nearest_end = sokoban.get_nearest_end_from_ice(ice)
         to_return += abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1])
-    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban)
+    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban) - 1
     return to_return
 
 

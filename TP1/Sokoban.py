@@ -10,6 +10,9 @@ class Movement(enum.Enum):
     RIGHT = Position(1, 0)
     DOWN = Position(0, 1)
 
+def manhattan_distance(pos1,pos2):
+    return abs(pos1[0]-pos2[0]) + abs(pos1[1]-pos2[1])
+
 
 class Sokoban:
     """
@@ -87,10 +90,12 @@ class Sokoban:
         state = self.state.save_state()
         player_position = state[0]
         nearest_ice = None
+        nearest_dist = 0
         for ice_position in state[1]:
-            if nearest_ice is None or abs(ice_position[0]-player_position[0]) + abs(ice_position[1]-player_position[1]) \
-                    < abs(nearest_ice[0]-player_position[0]) + abs(nearest_ice[1]-player_position[1]):
+            ice_dist = manhattan_distance(ice_position,player_position)
+            if nearest_ice is None or ice_dist < nearest_dist:
                 nearest_ice = ice_position
+                nearest_dist = ice_dist
         return nearest_ice
 
     # Devuelve el ice más cercano al player que NO esté sobre un END
@@ -98,11 +103,13 @@ class Sokoban:
         state = self.state.save_state()
         player_position = state[0]
         nearest_ice = None
+        nearest_dist = 0
         for ice_position in state[1]:
             if self.state.get_static_block(ice_position) != GameState.END:
-                if nearest_ice is None or abs(ice_position[0] - player_position[0]) + abs(ice_position[1] - player_position[1]) \
-                        < abs(nearest_ice[0] - player_position[0]) + abs(nearest_ice[1] - player_position[1]):
+                ice_dist = manhattan_distance(player_position,ice_position)
+                if nearest_ice is None or  ice_dist < nearest_dist:
                     nearest_ice = ice_position
+                    nearest_dist = ice_dist
         return nearest_ice
 
     def get_sum_of_distance_to_non_finished_ice_from_player(self):
@@ -127,9 +134,11 @@ class Sokoban:
         if exclude_ends is None:
             exclude_ends = []
         nearest_end = None
+        nearest_dist = 0
         for end_position in self.state.end_positions:
             if end_position not in exclude_ends:
-                if nearest_end is None or abs(end_position[0] - ice[0]) + abs(end_position[1] - ice[1]) \
-                        < abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1]):
+                end_dist = manhattan_distance(end_position,ice)
+                if nearest_end is None or  end_dist < nearest_dist:
                     nearest_end = end_position
+                    nearest_dist = end_dist
         return nearest_end

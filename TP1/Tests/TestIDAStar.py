@@ -6,7 +6,7 @@ from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban
 import sys
 from TP1.Algorithms.IDAStar import IDAStar
-from TP1.heuristics import heuristic_1, heuristic_2
+from TP1.heuristics import heuristic_1, heuristic_2, heuristic_3
 from TP1.heuristics2 import get_heuristic1
     
 
@@ -16,7 +16,7 @@ def main(initial_state):
         exit(1)
     state = GameState.from_filepath(initial_state)
     sokoban = Sokoban(state)
-    algorithm = IDAStar(sokoban, heuristic_2)
+    algorithm = IDAStar(sokoban, heuristic_1)
     algorithm.run()
     print(algorithm.statistics)
     shower_app = AlgorithmShowerApplication(sokoban, algorithm.run(), update_rate=1 / 4)
