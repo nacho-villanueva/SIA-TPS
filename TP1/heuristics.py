@@ -12,8 +12,9 @@ def heuristic_1(sokoban: Sokoban):
     to_return = 0
     to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban)
     ice = sokoban.get_nearest_non_finished_ice_from_player()
-    end = sokoban.get_nearest_end_from_ice(ice)
-    to_return += abs(ice[0] - end[0]) + abs(ice[1] - end[1])
+    if ice is not None:
+        end = sokoban.get_nearest_end_from_ice(ice)
+        to_return += abs(ice[0] - end[0]) + abs(ice[1] - end[1])
     return to_return
 
 
