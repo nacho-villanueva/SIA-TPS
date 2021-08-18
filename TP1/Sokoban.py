@@ -123,10 +123,13 @@ class Sokoban:
                     furthest_dist = ice_dist
         return furthest_ice
 
-    def get_nearest_end_from_ice(self, ice: tuple[int, int]):
+    def get_nearest_end_from_ice(self, ice: tuple[int, int], exclude_ends=None):
+        if exclude_ends is None:
+            exclude_ends = []
         nearest_end = None
         for end_position in self.state.end_positions:
-            if nearest_end is None or abs(end_position[0] - ice[0]) + abs(end_position[1] - ice[1]) \
-                    < abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1]):
-                nearest_end = end_position
+            if end_position not in exclude_ends:
+                if nearest_end is None or abs(end_position[0] - ice[0]) + abs(end_position[1] - ice[1]) \
+                        < abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1]):
+                    nearest_end = end_position
         return nearest_end
