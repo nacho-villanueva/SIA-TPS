@@ -7,12 +7,13 @@ from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban
 from TP1.SokobanAlgorithmApplication import AlgorithmShowerApplication
 from TP1.heuristics import heuristic_1, heuristic_2, heuristic_non_admisible
+from TP1.heuristics2 import get_heuristic1
 
 
 def main(file):
     state = GameState.from_filepath(file)
     sokoban = Sokoban(state)
-    algorithm = AStar(sokoban, heuristic_non_admisible, test_deadlocks=True)
+    algorithm = AStar(sokoban, heuristic_1, test_deadlocks=True)
     solution = algorithm.run()
 
     print(f"Solution found = {len(solution) > 0}")
