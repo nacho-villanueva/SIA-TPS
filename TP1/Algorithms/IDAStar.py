@@ -7,13 +7,18 @@ from TP1.Algorithms.Statistics import Statistics
 
 
 class IDAStar(Algorithm):
-    def __init__(self, sokoban: Sokoban, f , test_deadlocks=True):
+
+    def f(self, cost):
+        return self.heuristic(self.sokoban) + cost
+
+    def __init__(self, sokoban: Sokoban, heuristic , test_deadlocks=True):
         super().__init__(sokoban)
-        self.f = f
+        
+        self.heuristic = heuristic
 
         self.repeated_states = {}
         self.frontier_nodes = SortedList(key=lambda x:x[0])
-        self.frontier_nodes.add((self.f(self.sokoban.state.save_state(),0), self.sokoban.state.save_state(), []))
+        self.frontier_nodes.add((self.f(0), self.sokoban.state.save_state(), []))
 
         self.test_deadlocks = test_deadlocks
 
@@ -42,7 +47,7 @@ class IDAStar(Algorithm):
                 # move and save state
                 self.sokoban.move(m)
                 new_state = self.sokoban.state.save_state()
-                new_node = (self.f(new_state,len(current_node[2]) + 1), new_state, current_node[2] + [m])
+                new_node = (self.f(len(current_node[2]) + 1), new_state, current_node[2] + [m])
 
                 # If state is not repeated or, if repeated, has less cost
                 if not (new_state in self.repeated_states and self.repeated_states[new_state] <= new_node[0]):
