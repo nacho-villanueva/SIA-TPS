@@ -10,7 +10,7 @@ from itertools import permutations
 
 def heuristic_1(sokoban: Sokoban):
     to_return = 0
-    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban) - 1
+    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban)
     ice = sokoban.get_nearest_non_finished_ice_from_player()
     if ice is not None:
         end = sokoban.get_nearest_end_from_ice(ice)
@@ -30,7 +30,7 @@ def heuristic_2(sokoban: Sokoban):
     for ice in state[1]:
         nearest_end = sokoban.get_nearest_end_from_ice(ice)
         to_return += abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1])
-    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban) - 1
+    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban)
     return to_return
 
 
@@ -44,7 +44,7 @@ def get_distance_from_player_to_closest_non_ended_ice(sokoban: Sokoban):
     if closest_ice is None:
         # Sucede solo si el juego está ganado
         return 0
-    return abs(sokoban.state.player_position.x - closest_ice[0]) + abs(sokoban.state.player_position.y - closest_ice[1])
+    return abs(sokoban.state.player_position.x - closest_ice[0]) + abs(sokoban.state.player_position.y - closest_ice[1]) - 1
 
 
 def get_distance_from_player_to_furthest_non_ended_ice(sokoban: Sokoban):
@@ -52,7 +52,7 @@ def get_distance_from_player_to_furthest_non_ended_ice(sokoban: Sokoban):
     if furthest is None:
         # Sucede solo si el juego está ganado
         return 0
-    return abs(sokoban.state.player_position.x - furthest[0]) + abs(sokoban.state.player_position.y - furthest[1])
+    return abs(sokoban.state.player_position.x - furthest[0]) + abs(sokoban.state.player_position.y - furthest[1]) - 1 
 
 
 '''

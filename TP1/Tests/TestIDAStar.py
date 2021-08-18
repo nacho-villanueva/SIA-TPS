@@ -16,7 +16,7 @@ def main(initial_state):
         exit(1)
     state = GameState.from_filepath(initial_state)
     sokoban = Sokoban(state)
-    algorithm = IDAStar(sokoban, heuristic_1)
+    algorithm = IDAStar(sokoban, heuristic_2)
     algorithm.run()
     print(algorithm.statistics)
     shower_app = AlgorithmShowerApplication(sokoban, algorithm.run(), update_rate=1 / 4)
