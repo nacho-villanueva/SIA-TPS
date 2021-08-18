@@ -2,23 +2,19 @@ from TP1.Sokoban import Sokoban
 from itertools import permutations
 
 '''
-    Devuelve la suma de las distancias de los hielos al objetivo mas cercano a ellos, 
-    más la distancia del jugador al bloque más cercano
+    Distancia Manhattan del jugador a la caja más cercana que no esté sobre un objetivo
+    +
+    Distancia de esa caja al objetivo más cercano.
 '''
 
 
 def heuristic_1(sokoban: Sokoban):
     to_return = 0
-    for ice in sokoban.state.save_state()[1]:
-        nearest_end = sokoban.get_nearest_end_from_ice(ice)
-        to_return += abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1])
-    to_return += get_distance_from_player_to_closest_ice(sokoban)
+    to_return += get_distance_from_player_to_closest_non_ended_ice(sokoban)
+    ice = sokoban.get_nearest_non_finished_ice_from_player()
+    end = sokoban.get_nearest_end_from_ice(ice)
+    to_return += abs(ice[0] - end[0]) + abs(ice[1] - end[1])
     return to_return
-
-
-def get_distance_from_player_to_closest_ice(sokoban: Sokoban):
-    closest_ice = sokoban.get_nearest_ice_from_player()
-    return abs(sokoban.state.player_position.x - closest_ice[0]) + abs(sokoban.state.player_position.y - closest_ice[1])
 
 
 '''
