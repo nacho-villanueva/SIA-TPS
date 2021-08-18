@@ -68,12 +68,15 @@ class DFS(Algorithm):
                 # Si tengo al menos un hijo, significa que me expandí
                 self.statistics.expanded_nodes += 1
             else:
-                aux = self.fr.pop()
-                for i in range(aux[2], self.statistics.deepness):
-                    self.movements_made.pop()
-                self.movements_made.append(aux[1])
-                self.statistics.deepness = aux[2]
-                self.fr.append(aux)
+                if len(self.fr) > 0:
+                    aux = self.fr.pop()
+                    for i in range(aux[2], self.statistics.deepness):
+                        self.movements_made.pop()
+                    self.movements_made.append(aux[1])
+                    self.statistics.deepness = aux[2]
+                    self.fr.append(aux)
+                else:
+                    self.movements_made = []
 
         t1 = time()
 

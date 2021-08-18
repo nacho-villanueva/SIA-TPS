@@ -75,7 +75,7 @@ class AStar(Algorithm):
                 # Si tengo al menos un hijo, significa que me expandí
                 self.statistics.expanded_nodes += 1
 
-            if not self.sokoban.is_game_won():
+            if not self.sokoban.is_game_won() and len(self.fr) > 0:
                 aux = self.fr.__getitem__(index=0)
                 self.statistics.deepness = aux[3]
 
