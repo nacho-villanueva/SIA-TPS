@@ -32,7 +32,7 @@ def main(initial_state):
 
 
 if __name__ == "__main__":
-    config_file = "./TestCodes/testGame3.txt"
+    config_file = "./TestCodes/testGame11.txt"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
