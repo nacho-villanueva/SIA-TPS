@@ -9,8 +9,7 @@ from TP1.Sokoban import Sokoban
 import sys
 from TP1.Algorithms.IDAStar import IDAStar
 from TP1.heuristics import heuristic_1, heuristic_2, heuristic_3, get_heuristic_by_number
-from TP1.heuristics2 import get_heuristic1
-    
+
 
 def main(initial_state, test_deadlocks, heuristic):
     if not isfile(initial_state):
