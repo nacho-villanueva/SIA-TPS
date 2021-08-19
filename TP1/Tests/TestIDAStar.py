@@ -21,7 +21,7 @@ def main(initial_state, test_deadlocks, heuristic):
     algorithm = IDAStar(sokoban, heuristic, test_deadlocks=test_deadlocks)
     algorithm.run()
     print(algorithm.statistics)
-    shower_app = AlgorithmShowerApplication(sokoban, algorithm.run(), update_rate=1 / 4)
+    shower_app = AlgorithmShowerApplication(sokoban, algorithm.run(), update_rate=0.25)
     arcade.run()
 
 

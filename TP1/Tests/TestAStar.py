@@ -24,7 +24,7 @@ def main(file, test_deadlocks, heuristic):
     print(f"Solution found = {len(solution) > 0}")
     print(algorithm.statistics)
     state = GameState.from_filepath(file)
-    shower_app = AlgorithmShowerApplication(Sokoban(state), solution, update_rate=0.01, move_automatically=False)
+    shower_app = AlgorithmShowerApplication(Sokoban(state), solution, update_rate=0.25)
     arcade.run()
 
 

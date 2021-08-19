@@ -22,7 +22,7 @@ def main(file, test_deadlocks):
     if solution:
         print(iddfs.statistics)
         state = GameState.from_filepath(file)
-        asa = AlgorithmShowerApplication(Sokoban(state), solution, update_rate=0.25, move_automatically=True)
+        asa = AlgorithmShowerApplication(Sokoban(state), solution, update_rate=0.25)
         arcade.run()
     else:
         print("No solution found.")
