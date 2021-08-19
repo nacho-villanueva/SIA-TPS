@@ -32,6 +32,7 @@ class IDDFS(Algorithm):
         while node_stack:
             current_node = node_stack.pop()
             self.sokoban.state.load_state(current_node[1])
+            self.statistics.expanded_nodes += 1
 
             if self.sokoban.is_game_won():
                 return current_node
@@ -44,11 +45,10 @@ class IDDFS(Algorithm):
 
                 if not (new_state in self.repeated_states and self.repeated_states[new_state] <= new_node[0]):
                     if not (self.test_deadlocks and self.sokoban.is_game_over()):
+                        self.repeated_states[new_state] = new_node[0]
                         if new_node[0] > limit:
                             self.frontier_nodes.append(new_node)
                         else:
-                            self.statistics.expanded_nodes += 1
-                            self.repeated_states[new_state] = new_node[0]
                             node_stack.append(new_node)
                 self.sokoban.state.load_state(current_node[1])
         return False

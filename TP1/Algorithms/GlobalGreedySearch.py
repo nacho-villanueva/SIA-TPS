@@ -9,7 +9,7 @@ from TP1.Sokoban import Sokoban, Movement
 
 
 def sort_node(node):
-    return node.state
+    return node.heuristic
 
 
 class GGS(Algorithm):
