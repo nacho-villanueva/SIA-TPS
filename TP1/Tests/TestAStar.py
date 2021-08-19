@@ -9,7 +9,6 @@ from TP1.GameState import GameState
 from TP1.Sokoban import Sokoban
 from TP1.SokobanAlgorithmApplication import AlgorithmShowerApplication
 from TP1.heuristics import heuristic_1, heuristic_2, heuristic_non_admisible, get_heuristic_by_number
-from TP1.heuristics2 import get_heuristic1
 
 
 def main(file, test_deadlocks, heuristic):
