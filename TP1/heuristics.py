@@ -78,3 +78,14 @@ def heuristic_3(sokoban: Sokoban):
             minimum_permutation_value = to_return
 
     return minimum_permutation_value + get_distance_from_player_to_closest_non_ended_ice(sokoban)
+
+
+def get_heuristic_by_number(number):
+    if number == "1":
+        return heuristic_1
+    elif number == "2":
+        return heuristic_2
+    elif number == "3":
+        return heuristic_3
+    else:
+        return None

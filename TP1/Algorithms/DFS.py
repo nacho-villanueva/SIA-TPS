@@ -1,12 +1,10 @@
-import random
-
 from TP1.Algorithms.Algorithm import Algorithm
 from TP1.Algorithms.Statistics import Statistics
 from time import time
 
 
 class DFS(Algorithm):
-    def __init__(self, sokoban, test_deadlocks=True, random_choose=False):
+    def __init__(self, sokoban, test_deadlocks=True):
         super(DFS, self).__init__(sokoban)
         self.passed_nodes = set()
         self.movements_made = []
@@ -15,7 +13,6 @@ class DFS(Algorithm):
         self.statistics = Statistics()
         self.fr = []
         self.test_deadlocks = test_deadlocks
-        self.random_choose = random_choose
 
     def run(self):
         if self.sokoban.is_game_won():
@@ -43,9 +40,6 @@ class DFS(Algorithm):
             self.sokoban.state.load_state(self.current_node[0])
 
             possible_movements = self.sokoban.get_possible_movements()
-
-            if self.random_choose:
-                random.shuffle(possible_movements)
 
             new_node_inserted = False
             last_valid_movement = None

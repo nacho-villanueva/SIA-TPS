@@ -8,25 +8,46 @@ minimizar la cantidad de movimientos para resolver los escenarios del Sokoban.
 * Python **>= 3.9** 
 * PIP
 
-## Getting Started 
-
-### Instalación
+## Instalación
 Una vez que se tenga Python (>=3.9) y PIP instalado, pueden ejecutar el siguiente comando en la carpeta `./TP1` para instalar las dependencias
 
 ```shell
 pip install -r requirements.txt
 ```
 
-### Como Correrlo
+## Cómo Correr los Algoritmos
+Dentro de la carpeta `./Tests` podrán encontrar diversos scripts los cuales al ejecutarlos correrán sus correspondientes algoritmos.
 
-Dentro de la carpeta `'./Tests` podrán encontrar diversos scripts los cuales al ejecutarlos correrán sus correspondientes algoritmos. 
-
-Estos requieren de un parámetro, el cual es un archivo.txt donde se encuentra el código que representa el mapa que se quiere utilizar para encontrar la solución. En `./TestCodes` se pueden encontrar varios de estos archivos que contienen los códigos, 
-o en caso de que se quiera generar sus propios mapas, se puede utilizar la página [game-sokoban.com](http://www.game-sokoban.com/) para generar estos codigos (Abajo a la derecha de cada mapa se puede encontrar como acceder al mismo).
-
-#### Ejemplo de Ejecución:
+Para correr DFS, BFS o IDDFS, el comando es el siguiente:
 ```shell
-python ./Tests/TestDFS ./TestCodes/testGame1.txt
+python ./Tests/<test> <tablero> <test_deadlocks>
+```
+* ```<test>``` debe ser alguno de los siguiente archivos ejecutables que se encuentran en el directorio ```/Tests```:
+  * TestDFS
+  * TestBFS
+  * TestIDDFS
+* ```<tablero>``` debe ser un archivo de texto (.txt) que contenga al tablero
+* ```<test_deadlocks>``` debe ser ```true``` o ```false```
+
+Para correr GGS, A* o IDA*, el comando es el siguiente:
+```shell
+python ./Tests/<test> <tablero> <test_deadlocks> <heuristic>
+```
+* ```<test>``` debe ser alguno de los siguiente archivos ejecutables que se encuentran en el directorio ```/Tests```:
+  * TestGGS
+  * TestAStar
+  * TestIDAStar
+* ```<tablero>``` debe ser un archivo de texto (.txt) que contenga al tablero
+* ```<test_deadlocks>``` debe ser ```true``` o ```false```
+* ```heuristic``` debe ser ```1```, ```2``` o ```3```
+
+
+En `./TestCodes` se pueden encontrar algunos tableros de prueba, o en caso de que se quiera generar sus propios mapas, se puede utilizar la página [game-sokoban.com](http://www.game-sokoban.com/) para generar estos codigos (Abajo a la derecha de cada mapa se puede encontrar como acceder al mismo).
+
+### Ejemplos de Ejecución:
+```shell
+python ./Tests/TestDFS   ./TestCodes/testGame1.txt true
+python ./Tests/TestAStar ./path/to/myFile.txt      false 2
 ```
 
 ## Descripción de las Clases 
@@ -44,9 +65,9 @@ Permite a los algoritmos guardar y cargar estados fácilmente.
     - **BFS**
     - **DFS**
     - **IDDFS**
-    - ****
-    - **** 
-    - ****
+    - **AStar**
+    - **IDAStar** 
+    - **GlobalGreedySearch**
     
 - **SokobanBasicDisplay:** Esta clase permite ser extendida, y fácilmente mostrar y actualizar el display grafico del juego. Las clases de algoritmos que extienden a la misma son:
     - **SokobanMainApplication:** Esta clase permite usando las flechas jugar al juego.

@@ -1,4 +1,6 @@
 import sys
+from distutils.util import strtobool
+from os.path import isfile
 
 import arcade
 
@@ -8,10 +10,13 @@ from TP1.Algorithms.IDDFS import IDDFS
 from TP1.SokobanAlgorithmApplication import AlgorithmShowerApplication
 
 
-def main(file):
+def main(file, test_deadlocks):
+    if not isfile(file):
+        print(f"File not found: {file}")
+        exit(1)
     state = GameState.from_filepath(file)
     game = Sokoban(state)
-    iddfs = IDDFS(game, 500, 5, 5)
+    iddfs = IDDFS(game, 500, 5, 5, test_deadlocks=test_deadlocks)
     solution = iddfs.run()
 
     if solution:
@@ -24,9 +29,9 @@ def main(file):
 
 
 if __name__ == "__main__":
-    config_file = "../TestCodes/testGame1.txt"
-    if len(sys.argv) >= 2:
-        config_file = sys.argv[1]
+    if len(sys.argv) != 3:
+        print("IDDFS espera 2 argumentos de entrada. Leer README para ver cómo invocarlo")
     else:
-        print("Using default config file (../config.txt)")
-    main(config_file)
+        tablero_argv = sys.argv[1]
+        test_deadlocks_argv = sys.argv[2]
+        main(tablero_argv, bool(strtobool(test_deadlocks_argv)))

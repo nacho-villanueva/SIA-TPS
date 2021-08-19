@@ -60,7 +60,7 @@ class IDDFS(Algorithm):
 
             if self.current_depth < current_depth:
                 self.current_depth = current_depth
-                print(f"Current Depth: {current_depth}")
+                #print(f"Current Depth: {current_depth}")
 
             if current_depth > self.max_depth:
                 return False
