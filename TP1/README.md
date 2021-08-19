@@ -47,7 +47,7 @@ En `./TestCodes` se pueden encontrar algunos tableros de prueba, o en caso de qu
 ### Ejemplos de Ejecución:
 ```shell
 python ./Tests/TestDFS   ./TestCodes/testGame1.txt true
-python ./Tests/TestAStar ./path/to/myFile.txt      false 2
+python ./Tests/TestAStar ./TestCodes/testGame3.txt true 2
 ```
 
 ## Descripción de las Clases 
