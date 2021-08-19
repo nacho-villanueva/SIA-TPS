@@ -20,7 +20,7 @@ class GGS(Algorithm):
             self.movements = movements
             self.heuristic = heuristic
 
-    def __init__(self, sokoban: Sokoban, heuristics_function: Callable, test_deadlocks=True, max_depth=500):
+    def __init__(self, sokoban: Sokoban, heuristics_function: Callable, test_deadlocks=True):
         super().__init__(sokoban)
         self.heuristics_function = heuristics_function
 
@@ -30,7 +30,6 @@ class GGS(Algorithm):
 
         self.repeated_states = set()
 
-        self.max_depth = max_depth
         self.test_deadlocks = test_deadlocks
         self.start_time = None
         self.statistics = Statistics()
@@ -39,7 +38,7 @@ class GGS(Algorithm):
         self.start_time = time()
 
         current_depth = 0
-        while current_depth < self.max_depth:
+        while self.frontier_nodes:
             current_node = self.frontier_nodes.pop(0)
             current_depth = max(current_depth, current_node.depth)
             self.sokoban.state.load_state(current_node.state)
