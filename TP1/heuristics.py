@@ -61,22 +61,31 @@ def get_distance_from_player_to_furthest_non_ended_ice(sokoban: Sokoban):
     Cada objetivo estará mapeado a solo un hielo
 '''
 def heuristic_3(sokoban: Sokoban):
-    minimum_permutation_value = 0
+    minimum_permutation_value = 10000000  # valor suficientemente alto para cumplir con la lógica del algoritmo
     ice_positions = sokoban.state.save_state()[1]
     permutations_of_ices = permutations(ice_positions)
-    first_call = True
 
     for permutation in permutations_of_ices:
         to_return = 0
         exclude_ends = []
         for ice in permutation:
             nearest_end = sokoban.get_nearest_end_from_ice(ice, exclude_ends=exclude_ends)
-            to_return += abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1])
-            exclude_ends.append(nearest_end)
-        if first_call:
-            first_call = False
-            minimum_permutation_value = to_return
-        elif to_return < minimum_permutation_value:
+            if nearest_end is not None:
+                to_return += abs(nearest_end[0] - ice[0]) + abs(nearest_end[1] - ice[1])
+                exclude_ends.append(nearest_end)
+
+        if to_return < minimum_permutation_value:
             minimum_permutation_value = to_return
 
     return minimum_permutation_value + get_distance_from_player_to_closest_non_ended_ice(sokoban)
+
+
+def get_heuristic_by_number(number):
+    if number == "1":
+        return heuristic_1
+    elif number == "2":
+        return heuristic_2
+    elif number == "3":
+        return heuristic_3
+    else:
+        return None
