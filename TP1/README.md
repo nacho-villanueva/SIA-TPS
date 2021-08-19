@@ -5,7 +5,7 @@ minimizar la cantidad de movimientos para resolver los escenarios del Sokoban.
 
 ## Dependencias 
 
-* Python **>= 3.9** 
+* Python **>= 3.9 (Importante!)**
 * PIP
 
 ## Instalación
@@ -20,26 +20,26 @@ Dentro de la carpeta `./Tests` podrán encontrar diversos scripts los cuales al 
 
 Para correr DFS, BFS o IDDFS, el comando es el siguiente:
 ```shell
-python ./Tests/<test> <tablero> <test_deadlocks>
+python ./Tests/[test] [tablero] [test_deadlocks]
 ```
-* ```<test>``` debe ser alguno de los siguiente archivos ejecutables que se encuentran en el directorio ```/Tests```:
+* ```[test]``` debe ser alguno de los siguientes archivos ejecutables que se encuentran en el directorio ```/Tests```:
   * TestDFS
   * TestBFS
   * TestIDDFS
-* ```<tablero>``` debe ser un archivo de texto (.txt) que contenga al tablero
-* ```<test_deadlocks>``` debe ser ```true``` o ```false```
+* ```[tablero]``` debe ser un archivo de texto (.txt) que contenga al tablero
+* ```[test_deadlocks]``` debe ser ```true``` o ```false```
 
 Para correr GGS, A* o IDA*, el comando es el siguiente:
 ```shell
-python ./Tests/<test> <tablero> <test_deadlocks> <heuristic>
+python ./Tests/[test] [tablero] [test_deadlocks] [heuristic]
 ```
-* ```<test>``` debe ser alguno de los siguiente archivos ejecutables que se encuentran en el directorio ```/Tests```:
+* ```[test]``` debe ser alguno de los siguientes archivos ejecutables que se encuentran en el directorio ```/Tests```:
   * TestGGS
   * TestAStar
   * TestIDAStar
-* ```<tablero>``` debe ser un archivo de texto (.txt) que contenga al tablero
-* ```<test_deadlocks>``` debe ser ```true``` o ```false```
-* ```heuristic``` debe ser ```1```, ```2``` o ```3```
+* ```[tablero]``` debe ser un archivo de texto (.txt) que contenga al tablero
+* ```[test_deadlocks]``` debe ser ```true``` o ```false```
+* ```[heuristic]``` debe ser ```1```, ```2``` o ```3```
 
 
 En `./TestCodes` se pueden encontrar algunos tableros de prueba, o en caso de que se quiera generar sus propios mapas, se puede utilizar la página [game-sokoban.com](http://www.game-sokoban.com/) para generar estos codigos (Abajo a la derecha de cada mapa se puede encontrar como acceder al mismo).
