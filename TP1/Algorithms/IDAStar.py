@@ -34,6 +34,7 @@ class IDAStar(Algorithm):
             # Get last and load it
             current_node = node_stack.pop()
             self.sokoban.state.load_state(current_node[1])
+            self.statistics.expanded_nodes += 1
 
             # If won return it
             if self.sokoban.is_game_won():
@@ -50,12 +51,11 @@ class IDAStar(Algorithm):
                 if not (new_state in self.repeated_states and self.repeated_states[new_state] <= new_node[0]):
                     # If it's not in deadlock or we arent testing for deadlocks save it
                     # if over limit save it in frontier, else save it in stack
+                    self.repeated_states[new_state] = new_node[0]
                     if not (self.test_deadlocks and self.sokoban.is_game_over()):
                         if new_node[0] > limit:
                             self.frontier_nodes.add(new_node)
                         else:
-                            self.statistics.expanded_nodes += 1
-                            self.repeated_states[new_state] = new_node[0]
                             node_stack.append(new_node)
                 # Reload state to make moves again
                 self.sokoban.state.load_state(current_node[1])
