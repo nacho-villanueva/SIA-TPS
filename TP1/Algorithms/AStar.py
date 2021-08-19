@@ -6,7 +6,7 @@ from TP1.Algorithms.Statistics import Statistics
 
 
 def sort_state(state):
-    return state[4]  # Ordena por heurística
+    return state[1]  # Ordena por heurística
 
 
 # f(n) = g(n) + h(n)
@@ -19,7 +19,6 @@ class AStar(Algorithm):
         super(AStar, self).__init__(sokoban)
         self.passed_nodes = set()
         self.solution_found = False
-        self.current_node = None
         self.statistics = Statistics(0, 0, 0, 0, 0)
         self.fr = SortedList(key=sort_state)
         self.heuristic = heuristic
@@ -27,70 +26,50 @@ class AStar(Algorithm):
         self.test_deadlocks = test_deadlocks
 
     def run(self):
-        if self.sokoban.is_game_won():
-            # Caso especial: el juego estaba ganado desde el comienzo
-            print(f"Solution found = {True}")
-            self.statistics.time_spent = 0
-            return []
-
-        if self.sokoban.is_game_over():
-            # Caso especial: el juego estaba perdido desde el comienzo
-            print(f"Solution found = {False}")
-            self.statistics.time_spent = 0
-            return []
-
         t0 = time()
 
         root_node = self.sokoban.state.save_state()
-        self.current_node = root_node
-        self.fr.add((self.current_node, None, None, 0, f(self.statistics.deepness, self.heuristic(self.sokoban))))
+        self.passed_nodes.add(root_node)
+        self.fr.add((root_node, f(self.statistics.deepness, self.heuristic(self.sokoban)), None, 0, None))
 
-        while not self.solution_found and len(self.fr) > 0:
-            self.statistics.deepness += 1
-
+        while len(self.fr) > 0:
             # El primer elemento es el de menor heuristica
-            self.current_node = self.fr.pop(index=0)
-            self.passed_nodes.add(self.current_node[0])
-            self.sokoban.state.load_state(self.current_node[0])
+            curr = self.fr.pop(index=0)
+            self.sokoban.state.load_state(curr[0])
 
-            possible_movements = self.sokoban.get_possible_movements()
 
-            new_node_inserted = False
-            for movement in possible_movements:
-                # Lleno la frontera Fr con los hijos
-                self.sokoban.move(movement)
-                node_to_insert = self.sokoban.state.save_state()
-                if node_to_insert not in self.passed_nodes:
-                    if not (self.test_deadlocks and self.sokoban.is_game_over()):
-                        new_node_inserted = True
-                        new_fr_element = (node_to_insert, movement, self.current_node, self.statistics.deepness, f(self.statistics.deepness, self.heuristic(self.sokoban)))
-                        self.fr.add(new_fr_element)
-                        if self.sokoban.is_game_won():
-                            self.solution_found = True
-                            self.winning_node = (new_fr_element, movement)
-                            break
-                self.sokoban.state.load_state(self.current_node[0])
-
-            if new_node_inserted:
-                # Si tengo al menos un hijo, significa que me expandí
+            if self.sokoban.is_game_won():
+                self.statistics.deepness = curr[3]
+                self.solution_found = True
+                self.winning_node = curr
+                break
+            else:
+                # curr = curr[0]
                 self.statistics.expanded_nodes += 1
 
-            if not self.sokoban.is_game_won() and len(self.fr) > 0:
-                aux = self.fr.__getitem__(index=0)
-                self.statistics.deepness = aux[3]
+                for movement in self.sokoban.get_possible_movements():
+                    self.sokoban.move(movement)
+                    new_node = self.sokoban.state.save_state()
+                    if not (self.test_deadlocks and self.sokoban.is_game_over()):
+                        if new_node not in self.passed_nodes:
+                            self.fr.add((new_node, f(curr[3] + 1, self.heuristic(self.sokoban)), curr, curr[3] + 1, movement))
+                            self.passed_nodes.add(new_node)
+                    self.sokoban.state.load_state(curr[0])
 
         t1 = time()
         self.statistics.time_spent = t1 - t0
 
-        if self.winning_node is not None:
+        if self.solution_found:
+            self.statistics.deepness = self.winning_node[3]
             self.statistics.cost = self.statistics.deepness
             self.statistics.frontier_nodes = len(self.fr)
-            movements_to_win = [self.winning_node[1]]
-            parent = self.winning_node[0][2]
-            while parent is not None and parent[1] is not None:
-                movements_to_win.append(parent[1])
-                parent = parent[2]
-            movements_to_win.reverse()
-            return movements_to_win
+            # Me construyo el array de movimientos para devolver
+            winning_movements = []
+            node_aux = self.winning_node
+            while node_aux[4] is not None:
+                winning_movements.append(node_aux[4])
+                node_aux = node_aux[2]
+            winning_movements.reverse()
+            return winning_movements
         else:
             return []
