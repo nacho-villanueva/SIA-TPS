@@ -1,0 +1,18 @@
+{
+  "crossover_algorithm": "one_point",
+  "mutation_algorithm": "gene",
+  "implementation": "fill-all",
+  "stop_condition": "time",
+
+  "real_time_graphics": true,
+
+  "population_size": 500,
+
+  "A": 1,
+  "selection_algorithm_1": "elite",
+  "selection_algorithm_2": "elite",
+
+  "B": 1,
+  "replacement_algorithm_1": "elite",
+  "replacement_algorithm_2": "elite"
+}
