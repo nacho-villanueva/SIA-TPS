@@ -46,7 +46,7 @@ class GeneticAlgorithm:
         self.generation = 0
         self.max_fitness_character = None
 
-        self.population = []
+        self.population = [] # TODO: CREAR POBLACION INIICIAL
 
     def run(self):
         while not self.stop(self):
