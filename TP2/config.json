@@ -1,10 +1,14 @@
 {
+  "role": "archer",
+
   "crossover_algorithm": "one_point",
   "mutation_algorithm": "gene",
   "implementation": "fill-all",
   "stop_condition": "time",
 
   "real_time_graphics": true,
+
+  "precision": 2,
 
   "population_size": 500,
 
