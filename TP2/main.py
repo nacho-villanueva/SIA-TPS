@@ -14,8 +14,8 @@ from TP2.items.weapon import Weapon
 
 
 # TODO: quizas se puede mover a otro archivo
-def create_generation_zero(weapons: pd.DataFrame, boots: pd.DataFrame, helmets: pd.DataFrame, gloves: pd.DataFrame,
-                           armours: pd.DataFrame, k: int, role: CharacterRole, precision: int):
+def create_generation_zero(armours: pd.DataFrame, boots: pd.DataFrame, gloves: pd.DataFrame, helmets: pd.DataFrame,
+                           weapons: pd.DataFrame, k: int, role: CharacterRole, precision: int):
     generation_zero = []
     multiplier = 10 ** precision
     for i in range(k):
@@ -84,19 +84,19 @@ if __name__ == "__main__":
 
     print("Reading files...")
 
-    armas = pd.read_csv("./dataset/armas.tsv", sep='\t')
-    armas_df = pd.DataFrame(data=armas)
+    armours_dataset = pd.read_csv(config_dict["armours_dataset_path"], sep='\t')
+    armours_df = pd.DataFrame(data=armours_dataset)
 
-    botas = pd.read_csv("./dataset/botas.tsv", sep='\t')
-    botas_df = pd.DataFrame(data=botas)
+    boots_dataset = pd.read_csv(config_dict["boots_dataset_path"], sep='\t')
+    boots_df = pd.DataFrame(data=boots_dataset)
 
-    cascos =pd.read_csv("./dataset/cascos.tsv", sep='\t')
-    cascos_df = pd.DataFrame(data=cascos)
+    gloves_dataset = pd.read_csv(config_dict["gloves_dataset_path"], sep='\t')
+    gloves_df = pd.DataFrame(data=gloves_dataset)
 
-    guantes = pd.read_csv("./dataset/guantes.tsv", sep='\t')
-    guantes_df = pd.DataFrame(data=guantes)
+    helmets_dataset = pd.read_csv(config_dict["helmets_dataset_path"], sep='\t')
+    helmets_df = pd.DataFrame(data=helmets_dataset)
 
-    pecheras = pd.read_csv("./dataset/pecheras.tsv", sep='\t')
-    pecheras_df = pd.DataFrame(data=pecheras)
+    weapons_dataset = pd.read_csv(config_dict["weapons_dataset_path"], sep='\t')
+    weapons_df = pd.DataFrame(data=weapons_dataset)
 
-    create_generation_zero(armas_df, botas_df, cascos_df, guantes_df, pecheras_df, population_size, character_role, precision)
+    create_generation_zero(armours_df, boots_df, gloves_df, helmets_df, weapons_df, population_size, character_role, precision)
