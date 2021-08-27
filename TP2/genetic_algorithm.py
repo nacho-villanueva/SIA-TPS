@@ -5,6 +5,7 @@ from enum import Enum
 from time import time
 from typing import Callable, Any
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 from TP2.character import Character
@@ -48,8 +49,10 @@ class GeneticAlgorithm:
         self.generation = 0
         self.max_fitness_character = None
 
+        self.all_max = []
         self.population = initial_population
         self.find_max_fitness()
+        self.generations = [0]
 
     def run(self):
         while not self.stop(self):
@@ -61,6 +64,10 @@ class GeneticAlgorithm:
 
             self.find_max_fitness()
             self.generation += 1
+            self.generations.append(self.generation)
+            plt.plot(self.generations, self.all_max, color="b")
+            plt.pause(0.05)
+        plt.show()
 
     def select_parents(self):
         parents = self.select_a(self.population, math.ceil(self.K * self.select_coefficient))
@@ -81,9 +88,7 @@ class GeneticAlgorithm:
 
         # Mutate Children
         for c in children:
-            MUTATION_PROBABILITY = 0.5
-            if random.uniform(0, 1) < MUTATION_PROBABILITY:  # TODO: MUTATION PROBABILTY AGREGAR A CONFIG
-                self.mutate(c)
+            self.mutate(c)
 
         return children
 
@@ -128,6 +133,7 @@ class GeneticAlgorithm:
             if max_fit.fitness < p.fitness:
                 max_fit = p
         self.max_fitness_character = max_fit
+        self.all_max.append(self.max_fitness_character.fitness)
 
 def pairwise(iterable):
     # Iterate by pairs
