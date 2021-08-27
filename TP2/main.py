@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     initial_population = create_generation_zero(population_size, character_role, precision)
 
-    algorithm = GeneticAlgorithm(
+    algorithm = GeneticAlgorithm( # TODO: FIX CONFIGURATIONS TO SELECT CORRECT METHOD
         select_a=selection_functions[config_dict["selection_algorithm_1"]],
         crossover=crossover_functions[config_dict["crossover_algorithm"]],
         mutate=mutation_functions[config_dict["mutation_algorithm"]],
