@@ -1,6 +1,8 @@
 import math
+import random
 from enum import Enum
 
+from TP2.datasets import DatasetLibrary
 from TP2.items.armour import Armour
 from TP2.items.boots import Boots
 from TP2.items.gloves import Gloves
@@ -53,6 +55,14 @@ class Gear:
 
 
 class Character:
+    class Allele(Enum):
+        # Defines the order of the alleles
+        HEIGHT = 0
+        WEAPON = 1
+        HELMET = 2
+        ARMOUR = 3
+        GLOVES = 4
+        BOOTS = 5
 
     def __init__(self, role: CharacterRole, height: float, gear: Gear, lastname: str):
         self.role = role
@@ -70,20 +80,6 @@ class Character:
         self.defense = self.calculate_defense()
 
         self.fitness = self.calculate_fitness()
-
-    def __str__(self):
-        # TODO: no imprimí el Gear porque sino es enorme el output
-        return "Role: " + str(self.role) + f"\tHeight: {self.height:.2f}" + "\tLast Name: " + self.lastname + \
-               "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
-               "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
-               "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)
-
-    def __repr__(self):
-        # TODO: no imprimí el Gear porque sino es enorme el output
-        return "Role: " + str(self.role) + "\tHeight: " + str(self.height) + "\tLast Name: " + self.lastname + \
-               "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
-               "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
-               "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)
 
     def calculate_chromosome(self):  # TODO: IMPLEMENTAR
         pass
@@ -129,3 +125,69 @@ class Character:
         for item in self.gear:
             intelligence += item.intelligence
         return 0.6 * math.tanh(0.01 * intelligence)
+
+    def mutate_allele(self, locus):
+        allele = Character.Allele(locus)
+        dl = DatasetLibrary()
+        if allele == Character.Allele.HEIGHT:
+            self.height = random.uniform(1.3, 2.0) #TODO: REMPLAZAR CON CONFIGURACION CUANDO SE HAGA EL SINGLETON
+        elif allele == Character.Allele.WEAPON:
+            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.WEAPON)
+        elif allele == Character.Allele.ARMOUR:
+            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.ARMOUR)
+        elif allele == Character.Allele.HELMET:
+            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.HELMET)
+        elif allele == Character.Allele.GLOVES:
+            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.GLOVES)
+        elif allele == Character.Allele.BOOTS:
+            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.BOOTS)
+        else:
+            raise Exception(f"Locus {locus} out of range")
+
+    def set_allele(self, locus, value):
+        allele = Character.Allele(locus)
+        if allele == Character.Allele.HEIGHT:
+            self.height = value
+        elif allele == Character.Allele.WEAPON:
+            self.gear.weapon = value
+        elif allele == Character.Allele.ARMOUR:
+            self.gear.weapon = value
+        elif allele == Character.Allele.HELMET:
+            self.gear.weapon = value
+        elif allele == Character.Allele.GLOVES:
+            self.gear.weapon = value
+        elif allele == Character.Allele.BOOTS:
+            self.gear.weapon = value
+        else:
+            raise Exception(f"Locus {locus} out of range")
+
+    def get_allele(self, locus):
+        allele = Character.Allele(locus)
+        if allele == Character.Allele.HEIGHT:
+            return self.height
+        elif allele == Character.Allele.WEAPON:
+            return self.gear.weapon
+        elif allele == Character.Allele.ARMOUR:
+            return self.gear.weapon
+        elif allele == Character.Allele.HELMET:
+            return self.gear.weapon
+        elif allele == Character.Allele.GLOVES:
+            return self.gear.weapon
+        elif allele == Character.Allele.BOOTS:
+            return self.gear.weapon
+        else:
+            raise Exception(f"Locus {locus} out of range")
+
+    def __str__(self):
+        # TODO: no imprimí el Gear porque sino es enorme el output
+        return "Role: " + str(self.role) + f"\tHeight: {self.height:.2f}" + "\tLast Name: " + self.lastname + \
+               "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
+               "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
+               "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)
+
+    def __repr__(self):
+        # TODO: no imprimí el Gear porque sino es enorme el output
+        return "Role: " + str(self.role) + "\tHeight: " + str(self.height) + "\tLast Name: " + self.lastname + \
+               "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
+               "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
+               "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)

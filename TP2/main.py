@@ -52,7 +52,7 @@ if __name__ == "__main__":
     datasets.load_dataset(DatasetLibrary.DatasetType.HELMET, config_dict["helmets_dataset_path"])
     datasets.load_dataset(DatasetLibrary.DatasetType.WEAPON, config_dict["weapons_dataset_path"])
 
-    initial_population = create_generation_zero(population_size, character_role, precision)
+    # initial_population = create_generation_zero(population_size, character_role, precision)
 
     algorithm = GeneticAlgorithm(
         select_a=selection_functions[config_dict["selection_algorithm_1"]],
@@ -68,3 +68,5 @@ if __name__ == "__main__":
         repopulate_b=selection_functions[config_dict["replacement_algorithm_2"]],
         repopulate_coefficient=config_dict["B"]
     )
+
+    print(datasets.datasets[DatasetLibrary.DatasetType.BOOTS].info())

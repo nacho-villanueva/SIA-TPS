@@ -17,8 +17,8 @@ class FillType(Enum):
 
 
 SelectFunction = Callable[[list[Character], int], list[Character]]
-CrossoverFunction = Callable[[tuple[Character, Character]], list[Character]]
-MutateFunction = Callable[[Character], Character]
+CrossoverFunction = Callable[[Character, Character], list[Character]]
+MutateFunction = Callable[[Character], None]
 StopFunction = Callable[[Any], bool]
 
 
@@ -71,14 +71,18 @@ class GeneticAlgorithm:
         return parents
 
     def breed(self, parents):
-        children = []
+        children_chromosomes = []
         # Crossover Parents
-        for p in pairwise(parents):
-            children += self.crossover(p)
+        for father, mother in pairwise(parents):
+            children_chromosomes += self.crossover(father, mother)
 
         # Mutate Children
-        for i in range(len(children)):
-            children[i] = self.mutate(children[i])
+        for cc in children_chromosomes:
+            self.mutate(cc)
+
+        children = []
+        for cc in children_chromosomes:
+            children.append()
 
         return children
 
