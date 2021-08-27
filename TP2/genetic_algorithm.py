@@ -24,9 +24,9 @@ StopFunction = Callable[[Any], bool]
 
 class GeneticAlgorithm:
     def __init__(self, select_a: SelectFunction, crossover: CrossoverFunction, mutate: MutateFunction,
-                 stop: StopFunction, repopulate_a: SelectFunction,
+                 stop: StopFunction, repopulate_a: SelectFunction, initial_population: list[Character],
 
-                 fill_type=FillType.FILL_ALL, population_size=100, k=50,
+                 fill_type=FillType.FILL_ALL, k=50,
 
                  select_b: SelectFunction = None, select_coefficient=1.0,
                  repopulate_b: SelectFunction = None, repopulate_coefficient=1.0):
@@ -42,14 +42,14 @@ class GeneticAlgorithm:
         self.repopulate_coefficient = repopulate_coefficient
 
         self.fill_type = fill_type
-        self.population_size = population_size
+        self.population_size = len(initial_population)
         self.K = k
 
         self.start_time = time()
         self.generation = 0
         self.max_fitness_character = None
 
-        self.population = []  # TODO: CREAR POBLACION INIICIAL
+        self.population = initial_population
 
     def run(self):
         while not self.stop(self):
@@ -84,9 +84,11 @@ class GeneticAlgorithm:
 
     def fill_all(self, children):
         all_population = self.population + children
-        new_population = self.repopulate_a(all_population, math.ceil(self.population_size * self.repopulate_coefficient))
+        new_population = self.repopulate_a(all_population,
+                                           math.ceil(self.population_size * self.repopulate_coefficient))
         if self.repopulate_coefficient < 1:
-            new_population += self.select_b(self.population, math.floor(self.population_size * (1 - self.repopulate_coefficient)))
+            new_population += self.select_b(self.population,
+                                            math.floor(self.population_size * (1 - self.repopulate_coefficient)))
         return new_population
 
     def fill_parent(self, children):
@@ -102,9 +104,11 @@ class GeneticAlgorithm:
 
         elif self.K < self.population_size:
             new_population = children
-            new_population += self.repopulate_a(self.population, math.ceil((self.population_size - self.K) * self.repopulate_coefficient))
+            new_population += self.repopulate_a(self.population, math.ceil(
+                (self.population_size - self.K) * self.repopulate_coefficient))
             if self.repopulate_coefficient < 1:
-                new_population += self.select_b(self.population, math.floor((self.population_size - self.K) * (1 - self.repopulate_coefficient)))
+                new_population += self.select_b(self.population, math.floor(
+                    (self.population_size - self.K) * (1 - self.repopulate_coefficient)))
             return new_population
 
     def repopulate(self, children):
@@ -112,18 +116,6 @@ class GeneticAlgorithm:
             return self.fill_all(children)
         elif self.fill_type == FillType.FILL_PARENT:
             return self.fill_parent(children)
-
-
-# TODO: PREGUNTAR
-''' 
-Preguntas:
-1) Como se define Padre y Madre? Se corre el metodo de seleccion 2 veces para obtener 2 listas y combinar el primero con el primero, segundo con segundo..? 
-Si
-2) El K (numero de hijos) es arbitrario?
-Si 
-4) Hay que implementar brecha generacional? Como se eligen los que se salvan/persisten a la proxima generacion?
-No
-'''
 
 
 def pairwise(iterable):

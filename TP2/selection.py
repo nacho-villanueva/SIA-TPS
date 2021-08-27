@@ -1,5 +1,11 @@
-def elite_selection(population):  # TODO: IMPLEMENTAR
-    return []
+def elite_selection():
+    def _elite_selection(collection, k):
+        sorted_collection = sorted(collection)
+        selection = sorted_collection * (len(sorted_collection) // k)
+        selection += sorted_collection[:len(sorted_collection) % k]
+        return selection
+
+    return _elite_selection
 
 
 def roulette_selection():  # TODO: IMPLEMENTAR

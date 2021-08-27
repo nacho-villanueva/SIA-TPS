@@ -1,12 +1,18 @@
 import math
 from enum import Enum
 
+from TP2.items.armour import Armour
+from TP2.items.boots import Boots
+from TP2.items.gloves import Gloves
+from TP2.items.helmet import Helmet
+from TP2.items.weapon import Weapon
+
 
 class CharacterRole(Enum):
-    WARRIOR = (0.6, 0.6)    # Guerrero
-    ARCHER = (0.9, 0.1)     # Arquero
-    TANK = (0.6, 0.6)       # Defensor
-    ASSASSIN = (0.6, 0.6)   # Infiltrado
+    WARRIOR = (0.6, 0.6)  # Guerrero
+    ARCHER = (0.9, 0.1)  # Arquero
+    TANK = (0.6, 0.6)  # Defensor
+    ASSASSIN = (0.6, 0.6)  # Infiltrado
 
     def __init__(self, attack_coefficient, defense_coefficient):
         self.attack_coefficient = attack_coefficient
@@ -34,19 +40,31 @@ class CharacterRole(Enum):
             return CharacterRole.ASSASSIN
 
 
+class Gear:
+    def __init__(self, weapon: Weapon, armour: Armour, helmet: Helmet, gloves: Gloves, boots: Boots):
+        self.boots = boots
+        self.gloves = gloves
+        self.helmet = helmet
+        self.armour = armour
+        self.weapon = weapon
+
+    def __iter__(self):
+        return [self.weapon, self.armour, self.helmet, self.gloves, self.boots].__iter__()
+
+
 class Character:
 
-    def __init__(self, role: CharacterRole, height: float, gear: list, lastname: str):
+    def __init__(self, role: CharacterRole, height: float, gear: Gear, lastname: str):
         self.role = role
         self.height = height
         self.gear = gear
         self.lastname = lastname
 
-        self.strength = self.calculate_strength()           # Fuerza
-        self.endurance = self.calculate_endurance()         # Resistencia
-        self.agility = self.calculate_agility()             # Agilidad
-        self.vitality = self.calculate_vitality()           # Vida
-        self.intelligence = self.calculate_intelligence()   # Pericia
+        self.strength = self.calculate_strength()  # Fuerza
+        self.endurance = self.calculate_endurance()  # Resistencia
+        self.agility = self.calculate_agility()  # Agilidad
+        self.vitality = self.calculate_vitality()  # Vida
+        self.intelligence = self.calculate_intelligence()  # Pericia
 
         self.attack = self.calculate_attack()
         self.defense = self.calculate_defense()
@@ -55,17 +73,17 @@ class Character:
 
     def __str__(self):
         # TODO: no imprimí el Gear porque sino es enorme el output
-        return "Role: " + str(self.role) + ", Height: " + str(self.height) + ", Last Name: " + self.lastname + \
-                ", Fu: " + str(self.strength) + ", Ag: " + str(self.agility) + \
-                ", Ex: " + str(self.intelligence) + ", Re: " + str(self.endurance) + ", Vi: " + str(self.vitality) + \
-                ", ATK: " + str(self.attack) + ", DEF: " + str(self.defense) + ", FITNESS: " + str(self.fitness)
+        return "Role: " + str(self.role) + f"\tHeight: {self.height:.2f}" + "\tLast Name: " + self.lastname + \
+               "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
+               "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
+               "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)
 
     def __repr__(self):
         # TODO: no imprimí el Gear porque sino es enorme el output
-        return "Role: " + str(self.role) + ", Height: " + str(self.height) + ", Last Name: " + self.lastname + \
-               ", Fu: " + str(self.strength) + ", Ag: " + str(self.agility) + \
-               ", Ex: " + str(self.intelligence) + ", Re: " + str(self.endurance) + ", Vi: " + str(self.vitality) + \
-               ", ATK: " + str(self.attack) + ", DEF: " + str(self.defense) + "FITNESS: " + str(self.fitness)
+        return "Role: " + str(self.role) + "\tHeight: " + str(self.height) + "\tLast Name: " + self.lastname + \
+               "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
+               "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
+               "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)
 
     def calculate_chromosome(self):  # TODO: IMPLEMENTAR
         pass
@@ -78,7 +96,8 @@ class Character:
         return (self.agility + self.intelligence) * self.strength * attack_modifier
 
     def calculate_defense(self):
-        defense_modifier = 1.9 + (2.5 * self.height - 4.16) ** 4 - (2.5 * self.height - 4.16) ** 2 - (3 * self.height / 10.0)
+        defense_modifier = 1.9 + (2.5 * self.height - 4.16) ** 4 - (2.5 * self.height - 4.16) ** 2 - (
+                3 * self.height / 10.0)
         return (self.endurance + self.intelligence) * self.vitality * defense_modifier
 
     def calculate_strength(self):
