@@ -11,6 +11,7 @@
   "precision": 2,
 
   "population_size": 500,
+  "K": 100,
 
   "A": 1,
   "selection_algorithm_1": "elite",

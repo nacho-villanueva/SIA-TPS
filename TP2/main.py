@@ -59,7 +59,7 @@ if __name__ == "__main__":
         crossover=crossover_functions[config_dict["crossover_algorithm"]],
         mutate=mutation_functions[config_dict["mutation_algorithm"]],
         stop=stop_conditions[config_dict["stop_condition"]],
-        k=100,  # TODO: FALTA AGREGAR K
+        k=config_dict["K"],
         repopulate_a=selection_functions[config_dict["replacement_algorithm_1"]],
         fill_type=implementations[config_dict["implementation"]],
         initial_population=initial_population,
