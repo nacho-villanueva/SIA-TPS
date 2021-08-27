@@ -33,7 +33,7 @@ def content_stop():  # TODO: IMPLEMENTAR
 
 
 def joint_stop(stop_functions: list):
-    def _joint_stop(genetic: genetic_algorithm):
+    def _joint_stop(genetic: GeneticAlgorithm):
         should_stop = False
         for stop in stop_functions:
             should_stop = should_stop or stop(genetic)
