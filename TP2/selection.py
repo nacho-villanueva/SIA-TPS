@@ -1,8 +1,11 @@
+from TP2.character import Character
+
+
 def elite_selection():
-    def _elite_selection(collection, k):
-        sorted_collection = sorted(collection)
-        selection = sorted_collection * (len(sorted_collection) // k)
-        selection += sorted_collection[:len(sorted_collection) % k]
+    def _elite_selection(collection: list[Character], k):
+        sorted_collection = sorted(collection, reverse=True)
+        selection = sorted_collection * (k // len(sorted_collection))
+        selection += sorted_collection[:k % len(sorted_collection)]
         return selection
 
     return _elite_selection

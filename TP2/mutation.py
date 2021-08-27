@@ -11,12 +11,18 @@ def gene_mutation():
 
 
 def limited_multiple_gene_mutation():  # TODO: IMPLEMENTAR
-    pass
+    def _limited_multiple_gene_mutation(character: Character):
+        pass
+    return _limited_multiple_gene_mutation
 
 
 def uniform_multiple_gene_mutation():  # TODO: IMPLEMENTAR
-    pass
+    def _uniform_multiple_gene_mutation(character: Character):
+        pass
+    return _uniform_multiple_gene_mutation
 
 
 def complete_mutation():  # TODO: IMPLEMENTAR
-    pass
+    def _complete_mutation(character: Character):
+        pass
+    return _complete_mutation

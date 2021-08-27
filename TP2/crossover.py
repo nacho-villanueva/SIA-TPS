@@ -23,12 +23,18 @@ def one_point_crossover():
 
 
 def two_point_crossover():  # TODO: IMPLEMENTAR
-    pass
+    def _two_point_crossover(father: Character, mother: Character):
+        return []
+    return _two_point_crossover
 
 
 def annular_crossover():  # TODO: IMPLEMENTAR
-    pass
+    def _annular_crossover(father: Character, mother: Character):
+        return []
+    return _annular_crossover
 
 
 def uniform_crossover():  # TODO: IMPLEMENTAR
-    pass
+    def _uniform_crossover(father: Character, mother: Character):
+        return []
+    return _uniform_crossover

@@ -81,8 +81,17 @@ class Character:
 
         self.fitness = self.calculate_fitness()
 
-    def calculate_chromosome(self):  # TODO: IMPLEMENTAR
-        pass
+    def recalculate_stats(self):
+        self.strength = self.calculate_strength()
+        self.endurance = self.calculate_endurance()
+        self.agility = self.calculate_agility()
+        self.vitality = self.calculate_vitality()
+        self.intelligence = self.calculate_intelligence()
+
+        self.attack = self.calculate_attack()
+        self.defense = self.calculate_defense()
+
+        self.fitness = self.calculate_fitness()
 
     def calculate_fitness(self):
         return self.role.attack_coefficient * self.attack + self.role.defense_coefficient * self.defense
@@ -130,7 +139,7 @@ class Character:
         allele = Character.Allele(locus)
         dl = DatasetLibrary()
         if allele == Character.Allele.HEIGHT:
-            self.height = random.uniform(1.3, 2.0) #TODO: REMPLAZAR CON CONFIGURACION CUANDO SE HAGA EL SINGLETON
+            self.height = random.uniform(1.3, 2.0)  # TODO: REMPLAZAR CON CONFIGURACION CUANDO SE HAGA EL SINGLETON
         elif allele == Character.Allele.WEAPON:
             self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.WEAPON)
         elif allele == Character.Allele.ARMOUR:
@@ -143,6 +152,7 @@ class Character:
             self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.BOOTS)
         else:
             raise Exception(f"Locus {locus} out of range")
+        self.recalculate_stats()
 
     def set_allele(self, locus, value):
         allele = Character.Allele(locus)
@@ -160,6 +170,7 @@ class Character:
             self.gear.weapon = value
         else:
             raise Exception(f"Locus {locus} out of range")
+        self.recalculate_stats()
 
     def get_allele(self, locus):
         allele = Character.Allele(locus)
@@ -178,12 +189,14 @@ class Character:
         else:
             raise Exception(f"Locus {locus} out of range")
 
+    def __lt__(self, other):
+        if not isinstance(other, Character):
+            raise TypeError(f"< not supported between isntaces of 'Character' and '{type(other)}'")
+        return self.fitness < other.fitness
+
     def __str__(self):
         # TODO: no imprimí el Gear porque sino es enorme el output
-        return "Role: " + str(self.role) + f"\tHeight: {self.height:.2f}" + "\tLast Name: " + self.lastname + \
-               "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
-               "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
-               "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)
+        return f"Name: {self.lastname}\tFitness: {self.fitness}"
 
     def __repr__(self):
         # TODO: no imprimí el Gear porque sino es enorme el output

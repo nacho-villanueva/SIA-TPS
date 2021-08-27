@@ -28,15 +28,16 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
         character = Character(role, height, gear, "Mendez")
         generation_zero.append(character)
 
-    for character in generation_zero:
-        print(character)
-
     return generation_zero
 
 
 if __name__ == "__main__":
     file = open("config.json")
     config_dict = json.load(file)
+
+    if config_dict["K"] % 2 != 0:
+        print(f"K is not and even number. Setting K = {config_dict['K'] + 1}")
+        config_dict['K'] += 1
 
     population_size = config_dict["population_size"]
     role_name = config_dict["role"]
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     datasets.load_dataset(DatasetLibrary.DatasetType.HELMET, config_dict["helmets_dataset_path"])
     datasets.load_dataset(DatasetLibrary.DatasetType.WEAPON, config_dict["weapons_dataset_path"])
 
-    # initial_population = create_generation_zero(population_size, character_role, precision)
+    initial_population = create_generation_zero(population_size, character_role, precision)
 
     algorithm = GeneticAlgorithm(
         select_a=selection_functions[config_dict["selection_algorithm_1"]],
@@ -68,5 +69,3 @@ if __name__ == "__main__":
         repopulate_b=selection_functions[config_dict["replacement_algorithm_2"]],
         repopulate_coefficient=config_dict["B"]
     )
-
-    print(datasets.datasets[DatasetLibrary.DatasetType.BOOTS].info())

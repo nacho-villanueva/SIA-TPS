@@ -2,7 +2,6 @@ import itertools
 import math
 import random
 from enum import Enum
-from random import shuffle
 from time import time
 from typing import Callable, Any
 
@@ -50,13 +49,17 @@ class GeneticAlgorithm:
         self.max_fitness_character = None
 
         self.population = initial_population
+        self.find_max_fitness()
 
     def run(self):
         while not self.stop(self):
+            print(f"Generation {self.generation} - Max Fit: {self.max_fitness_character}")
+
             parents = self.select_parents()
             children = self.breed(parents)
             self.population = self.repopulate(children)
 
+            self.find_max_fitness()
             self.generation += 1
 
     def select_parents(self):
@@ -71,18 +74,16 @@ class GeneticAlgorithm:
         return parents
 
     def breed(self, parents):
-        children_chromosomes = []
+        children = []
         # Crossover Parents
         for father, mother in pairwise(parents):
-            children_chromosomes += self.crossover(father, mother)
+            children += self.crossover(father, mother)
 
         # Mutate Children
-        for cc in children_chromosomes:
-            self.mutate(cc)
-
-        children = []
-        for cc in children_chromosomes:
-            children.append()
+        for c in children:
+            MUTATION_PROBABILITY = 0.5
+            if random.uniform(0, 1) < MUTATION_PROBABILITY:  # TODO: MUTATION PROBABILTY AGREGAR A CONFIG
+                self.mutate(c)
 
         return children
 
@@ -121,6 +122,12 @@ class GeneticAlgorithm:
         elif self.fill_type == FillType.FILL_PARENT:
             return self.fill_parent(children)
 
+    def find_max_fitness(self):
+        max_fit = self.population[0]
+        for p in self.population:
+            if max_fit.fitness < p.fitness:
+                max_fit = p
+        self.max_fitness_character = max_fit
 
 def pairwise(iterable):
     # Iterate by pairs
