@@ -21,6 +21,9 @@
   "replacement_algorithm_1": "elite",
   "replacement_algorithm_2": "elite",
 
+  "deterministic_tournaments_M": 10,
+  "probabilistic_tournaments_Threshold": 0.6,
+
   "weapons_dataset_path": "./dataset/armas.tsv",
   "boots_dataset_path": "./dataset/botas.tsv",
   "helmets_dataset_path": "./dataset/cascos.tsv",
