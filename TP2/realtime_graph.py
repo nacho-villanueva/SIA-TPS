@@ -1,12 +1,10 @@
 from random import random
-from time import sleep
 import matplotlib.pyplot as plt
-import numpy as np
 
 class RealTimeGraphDrawer:
-    def __init__(self, max_len = 100):
+    def __init__(self, max_len = 100, gen_step = 1):
         self.max_len = max_len
-        self.gen_step = 1
+        self.gen_step = gen_step
         self.curr_len = 0
 
         self.x = [0]
