@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from TP2.character import Character
+from TP2.realtime_graph import RealTimeGraphDrawer
 
 
 class FillType(Enum):
@@ -55,6 +56,7 @@ class GeneticAlgorithm:
         self.generations = [0]
 
     def run(self):
+        graph = RealTimeGraphDrawer()
         while not self.stop(self):
             print(f"Generation {self.generation} - Max Fit: {self.max_fitness_character}")
 
@@ -65,8 +67,8 @@ class GeneticAlgorithm:
             self.find_max_fitness()
             self.generation += 1
             self.generations.append(self.generation)
-            plt.plot(self.generations, self.all_max, color="b")
-            plt.pause(0.05)
+            min_fit,avg_fit,diversity = self.get_graph_data()
+            graph.push_and_draw(min_fit,avg_fit,diversity)
         plt.show()
 
     def select_parents(self):
@@ -134,6 +136,16 @@ class GeneticAlgorithm:
                 max_fit = p
         self.max_fitness_character = max_fit
         self.all_max.append(self.max_fitness_character.fitness)
+
+    def get_graph_data(self):
+        min_fit = self.population[0].fitness
+        diversity = 0
+        sum_fit = 0
+        for p in self.population:
+            if min_fit > p.fitness:
+                min_fit = p.fitness
+            sum_fit += p.fitness
+        return min_fit,sum_fit/len(self.population),diversity
 
 def pairwise(iterable):
     # Iterate by pairs
