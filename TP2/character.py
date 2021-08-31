@@ -143,13 +143,13 @@ class Character:
         elif allele == Character.Allele.WEAPON:
             self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.WEAPON)
         elif allele == Character.Allele.ARMOUR:
-            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.ARMOUR)
+            self.gear.armour = dl.get_random_item(DatasetLibrary.DatasetType.ARMOUR)
         elif allele == Character.Allele.HELMET:
-            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.HELMET)
+            self.gear.helmet = dl.get_random_item(DatasetLibrary.DatasetType.HELMET)
         elif allele == Character.Allele.GLOVES:
-            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.GLOVES)
+            self.gear.gloves = dl.get_random_item(DatasetLibrary.DatasetType.GLOVES)
         elif allele == Character.Allele.BOOTS:
-            self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.BOOTS)
+            self.gear.boots = dl.get_random_item(DatasetLibrary.DatasetType.BOOTS)
         else:
             raise Exception(f"Locus {locus} out of range")
         self.recalculate_stats()
@@ -161,13 +161,13 @@ class Character:
         elif allele == Character.Allele.WEAPON:
             self.gear.weapon = value
         elif allele == Character.Allele.ARMOUR:
-            self.gear.weapon = value
+            self.gear.armour = value
         elif allele == Character.Allele.HELMET:
-            self.gear.weapon = value
+            self.gear.helmet = value
         elif allele == Character.Allele.GLOVES:
-            self.gear.weapon = value
+            self.gear.gloves = value
         elif allele == Character.Allele.BOOTS:
-            self.gear.weapon = value
+            self.gear.boots = value
         else:
             raise Exception(f"Locus {locus} out of range")
         self.recalculate_stats()
@@ -179,13 +179,13 @@ class Character:
         elif allele == Character.Allele.WEAPON:
             return self.gear.weapon
         elif allele == Character.Allele.ARMOUR:
-            return self.gear.weapon
+            return self.gear.armour
         elif allele == Character.Allele.HELMET:
-            return self.gear.weapon
+            return self.gear.helmet
         elif allele == Character.Allele.GLOVES:
-            return self.gear.weapon
+            return self.gear.gloves
         elif allele == Character.Allele.BOOTS:
-            return self.gear.weapon
+            return self.gear.boots
         else:
             raise Exception(f"Locus {locus} out of range")
 
