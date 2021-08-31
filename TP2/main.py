@@ -58,17 +58,21 @@ if __name__ == "__main__":
 
     initial_population = create_generation_zero(population_size, character_role, precision)
 
+    print("Setting up Genetic Algorithm...")
     algorithm = GeneticAlgorithm( # TODO: FIX CONFIGURATIONS TO SELECT CORRECT METHOD
-        select_a=selection_functions[config.selection_algorithm_1],
-        crossover=crossover_functions[config.crossover_algorithm],
-        mutate=mutation_functions[config.mutation_algorithm],
-        stop=stop_conditions[config.stop_condition],
+        select_a=get_selection_function(config.selection_1),
+        crossover=get_crossover_function(config.crossover_algorithm),
+        mutate=get_mutation_function(config.mutation_algorithm),
+        stop=get_stop_condition(config.stop_condition),
         k=config.K,
-        repopulate_a=selection_functions[config.replacement_algorithm_1],
+        repopulate_a=get_selection_function(config.replacement_1),
         fill_type=implementations[config.implementation],
         initial_population=initial_population,
-        select_b=selection_functions[config.selection_algorithm_2],
+        select_b=get_selection_function(config.selection_2),
         select_coefficient=config.A,
-        repopulate_b=selection_functions[config.replacement_algorithm_2],
+        repopulate_b=get_selection_function(config.replacement_2),
         repopulate_coefficient=config.B
     )
+
+    print("Running...")
+    algorithm.run()

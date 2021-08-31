@@ -59,7 +59,7 @@ def annular_crossover():
     return _annular_crossover
 
 
-def uniform_crossover():  # TODO: IMPLEMENTAR
+def uniform_crossover():
     def _uniform_crossover(father: Character, mother: Character):
         child_a = copy(father)
         child_b = copy(mother)

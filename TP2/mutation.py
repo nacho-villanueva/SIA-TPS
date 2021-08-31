@@ -14,7 +14,7 @@ def gene_mutation():
     return _gene_mutation
 
 
-def limited_multiple_gene_mutation(m):  # TODO: IMPLEMENTAR
+def limited_multiple_gene_mutation(m):
     def _limited_multiple_gene_mutation(character: Character):
         loci = random.sample([0, 1, 2, 3, 4, 5], m)
         for locus in loci:
@@ -24,7 +24,7 @@ def limited_multiple_gene_mutation(m):  # TODO: IMPLEMENTAR
     return _limited_multiple_gene_mutation
 
 
-def uniform_multiple_gene_mutation():  # TODO: IMPLEMENTAR
+def uniform_multiple_gene_mutation():
     def _uniform_multiple_gene_mutation(character: Character):
         for locus in range(0, 6):
             if random.uniform(0, 1) < MUTATION_PROBABILITY:
@@ -33,7 +33,7 @@ def uniform_multiple_gene_mutation():  # TODO: IMPLEMENTAR
     return _uniform_multiple_gene_mutation
 
 
-def complete_mutation():  # TODO: IMPLEMENTAR
+def complete_mutation():
     def _complete_mutation(character: Character):
         if random.uniform(0, 1) < MUTATION_PROBABILITY:
             for locus in range(0, 6):

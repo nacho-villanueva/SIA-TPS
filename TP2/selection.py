@@ -1,10 +1,9 @@
 import random
 
-from TP2.character import Character
 import numpy as np
 from sortedcontainers import SortedList
 
-from TP2.config import Config
+from TP2.character import Character
 
 
 def elite_selection():
@@ -59,9 +58,8 @@ def boltzmann_selection():  # TODO: IMPLEMENTAR
     return []
 
 
-def deterministic_tournament_selection():  # TODO: IMPLEMENTAR
+def deterministic_tournament_selection(M):  # TODO: IMPLEMENTAR
     def _deterministic_tournament_selection(population: list[Character], k):
-        M = Config().deterministic_tournaments_M
         selected = []
         for i in range(k):
             m_individuals = SortedList(key=sort_by_fitness)
@@ -79,9 +77,8 @@ def sort_by_fitness(individual: Character):
     return individual.fitness
 
 
-def stochastic_tournament_selection():  # TODO: IMPLEMENTAR
+def stochastic_tournament_selection(threshold):  # TODO: IMPLEMENTAR
     def _stochastic_tournament_selection(population: list[Character], k):
-        threshold = Config().probabilistic_tournaments_Threshold
         selected = []
         for i in range(k):
             two_individuals = SortedList(key=sort_by_fitness)

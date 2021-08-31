@@ -1,32 +1,42 @@
 {
   "role": "archer",
-
-  "crossover_algorithm": "one_point",
-  "mutation_algorithm": "gene",
-  "implementation": "fill-all",
-  "stop_condition": "time",
-
-  "real_time_graphics": true,
-
-  "precision": 2,
-
   "population_size": 100,
   "K": 50,
 
+  "implementation": "fill-all",
+  "real_time_graphics": true,
+  "precision": 2,
+
+  "crossover": "one_point",
+
+  "mutation": {
+    "method": "gene"
+  },
+
+  "stop_condition": {
+    "method": "generation",
+    "generation": 10
+  },
+
   "A": 1,
-  "selection_algorithm_1": "elite",
-  "selection_algorithm_2": "elite",
+  "selection_1": {
+    "method": "elite"
+  },
+  "selection_2": {
+    "method": "elite"
+  },
 
   "B": 1,
-  "replacement_algorithm_1": "elite",
-  "replacement_algorithm_2": "elite",
-
-  "deterministic_tournaments_M": 10,
-  "probabilistic_tournaments_Threshold": 0.6,
+  "replacement_1": {
+    "method": "elite"
+  },
+  "replacement_2": {
+    "method": "elite"
+  },
 
   "weapons_dataset_path": "./dataset/armas.tsv",
-  "boots_dataset_path": "./dataset/botas.tsv",
+  "boots_dataset_path":   "./dataset/botas.tsv",
   "helmets_dataset_path": "./dataset/cascos.tsv",
-  "gloves_dataset_path": "./dataset/guantes.tsv",
+  "gloves_dataset_path":  "./dataset/guantes.tsv",
   "armours_dataset_path": "./dataset/pecheras.tsv"
 }
