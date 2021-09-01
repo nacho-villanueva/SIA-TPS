@@ -48,27 +48,34 @@ class GeneticAlgorithm:
 
         self.start_time = time()
         self.generation = 0
-        self.max_fitness_character = None
 
         self.all_max = []
         self.population = initial_population
+        self.max_fitness_character = self.population[0]
         self.find_max_fitness()
         self.generations = [0]
 
     def run(self):
         graph = RealTimeGraphDrawer()
         while not self.stop(self):
-            print(f"Generation {self.generation} - Max Fit: {self.max_fitness_character}")
+            # print(f"Generation {self.generation} - Max Fit: {self.max_fitness_character}")
 
             parents = self.select_parents()
             children = self.breed(parents)
             self.population = self.repopulate(children)
 
-            self.find_max_fitness()
+            previous_best_character = self.max_fitness_character
+            self.find_max_fitness()  # Updates max_fitness_character
+            if previous_best_character.fitness < self.max_fitness_character.fitness:
+                print(f"New best character found in generation {self.generation}: [{self.max_fitness_character}]")
+
             self.generation += 1
             self.generations.append(self.generation)
             min_fit,avg_fit,diversity = self.get_graph_data()
             graph.push_and_draw(min_fit,avg_fit,diversity)
+
+        print(f"Best {self.max_fitness_character.role} found: [{self.max_fitness_character}]")
+
         plt.show()
 
     def select_parents(self):
@@ -130,12 +137,19 @@ class GeneticAlgorithm:
             return self.fill_parent(children)
 
     def find_max_fitness(self):
-        max_fit = self.population[0]
+        # max_fit = self.population[0]
+        # for p in self.population:
+        #     if max_fit.fitness < p.fitness:
+        #         max_fit = p
+        # self.max_fitness_character = max_fit
+        new_fitness_found = False
         for p in self.population:
-            if max_fit.fitness < p.fitness:
-                max_fit = p
-        self.max_fitness_character = max_fit
-        self.all_max.append(self.max_fitness_character.fitness)
+            if self.max_fitness_character.fitness < p.fitness:
+                self.max_fitness_character = p
+                new_fitness_found = True
+
+        if new_fitness_found:
+            self.all_max.append(self.max_fitness_character.fitness)
 
     def get_graph_data(self):
         min_fit = self.population[0].fitness
