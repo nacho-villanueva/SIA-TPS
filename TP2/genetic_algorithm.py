@@ -139,12 +139,16 @@ class GeneticAlgorithm:
 
     def get_graph_data(self):
         min_fit = self.population[0].fitness
-        diversity = 0
+        locuses = [i for i in Character.Allele]
+        diversity = [set() for _ in locuses ]
         sum_fit = 0
         for p in self.population:
             if min_fit > p.fitness:
                 min_fit = p.fitness
             sum_fit += p.fitness
+            for i in range(len(locuses)):
+                diversity[i].add(p.get_allele(locuses[i]))
+        diversity = np.average(list(map(lambda x:len(x),diversity)))
         return min_fit,sum_fit/len(self.population),diversity
 
 def pairwise(iterable):
