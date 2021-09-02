@@ -14,8 +14,9 @@
   },
 
   "stop_condition": {
-    "method": "generation",
-    "generation": 10
+    "method": "structure",
+    "relevant_percentage": 90,
+    "generations_amount": 10
   },
 
   "A": 1,

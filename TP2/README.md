@@ -284,9 +284,13 @@ Para elegir la condición de freno se debera insertar una de las siguientes posi
 	<td>
 		<pre>
 "stop_condition": {
-	"method": "structure"
-// TODO: ACTUALIZAR PARAMETROS
+	"method": "structure",
+        "relevant_percentage": 90,  // representa 90%
+        "generations_amount": 10
 },
+
+El ejemplo de arriba significa "_cortar cuando las últimas 
+10 generaciones tienen el 90% o más de su población idéntica_"
 		</pre>
 	</td>
 </tr>

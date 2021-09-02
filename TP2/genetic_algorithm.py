@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from TP2.character import Character
+from TP2.generation import Generation
 from TP2.realtime_graph import RealTimeGraphDrawer
 
 
@@ -53,7 +54,8 @@ class GeneticAlgorithm:
         self.population = initial_population
         self.max_fitness_character = self.population[0]
         self.find_max_fitness()
-        self.generations = [0]
+
+        self.generations = [Generation(0, self.calculate_similarity())]
 
     def run(self):
         graph = RealTimeGraphDrawer()
@@ -70,7 +72,11 @@ class GeneticAlgorithm:
                 print(f"New best character found in generation {self.generation}: [{self.max_fitness_character}]")
 
             self.generation += 1
-            self.generations.append(self.generation)
+            self.generations.append(Generation(self.generation, self.calculate_similarity()))
+
+            # Uncomment to see how the calculate_similarity() works
+            # print(f"Generation {self.generation} similarity = {self.generations[-1].similarity}%")
+
             min_fit,avg_fit,diversity = self.get_graph_data()
             graph.push_and_draw(min_fit,avg_fit,diversity)
 
@@ -164,6 +170,14 @@ class GeneticAlgorithm:
                 diversity[i].add(p.get_allele(locuses[i]))
         diversity = np.average(list(map(lambda x:len(x),diversity)))
         return min_fit,sum_fit/len(self.population),diversity
+
+    # Returns a number [0, 100] representing the percentage of similarity in the population
+    # A value of 100 means that the whole population is the same
+    # A value of 0 means that the whole population is different
+    def calculate_similarity(self):
+        without_duplicates = list(dict.fromkeys(self.population))
+        return 100.0 - (len(without_duplicates) * 100.0 / len(self.population))
+
 
 def pairwise(iterable):
     # Iterate by pairs

@@ -24,8 +24,14 @@ def fitness_stop(max_fitness):
     return _fitness_stop
 
 
-def structure_stop():  # TODO: IMPLEMENTAR
-    pass
+def structure_stop(percentage: float, generations_amount: int):
+    def _structure_stop(genetic: GeneticAlgorithm):
+        if len(genetic.generations) < generations_amount:
+            return False
+        last_generations = genetic.generations[-generations_amount-1:]
+        return all(gen.similarity >= percentage for gen in last_generations)
+
+    return _structure_stop
 
 
 def content_stop():  # TODO: IMPLEMENTAR
