@@ -5,25 +5,25 @@
 
   "implementation": "fill-all",
   "real_time_graphics": true,
-  "precision": 2,
+  "float_precision": 2,
   "mutation_probability": 0.5,
 
-  "crossover": "one_point",
+  "crossover": "annular",
 
   "mutation": {
-    "method": "gene"
+    "method": "complete"
   },
 
   "stop_condition": {
-    "method": "structure",
-    "relevant_percentage": 90,
-    "generations_amount": 10
+    "method": "generation",
+    "generation": 200
   },
 
   "A": 1,
   "selection_1": {
     "method": "boltzmann"
   },
+
   "selection_2": {
     "method": "boltzmann"
   },

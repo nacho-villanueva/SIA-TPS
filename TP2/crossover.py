@@ -4,11 +4,15 @@ from copy import copy
 from TP2.character import Character
 
 
-# TODO: TRANSFERIR APELLIDO DEL MAYOR FITNESS
 def one_point_crossover():
     def _one_point_crossover(father: Character, mother: Character):
         child_a = copy(father)
         child_b = copy(mother)
+
+        if father.fitness > mother.fitness:
+            child_b.lastname = father.lastname
+        elif mother.fitness > father.fitness:
+            child_a.lastname = mother.lastname
 
         point = random.randint(0, 6)
 
@@ -28,6 +32,11 @@ def two_point_crossover():
         child_a = copy(father)
         child_b = copy(mother)
 
+        if father.fitness > mother.fitness:
+            child_b.lastname = father.lastname
+        elif mother.fitness > father.fitness:
+            child_a.lastname = mother.lastname
+
         point_1 = random.randint(0, 6)
         point_2 = random.randint(point_1, 6)
         for i in range(point_1, point_2):
@@ -46,6 +55,11 @@ def annular_crossover():
         child_a = copy(father)
         child_b = copy(mother)
 
+        if father.fitness > mother.fitness:
+            child_b.lastname = father.lastname
+        elif mother.fitness > father.fitness:
+            child_a.lastname = mother.lastname
+
         point = random.randint(0, 6)
         length = random.randint(0, 3)
         for i in range(point, min(point + length, 6)):
@@ -63,6 +77,11 @@ def uniform_crossover():
     def _uniform_crossover(father: Character, mother: Character):
         child_a = copy(father)
         child_b = copy(mother)
+
+        if father.fitness > mother.fitness:
+            child_b.lastname = father.lastname
+        elif mother.fitness > father.fitness:
+            child_a.lastname = mother.lastname
 
         for i in range(0, 6):
             swap = random.uniform(0, 1) < 0.5

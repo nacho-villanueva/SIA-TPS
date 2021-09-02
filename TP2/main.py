@@ -29,7 +29,9 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
 
         gear = Gear(weapon=weapon, armour=armour, boots=boots, gloves=gloves, helmet=helmet)
 
-        character = Character(role, height, gear, fake.name())
+        last_name = fake.unique.last_name()
+
+        character = Character(role, height, gear, last_name)
         generation_zero.append(character)
 
     return generation_zero
