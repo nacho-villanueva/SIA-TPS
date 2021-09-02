@@ -29,3 +29,4 @@ class Config(metaclass=Singleton):
         self.B = config_dict["B"]
         self.replacement_1 = config_dict["replacement_1"]
         self.replacement_2 = config_dict["replacement_2"]
+        self.mutation_probability = config_dict["mutation_probability"]

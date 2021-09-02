@@ -6,6 +6,7 @@
   "implementation": "fill-all",
   "real_time_graphics": true,
   "precision": 2,
+  "mutation_probability": 0.5,
 
   "crossover": "one_point",
 
