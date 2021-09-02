@@ -16,12 +16,18 @@ pip install -r requirements.txt
 ```
 
 ## Cómo Correr
-
+Utilizando python se debera ejecutar el main.py donde el primer parámetro es el del archivo de configuración.
+```bash
+python main.py "./config.json"
+```
 
 ## Archivo de Configuración:
 ### Configuraciones Basicas
 Para definir las configuraciones basicas deberan agregar los siguientes parámetros:
+
 **Nota: Borrar los comentarios (//), ya que no son parte de json.**
+
+**Nota: (opción_a | opción_b | opción_c) representa un parámetro que puede tomar únicamente esas opciones**
 ```json5
 "role": ("warrior"|"archer"|"tank"|"assasin"), 
 "population_size": 100, 

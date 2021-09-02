@@ -1,5 +1,7 @@
 import json
 import random
+import sys
+
 import pandas as pd
 
 from TP2.character import Character, CharacterRole, Gear
@@ -33,7 +35,13 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
 
 
 if __name__ == "__main__":
-    file = open("config.json")
+    config_file = "./config.json"
+    if len(sys.argv) >= 2:
+        config_file = sys.argv[1]
+    else:
+        print("Using default config file (./config.json)")
+
+    file = open(config_file)
     config_dict = json.load(file)
 
     if config_dict["K"] % 2 != 0:
