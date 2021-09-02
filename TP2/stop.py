@@ -34,8 +34,17 @@ def structure_stop(percentage: float, generations_amount: int):
     return _structure_stop
 
 
-def content_stop():  # TODO: IMPLEMENTAR
-    pass
+def content_stop(generations_amount: int):
+    def _content_stop(genetic: GeneticAlgorithm):
+        if len(genetic.generations) < generations_amount:
+            return False
+        last_generations = genetic.generations[-generations_amount-1:]
+        max_fitness = set()
+        for gen in last_generations:
+            max_fitness.add(gen.max_fitness)
+        return len(max_fitness) == 1
+
+    return _content_stop
 
 
 def joint_stop(stop_functions: list):

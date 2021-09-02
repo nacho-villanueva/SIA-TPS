@@ -55,7 +55,7 @@ class GeneticAlgorithm:
         self.max_fitness_character = self.population[0]
         self.find_max_fitness()
 
-        self.generations = [Generation(0, self.calculate_similarity())]
+        self.generations = [Generation(0, self.calculate_similarity(), self.max_fitness_character.fitness)]
 
     def run(self):
         graph = RealTimeGraphDrawer()
@@ -72,7 +72,7 @@ class GeneticAlgorithm:
                 print(f"New best character found in generation {self.generation}: [{self.max_fitness_character}]")
 
             self.generation += 1
-            self.generations.append(Generation(self.generation, self.calculate_similarity()))
+            self.generations.append(Generation(self.generation, self.calculate_similarity(), self.max_fitness_character.fitness))
 
             # Uncomment to see how the calculate_similarity() works
             # print(f"Generation {self.generation} similarity = {self.generations[-1].similarity}%")

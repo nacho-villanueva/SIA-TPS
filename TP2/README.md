@@ -301,8 +301,8 @@ El ejemplo de arriba significa "_cortar cuando las últimas
 	<td>
 		<pre>
 "stop_condition": {
-	"method": "content"
-// TODO: ACTUALIZAR PARAMETROS
+	"method": "content",
+	"generations_amount": 10
 },
 		</pre>
 	</td>

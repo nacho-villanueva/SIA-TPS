@@ -58,7 +58,7 @@ def get_stop_condition(condition_config):
     elif name == "structure":
         return structure_stop(condition_config["relevant_percentage"], condition_config["generations_amount"])
     elif name == "content":
-        return content_stop()
+        return content_stop(condition_config["generations_amount"])
 
 
 implementations = {
