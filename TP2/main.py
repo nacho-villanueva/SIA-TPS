@@ -4,6 +4,7 @@ import sys
 
 import pandas as pd
 
+from faker import Faker
 from TP2.character import Character, CharacterRole, Gear
 from TP2.config import Config
 from TP2.constants import *
@@ -11,7 +12,6 @@ from TP2.datasets import DatasetLibrary
 from TP2.genetic_algorithm import GeneticAlgorithm
 
 
-# TODO: quizas se puede mover a otro archivo
 def create_generation_zero(k: int, role: CharacterRole, precision: int):
     generation_zero = []
     multiplier = 10 ** precision
@@ -19,6 +19,7 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
         height = random.randint(MIN_HEIGHT * multiplier, MAX_HEIGHT * multiplier) / multiplier
 
         dl = DatasetLibrary()
+        fake = Faker()
 
         armour = dl.get_random_item(DatasetLibrary.DatasetType.ARMOUR)
         boots = dl.get_random_item(DatasetLibrary.DatasetType.BOOTS)
@@ -28,7 +29,7 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
 
         gear = Gear(weapon=weapon, armour=armour, boots=boots, gloves=gloves, helmet=helmet)
 
-        character = Character(role, height, gear, "Mendez")
+        character = Character(role, height, gear, fake.name())
         generation_zero.append(character)
 
     return generation_zero
