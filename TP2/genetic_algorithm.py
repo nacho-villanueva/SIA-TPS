@@ -50,7 +50,6 @@ class GeneticAlgorithm:
         self.start_time = time()
         self.generation = 0
 
-        self.all_max = []
         self.population = initial_population
         self.max_fitness_character = self.population[0]
         self.find_max_fitness()
@@ -72,13 +71,14 @@ class GeneticAlgorithm:
                 print(f"New best character found in generation {self.generation}: [{self.max_fitness_character}]")
 
             self.generation += 1
-            self.generations.append(Generation(self.generation, self.calculate_similarity(), self.max_fitness_character.fitness))
+            self.generations.append(
+                Generation(self.generation, self.calculate_similarity(), self.max_fitness_character.fitness))
 
             # Uncomment to see how the calculate_similarity() works
             # print(f"Generation {self.generation} similarity = {self.generations[-1].similarity}%")
 
-            min_fit,avg_fit,diversity = self.get_graph_data()
-            graph.push_and_draw(min_fit,avg_fit,diversity)
+            min_fit, max_fit, avg_fit, diversity = self.get_graph_data()
+            graph.push_and_draw(min_fit, max_fit, avg_fit, diversity)
 
         print(f"Best {self.max_fitness_character.role} found: [{self.max_fitness_character}]")
 
@@ -143,33 +143,28 @@ class GeneticAlgorithm:
             return self.fill_parent(children)
 
     def find_max_fitness(self):
-        # max_fit = self.population[0]
-        # for p in self.population:
-        #     if max_fit.fitness < p.fitness:
-        #         max_fit = p
-        # self.max_fitness_character = max_fit
-        new_fitness_found = False
+        max_fit = self.population[0]
         for p in self.population:
-            if self.max_fitness_character.fitness < p.fitness:
-                self.max_fitness_character = p
-                new_fitness_found = True
-
-        if new_fitness_found:
-            self.all_max.append(self.max_fitness_character.fitness)
+            if max_fit.fitness < p.fitness:
+                max_fit = p
+        self.max_fitness_character = max_fit
 
     def get_graph_data(self):
         min_fit = self.population[0].fitness
+        max_fit = self.population[0].fitness
         locuses = [i for i in Character.Allele]
-        diversity = [set() for _ in locuses ]
+        diversity = [set() for _ in locuses]
         sum_fit = 0
         for p in self.population:
             if min_fit > p.fitness:
                 min_fit = p.fitness
+            if max_fit < p.fitness:
+                max_fit = p.fitness
             sum_fit += p.fitness
             for i in range(len(locuses)):
                 diversity[i].add(p.get_allele(locuses[i]))
-        diversity = np.average(list(map(lambda x:len(x),diversity)))
-        return min_fit,sum_fit/len(self.population),diversity
+        diversity = np.average(list(map(lambda x: len(x), diversity)))
+        return min_fit, max_fit, sum_fit  / len(self.population), diversity
 
     # Returns a number [0, 100] representing the percentage of similarity in the population
     # A value of 100 means that the whole population is the same

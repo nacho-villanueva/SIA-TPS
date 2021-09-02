@@ -20,7 +20,7 @@ class Config(metaclass=Singleton):
         self.implementation = config_dict["implementation"]
         self.stop_condition = config_dict["stop_condition"]
         self.real_time_graphics = config_dict["real_time_graphics"]
-        self.precision = config_dict["precision"]
+        self.precision = config_dict["float_precision"]
         self.population_size = config_dict["population_size"]
         self.K = config_dict["K"]
         self.A = config_dict["A"]
@@ -30,3 +30,6 @@ class Config(metaclass=Singleton):
         self.replacement_1 = config_dict["replacement_1"]
         self.replacement_2 = config_dict["replacement_2"]
         self.mutation_probability = config_dict["mutation_probability"]
+
+        self.min_height = 1.3
+        self.max_height = 2.0

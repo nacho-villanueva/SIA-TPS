@@ -2,6 +2,7 @@ import math
 import random
 from enum import Enum
 
+from TP2.config import Config
 from TP2.datasets import DatasetLibrary
 from TP2.items.armour import Armour
 from TP2.items.boots import Boots
@@ -52,6 +53,18 @@ class Gear:
 
     def __iter__(self):
         return [self.weapon, self.armour, self.helmet, self.gloves, self.boots].__iter__()
+
+    def __eq__(self, other):
+        if isinstance(other, Gear):
+            is_equal = other.weapon.item_id == self.weapon.item_id
+            is_equal = is_equal and other.gloves.item_id == self.gloves.item_id
+            is_equal = is_equal and other.helmet.item_id == self.helmet.item_id
+            is_equal = is_equal and other.armour.item_id == self.armour.item_id
+            is_equal = is_equal and other.boots.item_id == self.boots.item_id
+            return is_equal
+
+    def __hash__(self):
+        return hash((self.weapon.item_id, self.armour.item_id, self.gloves.item_id, self.helmet.item_id, self.boots.item_id))
 
 
 class Character:
@@ -139,7 +152,9 @@ class Character:
         allele = Character.Allele(locus)
         dl = DatasetLibrary()
         if allele == Character.Allele.HEIGHT:
-            self.height = random.uniform(1.3, 2.0)  # TODO: REMPLAZAR CON CONFIGURACION CUANDO SE HAGA EL SINGLETON
+            configs = Config()
+            multiplier = 10 ** configs.precision
+            self.height = random.randint(configs.min_height * multiplier, configs.max_height * multiplier) / multiplier
         elif allele == Character.Allele.WEAPON:
             self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.WEAPON)
         elif allele == Character.Allele.ARMOUR:
@@ -207,7 +222,7 @@ class Character:
 
     def __eq__(self, other):
         if isinstance(other, Character):
-            if self.fitness == other.fitness and self.height == other.height and self.gear == other.gear:
+            if self.fitness == other.fitness and abs(self.height - other.height) < 10**(-Config().precision) and self.gear == other.gear:
                 return True
         return False
 

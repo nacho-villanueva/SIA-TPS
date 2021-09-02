@@ -35,7 +35,7 @@ Para definir las configuraciones basicas deberan agregar los siguientes parámet
   
 "implementation": ("fill-all"|"fill-parent"),
 "real_time_graphics": (true|false),
-"precision": 2,
+"float_precision": 2,
 "mutation_probability": 0.5, // ∈[0, 1]
 
 "weapons_dataset_path": "./dataset/armas.tsv",
@@ -177,7 +177,7 @@ Para elegir el método de cruza se debera insertar una de las siguientes posibil
 	</td>
 	<td>
 		<pre>
-"crossover": "anular",
+"crossover": "annular",
 		</pre>
 	</td>
 <td></td>
