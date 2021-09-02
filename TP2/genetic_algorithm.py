@@ -17,8 +17,7 @@ class FillType(Enum):
     FILL_ALL = "fill_all"
     FILL_PARENT = "fill_parent"
 
-
-SelectFunction = Callable[[list[Character], int], list[Character]]
+SelectFunction = Callable[[list[Character], int, 'GeneticAlgorithm'], list[Character]]
 CrossoverFunction = Callable[[Character, Character], list[Character]]
 MutateFunction = Callable[[Character], None]
 StopFunction = Callable[[Any], bool]
@@ -85,9 +84,9 @@ class GeneticAlgorithm:
         plt.show()
 
     def select_parents(self):
-        parents = self.select_a(self.population, math.ceil(self.K * self.select_coefficient))
+        parents = self.select_a(self.population, math.ceil(self.K * self.select_coefficient),self)
         if self.select_coefficient < 1:
-            parents += self.select_b(self.population, math.floor(self.K * (1 - self.select_coefficient)))
+            parents += self.select_b(self.population, math.floor(self.K * (1 - self.select_coefficient)),self)
 
         if self.K % 2 == 1:
             parents.append(random.choice(self.population))
@@ -110,18 +109,18 @@ class GeneticAlgorithm:
     def fill_all(self, children):
         all_population = self.population + children
         new_population = self.repopulate_a(all_population,
-                                           math.ceil(self.population_size * self.repopulate_coefficient))
+                                           math.ceil(self.population_size * self.repopulate_coefficient),self)
         if self.repopulate_coefficient < 1:
             new_population += self.select_b(self.population,
-                                            math.floor(self.population_size * (1 - self.repopulate_coefficient)))
+                                            math.floor(self.population_size * (1 - self.repopulate_coefficient)),self)
         return new_population
 
     def fill_parent(self, children):
         if self.K > self.population_size:
-            new_population = self.repopulate_a(children, math.ceil(self.population_size * self.repopulate_coefficient))
+            new_population = self.repopulate_a(children, math.ceil(self.population_size * self.repopulate_coefficient),self)
             if self.repopulate_coefficient < 1:
                 new_population += self.select_b(self.population,
-                                                math.floor(self.population_size * (1 - self.repopulate_coefficient)))
+                                                math.floor(self.population_size * (1 - self.repopulate_coefficient)),self)
             return new_population
 
         elif self.K == self.population_size:
@@ -130,10 +129,10 @@ class GeneticAlgorithm:
         elif self.K < self.population_size:
             new_population = children
             new_population += self.repopulate_a(self.population, math.ceil(
-                (self.population_size - self.K) * self.repopulate_coefficient))
+                (self.population_size - self.K) * self.repopulate_coefficient),self)
             if self.repopulate_coefficient < 1:
                 new_population += self.select_b(self.population, math.floor(
-                    (self.population_size - self.K) * (1 - self.repopulate_coefficient)))
+                    (self.population_size - self.K) * (1 - self.repopulate_coefficient)),self)
             return new_population
 
     def repopulate(self, children):

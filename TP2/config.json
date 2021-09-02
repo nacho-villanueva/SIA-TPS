@@ -21,19 +21,19 @@
 
   "A": 1,
   "selection_1": {
-    "method": "boltzmann"
+    "method": "elite"
   },
 
   "selection_2": {
-    "method": "boltzmann"
+    "method": "elite"
   },
 
   "B": 1,
   "replacement_1": {
-    "method": "boltzmann"
+    "method": "elite"
   },
   "replacement_2": {
-    "method": "boltzmann"
+    "method": "elite"
   },
 
   "weapons_dataset_path": "./dataset/armas.tsv",

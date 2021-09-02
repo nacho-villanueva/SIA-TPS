@@ -1,3 +1,4 @@
+from TP2.genetic_algorithm import GeneticAlgorithm
 import random
 
 import numpy as np
@@ -8,8 +9,8 @@ from TP2.character import Character
 
 
 def elite_selection():
-    def _elite_selection(collection: list[Character], k):
-        sorted_collection = sorted(collection, reverse=True)
+    def _elite_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
+        sorted_collection = sorted(population, reverse=True)
         selection = sorted_collection * (k // len(sorted_collection))
         selection += sorted_collection[:k % len(sorted_collection)]
         return selection
@@ -18,7 +19,7 @@ def elite_selection():
 
 
 def roulette_selection():  # TODO: IMPLEMENTAR
-    def _roulette_selection(population: list[Character], k):
+    def _roulette_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         accumulated_relative_fitness = get_accumulated_relative_fitness(population)
         selected = []
         for i in range(k):
@@ -32,7 +33,7 @@ def roulette_selection():  # TODO: IMPLEMENTAR
 
 
 def universal_selection():  # TODO: IMPLEMENTAR
-    def _universal_selection(population: list[Character], k):
+    def _universal_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         accumulated_relative_fitness = get_accumulated_relative_fitness(population)
         selected = []
         for j in range(k):
@@ -56,14 +57,14 @@ def get_accumulated_relative_fitness(population: list[Character]):
 
 
 def boltzmann_selection():  # TODO: Check
-    def _boltzmann_selection(population: list[Character], k):
+    def _boltzmann_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         N = len(population)
         # First get the upper half of the equation of EXP
         # and the sum to later get the average
         new_relative = []
         sum_over_pop = 0
         # numero de generacion
-        t  = 19 # TODO: implementar
+        t  = genetic_algorithm.generation
         # T = Tc + (T0 - Tc) * (math.e ** ( - kconst * t))
         temperature = 100 + (1000 - 100) * (math.e ** ( - 10 * t)) # TODO: revisar estos numeros
         for i in range(N):
@@ -95,7 +96,7 @@ def boltzmann_selection():  # TODO: Check
 
 
 def deterministic_tournament_selection(M):  # TODO: IMPLEMENTAR
-    def _deterministic_tournament_selection(population: list[Character], k):
+    def _deterministic_tournament_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         selected = []
         for i in range(k):
             m_individuals = SortedList(key=sort_by_fitness)
@@ -114,7 +115,7 @@ def sort_by_fitness(individual: Character):
 
 
 def stochastic_tournament_selection(threshold):  # TODO: IMPLEMENTAR
-    def _stochastic_tournament_selection(population: list[Character], k):
+    def _stochastic_tournament_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         selected = []
         for i in range(k):
             two_individuals = SortedList(key=sort_by_fitness)
@@ -131,7 +132,7 @@ def stochastic_tournament_selection(threshold):  # TODO: IMPLEMENTAR
 
 
 def ranking_selection():  # TODO: IMPLEMENTAR
-    def _ranking_selection(population: list[Character], k):
+    def _ranking_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         # Sort from highest to lowest
         sorted_pop = sorted(population, reverse=True)
         N = len(sorted_pop)
