@@ -1,6 +1,7 @@
 import random
 
 import numpy as np
+from numpy.lib import math
 from sortedcontainers import SortedList
 
 from TP2.character import Character
@@ -95,4 +96,22 @@ def stochastic_tournament_selection(threshold):  # TODO: IMPLEMENTAR
 
 
 def ranking_selection():  # TODO: IMPLEMENTAR
-    return []
+    def _ranking_selection(population: list[Character], k):
+        sorted_pop = sorted(population, reverse=True)
+        N = len(sorted_pop)
+        new_relative = []
+        for i  in range(N):
+            new_relative.append(2 * (N - i) / ( ( N + 1 ) * N ))
+        accumulated_relative_fitness = [0]
+        for i in range(N):
+            accumulated_relative_fitness.append(0)
+            for j in range(i+1):
+                accumulated_relative_fitness[i+1] += new_relative[j]
+        selected = []
+        for i in range(k):
+            r = random.uniform(0, 1)
+            for j in range(N):
+                if accumulated_relative_fitness[j] < r <= accumulated_relative_fitness[j+1]:
+                    selected.append(sorted_pop[j])
+        return selected
+    return _ranking_selection

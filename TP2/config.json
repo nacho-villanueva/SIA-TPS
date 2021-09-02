@@ -22,18 +22,18 @@
 
   "A": 1,
   "selection_1": {
-    "method": "elite"
+    "method": "ranking"
   },
   "selection_2": {
-    "method": "elite"
+    "method": "ranking"
   },
 
   "B": 1,
   "replacement_1": {
-    "method": "elite"
+    "method": "ranking"
   },
   "replacement_2": {
-    "method": "elite"
+    "method": "ranking"
   },
 
   "weapons_dataset_path": "./dataset/armas.tsv",
