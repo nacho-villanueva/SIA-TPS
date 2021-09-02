@@ -204,3 +204,12 @@ class Character:
                "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
                "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \
                "\tATK: " + str(self.attack) + "\tDEF: " + str(self.defense) + "\tFITNESS: " + str(self.fitness)
+
+    def __eq__(self, other):
+        if isinstance(other, Character):
+            if self.fitness == other.fitness and self.height == other.height and self.gear == other.gear:
+                return True
+        return False
+
+    def __hash__(self):
+        return hash((self.fitness, self.height, self.gear))
