@@ -20,7 +20,8 @@ pip install -r requirements.txt
 
 ## Archivo de Configuración:
 ### Configuraciones Basicas
-Para definir las configuraciones basicas deberan agregar los siguientes parametros:
+Para definir las configuraciones basicas deberan agregar los siguientes parámetros:
+**Nota: Borrar los comentarios (//), ya que no son parte de json.**
 ```json5
 "role": ("warrior"|"archer"|"tank"|"assasin"), 
 "population_size": 100, 
@@ -29,6 +30,7 @@ Para definir las configuraciones basicas deberan agregar los siguientes parametr
 "implementation": ("fill-all"|"fill-parent"),
 "real_time_graphics": (true|false),
 "precision": 2,
+"mutation_probability": 0.5, // ∈[0, 1]
 
 "weapons_dataset_path": "./dataset/armas.tsv",
 "boots_dataset_path":   "./dataset/botas.tsv",
