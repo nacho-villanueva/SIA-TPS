@@ -38,6 +38,7 @@ Para definir las configuraciones basicas deberan agregar los siguientes parametr
 
 ```
 
+* Los datasets pueden ser distintos a los proporcionados por la cátedra, pero de todas formas deben contener las mismas definiciones de columnas. Es decir, deben contar con las columnas "id", "Fu", "Ag", "Ex", "Re" y "Vi"
 
 ### Métodos de Seleccion/Remplazo
 Para definir los métodos de configuración se deben utilizar como nombre los siguientes parámetros:
