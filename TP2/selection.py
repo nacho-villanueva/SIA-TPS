@@ -55,8 +55,43 @@ def get_accumulated_relative_fitness(population: list[Character]):
     return accumulated_fitness / total_fitness
 
 
-def boltzmann_selection():  # TODO: IMPLEMENTAR
-    return []
+def boltzmann_selection():  # TODO: Check
+    def _boltzmann_selection(population: list[Character], k):
+        N = len(population)
+        # First get the upper half of the equation of EXP
+        # and the sum to later get the average
+        new_relative = []
+        sum_over_pop = 0
+        # numero de generacion
+        t  = 19 # TODO: implementar
+        # T = Tc + (T0 - Tc) * (math.e ** ( - kconst * t))
+        temperature = 100 + (1000 - 100) * (math.e ** ( - 10 * t)) # TODO: revisar estos numeros
+        for i in range(N):
+            exp = math.e ** (population[i].fitness / temperature)
+            new_relative.append(exp)
+            sum_over_pop += exp
+        # Get the average and de sum of total fitnesses(aka, the sum of the 
+        # upper half divided by de average)
+        avg_over_pop = sum_over_pop / N
+        sum_over_pop /= avg_over_pop
+        # Calculate the fitness and then transform it to relative
+        for i in range(N):
+            new_relative[i] = (new_relative[i] / avg_over_pop) / sum_over_pop
+        # Accumulate
+        accumulated_relative_fitness = [0]
+        for i in range(N):
+            accumulated_relative_fitness.append(0)
+            for j in range(i+1):
+                accumulated_relative_fitness[i+1] += new_relative[j]
+        # Finally, run roulette
+        selected = []
+        for i in range(k):
+            r = random.uniform(0, 1)
+            for j in range(N):
+                if accumulated_relative_fitness[j] < r <= accumulated_relative_fitness[j+1]:
+                    selected.append(population[j])
+        return selected
+    return _boltzmann_selection
 
 
 def deterministic_tournament_selection(M):  # TODO: IMPLEMENTAR
@@ -97,16 +132,20 @@ def stochastic_tournament_selection(threshold):  # TODO: IMPLEMENTAR
 
 def ranking_selection():  # TODO: IMPLEMENTAR
     def _ranking_selection(population: list[Character], k):
+        # Sort from highest to lowest
         sorted_pop = sorted(population, reverse=True)
         N = len(sorted_pop)
+        # Get the new relative fitnesses
         new_relative = []
         for i  in range(N):
             new_relative.append(2 * (N - i) / ( ( N + 1 ) * N ))
+        # Accumulate them with a 0 at the start
         accumulated_relative_fitness = [0]
         for i in range(N):
             accumulated_relative_fitness.append(0)
             for j in range(i+1):
                 accumulated_relative_fitness[i+1] += new_relative[j]
+        # Run roulette on this
         selected = []
         for i in range(k):
             r = random.uniform(0, 1)

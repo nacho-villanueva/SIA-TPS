@@ -22,18 +22,18 @@
 
   "A": 1,
   "selection_1": {
-    "method": "ranking"
+    "method": "boltzmann"
   },
   "selection_2": {
-    "method": "ranking"
+    "method": "boltzmann"
   },
 
   "B": 1,
   "replacement_1": {
-    "method": "ranking"
+    "method": "boltzmann"
   },
   "replacement_2": {
-    "method": "ranking"
+    "method": "boltzmann"
   },
 
   "weapons_dataset_path": "./dataset/armas.tsv",
