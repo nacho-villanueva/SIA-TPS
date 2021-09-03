@@ -64,12 +64,13 @@ class GeneticAlgorithm:
             children = self.breed(parents)
             self.population = self.repopulate(children)
 
+            self.generation += 1
+
             previous_best_character = self.max_fitness_character
             self.find_max_fitness()  # Updates max_fitness_character
             if previous_best_character.fitness < self.max_fitness_character.fitness:
                 print(f"New best character found in generation {self.generation}: [{self.max_fitness_character}]")
 
-            self.generation += 1
             self.generations.append(
                 Generation(self.generation, self.calculate_similarity(), self.max_fitness_character.fitness))
 
