@@ -15,11 +15,11 @@ from TP2.genetic_algorithm import GeneticAlgorithm
 def create_generation_zero(k: int, role: CharacterRole, precision: int):
     generation_zero = []
     multiplier = 10 ** precision
+    dl = DatasetLibrary()
+    fake = Faker()
+
     for i in range(k):
         height = random.randint(MIN_HEIGHT * multiplier, MAX_HEIGHT * multiplier) / multiplier
-
-        dl = DatasetLibrary()
-        fake = Faker()
 
         armour = dl.get_random_item(DatasetLibrary.DatasetType.ARMOUR)
         boots = dl.get_random_item(DatasetLibrary.DatasetType.BOOTS)
@@ -29,7 +29,7 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
 
         gear = Gear(weapon=weapon, armour=armour, boots=boots, gloves=gloves, helmet=helmet)
 
-        last_name = fake.unique.last_name()
+        last_name = fake.last_name()
 
         character = Character(role, height, gear, last_name)
         generation_zero.append(character)
@@ -67,6 +67,7 @@ if __name__ == "__main__":
     datasets.load_dataset(DatasetLibrary.DatasetType.HELMET, config_dict["helmets_dataset_path"])
     datasets.load_dataset(DatasetLibrary.DatasetType.WEAPON, config_dict["weapons_dataset_path"])
 
+    print("Creating generation zero...")
     initial_population = create_generation_zero(population_size, character_role, precision)
 
     print("Setting up Genetic Algorithm...")
