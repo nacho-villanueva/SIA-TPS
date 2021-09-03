@@ -210,11 +210,9 @@ class Character:
         return self.fitness < other.fitness
 
     def __str__(self):
-        # TODO: no imprimí el Gear porque sino es enorme el output
         return f"Name: {self.lastname}\tFitness: {self.fitness}"
 
     def __repr__(self):
-        # TODO: no imprimí el Gear porque sino es enorme el output
         return "Role: " + str(self.role) + "\tHeight: " + str(self.height) + "\tLast Name: " + self.lastname + \
                "\tFu: " + str(self.strength) + "\tAg: " + str(self.agility) + \
                "\tEx: " + str(self.intelligence) + "\tRe: " + str(self.endurance) + "\tVi: " + str(self.vitality) + \

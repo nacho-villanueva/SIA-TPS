@@ -18,7 +18,7 @@ def elite_selection():
     return _elite_selection
 
 
-def roulette_selection():  # TODO: IMPLEMENTAR
+def roulette_selection():
     def _roulette_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         accumulated_relative_fitness = get_accumulated_relative_fitness(population)
         selected = []
@@ -32,7 +32,7 @@ def roulette_selection():  # TODO: IMPLEMENTAR
     return _roulette_selection
 
 
-def universal_selection():  # TODO: IMPLEMENTAR
+def universal_selection():
     def _universal_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         accumulated_relative_fitness = get_accumulated_relative_fitness(population)
         selected = []
@@ -95,7 +95,7 @@ def boltzmann_selection():  # TODO: Check
     return _boltzmann_selection
 
 
-def deterministic_tournament_selection(M):  # TODO: IMPLEMENTAR
+def deterministic_tournament_selection(M):
     def _deterministic_tournament_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         selected = []
         for i in range(k):
@@ -103,8 +103,8 @@ def deterministic_tournament_selection(M):  # TODO: IMPLEMENTAR
             while len(m_individuals) < M:
                 random_index = random.randint(0, len(population) - 1)
                 random_individual = population[random_index]
-                m_individuals.add(random_individual)  # Los M individuos son elegidos con reposición TODO: esta bien?
-            selected.append(m_individuals[-1])  # Los K individuos son elegidos con reposición TODO: esta bien?
+                m_individuals.add(random_individual)  # Los M individuos son elegidos con reposición
+            selected.append(m_individuals[-1])  # Los K individuos son elegidos con reposición
         return selected
 
     return _deterministic_tournament_selection
@@ -114,7 +114,7 @@ def sort_by_fitness(individual: Character):
     return individual.fitness
 
 
-def stochastic_tournament_selection(threshold):  # TODO: IMPLEMENTAR
+def stochastic_tournament_selection(threshold):
     def _stochastic_tournament_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         selected = []
         for i in range(k):
@@ -131,7 +131,7 @@ def stochastic_tournament_selection(threshold):  # TODO: IMPLEMENTAR
     return _stochastic_tournament_selection
 
 
-def ranking_selection():  # TODO: IMPLEMENTAR
+def ranking_selection():
     def _ranking_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         # Sort from highest to lowest
         sorted_pop = sorted(population, reverse=True)
