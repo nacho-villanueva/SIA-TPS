@@ -25,8 +25,8 @@ class RealTimeGraphDrawer:
             self.axs = [plt.gca()]
             self.fitness_ax = self.axs[0]
 
-        mng = plt.get_current_fig_manager()
-        mng.full_screen_toggle()
+        # mng = plt.get_current_fig_manager()
+        # mng.full_screen_toggle()
 
         self.is_closed = False
         self.fig.canvas.mpl_connect('close_event', lambda _: self._handle_close())
