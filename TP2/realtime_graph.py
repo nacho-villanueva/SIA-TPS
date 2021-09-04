@@ -15,17 +15,15 @@ class RealTimeGraphDrawer:
         self.max_fitness_data = []
         self.avg_fitness_data = []
 
-        subplots = 1
-
         if self.include_diversity:
             self.diversity_data = []
-            subplots = 2
-
-        self.fig, self.axs = plt.subplots(subplots, figsize=(15, 15))
-        self.fitness_ax = self.axs[0]
-
-        if self.include_diversity:
+            self.fig, self.axs = plt.subplots(2, figsize=(15, 15))
+            self.fitness_ax = self.axs[0]
             self.diversity_ax = self.axs[1]
+        else:
+            self.fig = plt.figure(figsize=(15, 15))
+            self.axs = [plt.gca()]
+            self.fitness_ax = self.axs[0]
 
         # mng = plt.get_current_fig_manager()
         # mng.full_screen_toggle()
