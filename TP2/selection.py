@@ -25,8 +25,8 @@ def roulette_selection():
         for i in range(k):
             r = random.uniform(0, 1)
             for j in range(len(accumulated_relative_fitness) - 1):
-                if accumulated_relative_fitness[j] < r <= accumulated_relative_fitness[i+1]:
-                    selected.append(accumulated_relative_fitness[i+1])
+                if accumulated_relative_fitness[j] < r <= accumulated_relative_fitness[j+1]:
+                    selected.append(population[j+1])
         return selected
 
     return _roulette_selection
@@ -41,14 +41,14 @@ def universal_selection():
             r = (r + j) / k
             for i in range(len(accumulated_relative_fitness) - 1):
                 if accumulated_relative_fitness[i] < r <= accumulated_relative_fitness[i+1]:
-                    selected.append(accumulated_relative_fitness[i+1])
+                    selected.append(population[i+1])
         return selected
 
     return _universal_selection
 
 
 def get_accumulated_relative_fitness(population: list[Character]):
-    accumulated_fitness = np.array([0])
+    accumulated_fitness = np.zeros(len(population), dtype=int)
     total_fitness = population[0].fitness
     for i in range(1, len(population)):
         total_fitness += population[i].fitness
