@@ -2,6 +2,7 @@ import json
 import random
 import sys
 import threading
+import os
 
 import pandas as pd
 
@@ -38,7 +39,7 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
     return generation_zero
 
 
-def run():
+def run(run_number=None):
     config = Config()
     print("Creating generation zero...")
     initial_population = create_generation_zero(config.population_size,
@@ -62,9 +63,14 @@ def run():
 
     print("Running...")
     max_fit = algorithm.run()
-    f = open("results.txt", "a")
-    f.write(str(max_fit.fitness) + "\n")
-    f.close()
+    if run_number != None:
+        f = open(os.path.join("results",f"results{run_number}.txt"), "a")
+        f.write(str(max_fit.fitness) + "\n")
+        f.close()
+    else:
+        f = open(os.path.join("results","results.txt"), "a")
+        f.write(str(max_fit.fitness) + "\n")
+        f.close()
 
 
 def main(instances=1):
@@ -93,9 +99,12 @@ def main(instances=1):
     datasets.load_dataset(DatasetLibrary.DatasetType.HELMET, config_dict["helmets_dataset_path"])
     datasets.load_dataset(DatasetLibrary.DatasetType.WEAPON, config_dict["weapons_dataset_path"])
 
+    if not os.path.isdir("results"):
+        os.makedirs("results")
+
     if instances > 1:
         for i in range(instances):
-            thr = threading.Thread(target=run)
+            thr = threading.Thread(target=lambda:run(i))
             thr.start()
     else:
         run()

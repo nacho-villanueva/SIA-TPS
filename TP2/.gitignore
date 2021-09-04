@@ -1,2 +1,3 @@
 # Exclude datasets
 *.tsv
+results/
