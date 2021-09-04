@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from TP2.character import Character
+from TP2.config import Config
 from TP2.generation import Generation
 from TP2.realtime_graph import RealTimeGraphDrawer
 
@@ -56,7 +57,10 @@ class GeneticAlgorithm:
         self.generations = [Generation(0, self.calculate_similarity(), self.max_fitness_character.fitness)]
 
     def run(self):
-        graph = RealTimeGraphDrawer()
+        config = Config()
+        graph = None
+        if config.real_time_graphics:
+            graph = RealTimeGraphDrawer()
         while not self.stop(self):
             # print(f"Generation {self.generation} - Max Fit: {self.max_fitness_character}")
 
@@ -78,11 +82,13 @@ class GeneticAlgorithm:
             # print(f"Generation {self.generation} similarity = {self.generations[-1].similarity}%")
 
             min_fit, max_fit, avg_fit, diversity = self.get_graph_data()
-            graph.push_and_draw(min_fit, max_fit, avg_fit, diversity)
+            if graph:
+                graph.push_and_draw(min_fit, max_fit, avg_fit, diversity)
 
         print(f"Best {self.max_fitness_character.role} found: [{self.max_fitness_character}]")
-
-        plt.show()
+        if graph:
+            plt.show()
+        return self.max_fitness_character
 
     def select_parents(self):
         parents = self.select_a(self.population, math.ceil(self.K * self.select_coefficient),self)

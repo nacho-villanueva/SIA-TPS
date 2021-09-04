@@ -1,6 +1,7 @@
 import json
 import random
 import sys
+import threading
 
 import pandas as pd
 
@@ -37,38 +38,11 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
     return generation_zero
 
 
-if __name__ == "__main__":
-    config_file = "./config.json"
-    if len(sys.argv) >= 2:
-        config_file = sys.argv[1]
-    else:
-        print("Using default config file (./config.json)")
-
-    file = open(config_file)
-    config_dict = json.load(file)
-
-    if config_dict["K"] % 2 != 0:
-        print(f"K is not an even number. Setting K = {config_dict['K'] + 1}")
-        config_dict['K'] += 1
-
+def run():
     config = Config()
-    config.setup_config(config_dict)
-
-    population_size = config.population_size
-    character_role = CharacterRole.get_role_by_role_name(config.role)
-    precision = config.precision
-
-    print("Reading files...")
-
-    datasets = DatasetLibrary()
-    datasets.load_dataset(DatasetLibrary.DatasetType.ARMOUR, config_dict["armours_dataset_path"])
-    datasets.load_dataset(DatasetLibrary.DatasetType.BOOTS, config_dict["boots_dataset_path"])
-    datasets.load_dataset(DatasetLibrary.DatasetType.GLOVES, config_dict["gloves_dataset_path"])
-    datasets.load_dataset(DatasetLibrary.DatasetType.HELMET, config_dict["helmets_dataset_path"])
-    datasets.load_dataset(DatasetLibrary.DatasetType.WEAPON, config_dict["weapons_dataset_path"])
-
     print("Creating generation zero...")
-    initial_population = create_generation_zero(population_size, character_role, precision)
+    initial_population = create_generation_zero(config.population_size,
+                                                CharacterRole.get_role_by_role_name(config.role), config.precision)
 
     print("Setting up Genetic Algorithm...")
     algorithm = GeneticAlgorithm(
@@ -87,4 +61,45 @@ if __name__ == "__main__":
     )
 
     print("Running...")
-    algorithm.run()
+    max_fit = algorithm.run()
+    f = open("results.txt", "a")
+    f.write(str(max_fit.fitness) + "\n")
+    f.close()
+
+
+def main(instances=1):
+    config_file = "./config.json"
+    if len(sys.argv) >= 2:
+        config_file = sys.argv[1]
+    else:
+        print("Using default config file (./config.json)")
+
+    file = open(config_file)
+    config_dict = json.load(file)
+
+    if config_dict["K"] % 2 != 0:
+        print(f"K is not an even number. Setting K = {config_dict['K'] + 1}")
+        config_dict['K'] += 1
+
+    config = Config()
+    config.setup_config(config_dict)
+
+    print("Reading files...")
+
+    datasets = DatasetLibrary()
+    datasets.load_dataset(DatasetLibrary.DatasetType.ARMOUR, config_dict["armours_dataset_path"])
+    datasets.load_dataset(DatasetLibrary.DatasetType.BOOTS, config_dict["boots_dataset_path"])
+    datasets.load_dataset(DatasetLibrary.DatasetType.GLOVES, config_dict["gloves_dataset_path"])
+    datasets.load_dataset(DatasetLibrary.DatasetType.HELMET, config_dict["helmets_dataset_path"])
+    datasets.load_dataset(DatasetLibrary.DatasetType.WEAPON, config_dict["weapons_dataset_path"])
+
+    if instances > 1:
+        for i in range(instances):
+            thr = threading.Thread(target=run)
+            thr.start()
+    else:
+        run()
+
+
+if __name__ == "__main__":
+    main(5)
