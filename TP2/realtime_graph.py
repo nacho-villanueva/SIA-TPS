@@ -73,14 +73,16 @@ class RealTimeGraphDrawer:
         self.fitness_ax.set(xlim=(self.x[0], self.x[0] + self.max_len * self.gen_step), ylim=(0, 35))
 
         # Titles
-        self.fitness_ax.set_title("Fitness", fontsize=15)
+        self.fitness_ax.set_xlabel("Generation", fontsize=15)
+        self.fitness_ax.set_ylabel("Fitness", fontsize=15)
 
         # Do the same for diversity
         if self.include_diversity:
             self.diversity_ax.cla()
             self.diversity_ax.plot(self.x, self.diversity_data, color='green')
             self.diversity_ax.set(xlim=(self.x[0], self.x[0] + self.max_len * self.gen_step), ylim=(1, self.diversity_data[0])) #TODO: ARREGLAR ESTO. HACER QUE y SEA FIJO
-            self.diversity_ax.set_title("diversity", fontsize=15)
+            self.diversity_ax.set_xlabel("Generation", fontsize=15)
+            self.diversity_ax.set_ylabel("Diversity", fontsize=15)
 
         # Draw and events
         plt.pause(interval)
