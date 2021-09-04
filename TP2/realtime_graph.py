@@ -19,7 +19,7 @@ class RealTimeGraphDrawer:
 
         if self.include_diversity:
             self.diversity_data = []
-            subplots = 2
+            subplots = 1
 
         self.fig, self.axs = plt.subplots(subplots, figsize=(15, 15))
         self.fitness_ax = self.axs[0]
