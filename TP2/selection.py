@@ -56,7 +56,7 @@ def get_accumulated_relative_fitness(population: list[Character]):
     return accumulated_fitness / total_fitness
 
 
-def boltzmann_selection():  # TODO: Check
+def boltzmann_selection(Tc,T0,K):  # TODO: Check
     def _boltzmann_selection(population: list[Character], k, genetic_algorithm:GeneticAlgorithm):
         N = len(population)
         # First get the upper half of the equation of EXP
@@ -66,7 +66,7 @@ def boltzmann_selection():  # TODO: Check
         # numero de generacion
         t  = genetic_algorithm.generation
         # T = Tc + (T0 - Tc) * (math.e ** ( - kconst * t))
-        temperature = 100 + (1000 - 100) * (math.e ** ( - 10 * t)) # TODO: revisar estos numeros
+        temperature = Tc + (T0 - Tc) * (math.e ** ( - K * t)) # TODO: revisar estos numeros
         for i in range(N):
             exp = math.e ** (population[i].fitness / temperature)
             new_relative.append(exp)

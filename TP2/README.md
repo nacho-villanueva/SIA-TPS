@@ -104,6 +104,9 @@ Donde los valores para los metodos de seleccion y de remplazo pueden ser los sig
 		<pre>
 "selection_1": {
 	"method": "boltzmann",
+	"T0":10, //con T0 > Tc
+	"Tc":1,
+	"K":1, //con K > 0
 },
 		</pre>
 	</td>

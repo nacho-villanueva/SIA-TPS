@@ -41,9 +41,9 @@ def get_selection_function(algorithm_config):
     elif name == "universal":
         return universal_selection()
     elif name == "boltzmann":
-        return boltzmann_selection()
+        return boltzmann_selection(algorithm_config["Tc"],algorithm_config["T0"],algorithm_config["K"])
     elif name == "deterministic_tournament":
-        return deterministic_tournament_selection(algorithm_config("M"))
+        return deterministic_tournament_selection(algorithm_config["M"])
     elif name == "stochastic_tournament":
         return stochastic_tournament_selection(algorithm_config["threshold"])
     elif name == "ranking":
