@@ -27,8 +27,8 @@ class RealTimeGraphDrawer:
         if self.include_diversity:
             self.diversity_ax = self.axs[1]
 
-        mng = plt.get_current_fig_manager()
-        mng.full_screen_toggle()
+        # mng = plt.get_current_fig_manager()
+        # mng.full_screen_toggle()
 
         self.is_closed = False
         self.fig.canvas.mpl_connect('close_event', lambda _: self._handle_close())
