@@ -29,7 +29,7 @@ Para definir las configuraciones basicas deberan agregar los siguientes parámet
 
 **Nota: (opción_a | opción_b | opción_c) representa un parámetro que puede tomar únicamente esas opciones**
 ```json5
-"role": ("warrior"|"archer"|"tank"|"assasin"), 
+"role": ("warrior"|"archer"|"tank"|"assassin"), 
 "population_size": 100, 
 "K": 50,
   
