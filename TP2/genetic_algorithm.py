@@ -1,5 +1,6 @@
 import itertools
 import math
+import os
 import random
 from enum import Enum
 from time import time
@@ -73,6 +74,9 @@ class GeneticAlgorithm:
             previous_best_character = self.max_fitness_character
             self.find_max_fitness()  # Updates max_fitness_character
             if previous_best_character.fitness < self.max_fitness_character.fitness:
+                f = open(os.path.join("results", f"best_fitness.txt"), "a")
+                f.write(f"{self.max_fitness_character.fitness} - {self.max_fitness_character.height} - {self.max_fitness_character.gear.weapon.item_id} - {self.max_fitness_character.gear.helmet.item_id} - {self.max_fitness_character.gear.armour.item_id} - {self.max_fitness_character.gear.gloves.item_id} - {self.max_fitness_character.gear.boots.item_id}\n")
+                f.close()
                 print(f"New best character found in generation {self.generation}: [{self.max_fitness_character}]")
 
             self.generations.append(

@@ -218,7 +218,7 @@ Para elegir el método de cruza se debera insertar uno de las siguientes posibil
 		<pre>
 "mutation": {
 	"method": "limited_multiple_gene",
-	"M": 25
+	"M": 3
 },
 		</pre>
 	</td>

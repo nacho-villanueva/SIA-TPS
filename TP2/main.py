@@ -13,6 +13,8 @@ from TP2.constants import *
 from TP2.datasets import DatasetLibrary
 from TP2.genetic_algorithm import GeneticAlgorithm
 
+output_results = []
+
 
 def create_generation_zero(k: int, role: CharacterRole, precision: int):
     generation_zero = []
@@ -63,17 +65,11 @@ def run(run_number=None):
 
     print("Running...")
     max_fit = algorithm.run()
-    if run_number != None:
-        f = open(os.path.join("results",f"results{run_number}.txt"), "a")
-        f.write(str(max_fit.fitness) + "\n")
-        f.close()
-    else:
-        f = open(os.path.join("results","results.txt"), "a")
-        f.write(str(max_fit.fitness) + "\n")
-        f.close()
+    output_results[run_number] = max_fit.fitness
 
 
 def main(instances=1):
+    global output_results
     config_file = "./config.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
@@ -102,13 +98,22 @@ def main(instances=1):
     if not os.path.isdir("results"):
         os.makedirs("results")
 
+    output_results = [0] * instances
+    threads = []
     if instances > 1:
         for i in range(instances):
-            thr = threading.Thread(target=lambda:run(i))
-            thr.start()
+            threads.append(threading.Thread(target=lambda: run(i)))
+            threads[i].start()
+        for t in threads:
+            t.join()
     else:
-        run()
+        run(0)
+
+    f = open(os.path.join("results", f"results.txt"), "w")
+    for r in output_results:
+        f.write(f"{r}\n")
+    f.close()
 
 
 if __name__ == "__main__":
-    main(5)
+    main(1)
