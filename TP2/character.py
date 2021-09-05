@@ -14,8 +14,8 @@ from TP2.items.weapon import Weapon
 class CharacterRole(Enum):
     WARRIOR = (0.6, 0.6)  # Guerrero
     ARCHER = (0.9, 0.1)  # Arquero
-    TANK = (0.6, 0.6)  # Defensor
-    ASSASSIN = (0.6, 0.6)  # Infiltrado
+    TANK = (0.3, 0.8)  # Defensor
+    ASSASSIN = (0.8, 0.3)  # Infiltrado
 
     def __init__(self, attack_coefficient, defense_coefficient):
         self.attack_coefficient = attack_coefficient
