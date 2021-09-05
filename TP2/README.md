@@ -33,8 +33,12 @@ Para definir las configuraciones basicas deberan agregar los siguientes parámet
 "population_size": 100, 
 "K": 50,
   
-"implementation": ("fill-all"|"fill-parent"),
 "real_time_graphics": (true|false),
+
+"save_graph_data":(true|false), // Puede no estar, por defecto false
+"graph_data_directory":"./results", // Puede no estar, por defecto results
+
+"implementation": ("fill-all"|"fill-parent"),
 "float_precision": 2,
 "mutation_probability": 0.5, // ∈[0, 1]
 

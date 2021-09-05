@@ -3,6 +3,7 @@ import math
 import os
 import random
 from enum import Enum
+import threading
 from time import time
 from typing import Callable, Any
 
@@ -60,6 +61,11 @@ class GeneticAlgorithm:
     def run(self):
         config = Config()
         graph = None
+        if config.save_graph_data:
+            if not os.path.isdir(config.graph_data_directory):
+                os.makedirs(config.graph_data_directory)
+            graph_data_file = open(os.path.join(config.graph_data_directory,f"graphData{threading.get_ident()}.csv"),"a")
+            graph_data_file.write("gen;max_fitness;min_fitness;avg_fitness;diversity\n")
         if config.real_time_graphics:
             graph = RealTimeGraphDrawer()
         while not self.stop(self):
@@ -88,8 +94,11 @@ class GeneticAlgorithm:
             min_fit, max_fit, avg_fit, diversity = self.get_graph_data()
             if graph:
                 graph.push_and_draw(min_fit, max_fit, avg_fit, diversity)
-
+            if config.save_graph_data:
+                graph_data_file.write(f"{self.generation};{min_fit};{max_fit};{avg_fit};{diversity}\n")
         print(f"Best {self.max_fitness_character.role} found: [{self.max_fitness_character}]")
+        if config.save_graph_data:
+            graph_data_file.close()
         if graph:
             plt.show()
         return self.max_fitness_character
