@@ -22,6 +22,7 @@ class Config(metaclass=Singleton):
         self.real_time_graphics = config_dict["real_time_graphics"]
         self.save_graph_data =  config_dict["save_graph_data"] if "save_graph_data" in config_dict else False
         self.graph_data_directory =  config_dict["graph_data_directory"] if "graph_data_directory" in config_dict else "results"
+        self.run_instances = config_dict["run_instances"] if "run_instances" in config_dict else 1
         self.precision = config_dict["float_precision"]
         self.population_size = config_dict["population_size"]
         self.K = config_dict["K"]

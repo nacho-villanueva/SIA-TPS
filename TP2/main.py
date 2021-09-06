@@ -68,7 +68,7 @@ def run(run_number=None):
     output_results[run_number] = max_fit.fitness
 
 
-def main(instances=1):
+def main():
     global output_results
     config_file = "./config.json"
     if len(sys.argv) >= 2:
@@ -98,10 +98,10 @@ def main(instances=1):
     if not os.path.isdir("results"):
         os.makedirs("results")
 
-    output_results = [0] * instances
+    output_results = [0] * config.run_instances
     threads = []
-    if instances > 1:
-        for i in range(instances):
+    if config.run_instances > 1:
+        for i in range(config.run_instances):
             threads.append(threading.Thread(target=lambda: run(i)))
             threads[i].start()
         for t in threads:
@@ -116,4 +116,4 @@ def main(instances=1):
 
 
 if __name__ == "__main__":
-    main(1)
+    main()

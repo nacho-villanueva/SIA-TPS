@@ -37,6 +37,8 @@ Para definir las configuraciones basicas deberan agregar los siguientes parámet
 
 "save_graph_data":(true|false), // Puede no estar, por defecto false
 "graph_data_directory":"./results", // Puede no estar, por defecto results
+// Puede no estar, por defecto 1, no es recomendable mas de 1 si esta real_time_graph en true
+"run_instances": 1, 
 
 "implementation": ("fill-all"|"fill-parent"),
 "float_precision": 2,
