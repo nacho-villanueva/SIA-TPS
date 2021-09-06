@@ -23,10 +23,16 @@ def roulette_selection():
         accumulated_relative_fitness = get_accumulated_relative_fitness(population)
         selected = []
         for i in range(k):
-            r = random.uniform(0, 1)
-            for j in range(len(accumulated_relative_fitness) - 1):
-                if accumulated_relative_fitness[j] < r <= accumulated_relative_fitness[j+1]:
-                    selected.append(population[j+1])
+            r = random.random()
+            for j in range(len(accumulated_relative_fitness)):
+                if j-1 < 0:
+                    bottom = 0
+                else:
+                    bottom = accumulated_relative_fitness[j - 1]
+
+                if bottom < r <= accumulated_relative_fitness[j]:
+                    selected.append(population[j])
+                    break
         return selected
 
     return _roulette_selection
@@ -48,11 +54,11 @@ def universal_selection():
 
 
 def get_accumulated_relative_fitness(population: list[Character]):
-    accumulated_fitness = np.zeros(len(population), dtype=int)
-    total_fitness = population[0].fitness
+    accumulated_fitness = np.zeros(len(population))
+    total_fitness = 0
     for i in range(1, len(population)):
         total_fitness += population[i].fitness
-        accumulated_fitness[i] = population[i].fitness + accumulated_fitness[i - 1]
+        accumulated_fitness[i] = total_fitness
     return accumulated_fitness / total_fitness
 
 
@@ -64,7 +70,7 @@ def boltzmann_selection(Tc,T0,K):  # TODO: Check
         new_relative = []
         sum_over_pop = 0
         # numero de generacion
-        t  = genetic_algorithm.generation
+        t = genetic_algorithm.generation
         # T = Tc + (T0 - Tc) * (math.e ** ( - kconst * t))
         temperature = Tc + (T0 - Tc) * (math.e ** ( - K * t)) # TODO: revisar estos numeros
         for i in range(N):

@@ -54,6 +54,7 @@ class GeneticAlgorithm:
 
         self.population = initial_population
         self.max_fitness_character = self.population[0]
+        self.top_character = self.population[0]
         self.find_max_fitness()
 
         self.generations = [Generation(0, self.calculate_similarity(), self.max_fitness_character.fitness)]
@@ -64,7 +65,7 @@ class GeneticAlgorithm:
         if config.save_graph_data:
             if not os.path.isdir(config.graph_data_directory):
                 os.makedirs(config.graph_data_directory)
-            graph_data_file = open(os.path.join(config.graph_data_directory,f"graphData{threading.get_ident()}.csv"),"a")
+            graph_data_file = open(os.path.join(config.graph_data_directory, f"graphData{threading.get_ident()}.csv"),"a")
             graph_data_file.write("gen;max_fitness;min_fitness;avg_fitness;diversity\n")
         if config.real_time_graphics:
             graph = RealTimeGraphDrawer()
@@ -76,14 +77,16 @@ class GeneticAlgorithm:
             self.population = self.repopulate(children)
 
             self.generation += 1
+            if self.generation % 10 == 0:
+                print(f"Generation {self.generation}")
 
-            previous_best_character = self.max_fitness_character
+            previous_best_character = self.top_character
             self.find_max_fitness()  # Updates max_fitness_character
-            if previous_best_character.fitness < self.max_fitness_character.fitness:
+            if previous_best_character.fitness < self.top_character.fitness:
                 f = open(os.path.join("results", f"best_fitness.txt"), "a")
-                f.write(f"{self.max_fitness_character.fitness} - {self.max_fitness_character.height} - {self.max_fitness_character.gear.weapon.item_id} - {self.max_fitness_character.gear.helmet.item_id} - {self.max_fitness_character.gear.armour.item_id} - {self.max_fitness_character.gear.gloves.item_id} - {self.max_fitness_character.gear.boots.item_id}\n")
+                f.write(f"{self.top_character.fitness} - {self.top_character.height} - {self.top_character.gear.weapon.item_id} - {self.top_character.gear.helmet.item_id} - {self.top_character.gear.armour.item_id} - {self.top_character.gear.gloves.item_id} - {self.top_character.gear.boots.item_id}\n")
                 f.close()
-                print(f"New best character found in generation {self.generation}: [{self.max_fitness_character}]")
+                print(f"New best character found in generation {self.generation}: [{self.top_character}]")
 
             self.generations.append(
                 Generation(self.generation, self.calculate_similarity(), self.max_fitness_character.fitness))
@@ -104,12 +107,9 @@ class GeneticAlgorithm:
         return self.max_fitness_character
 
     def select_parents(self):
-        parents = self.select_a(self.population, math.ceil(self.K * self.select_coefficient),self)
+        parents = self.select_a(self.population, math.ceil(self.K * self.select_coefficient), self)
         if self.select_coefficient < 1:
-            parents += self.select_b(self.population, math.floor(self.K * (1 - self.select_coefficient)),self)
-
-        if self.K % 2 == 1:
-            parents.append(random.choice(self.population))
+            parents += self.select_b(self.population, math.floor(self.K * (1 - self.select_coefficient)), self)
 
         np.random.shuffle(parents)
         return parents
@@ -166,6 +166,8 @@ class GeneticAlgorithm:
         for p in self.population:
             if max_fit.fitness < p.fitness:
                 max_fit = p
+        if self.top_character.fitness < max_fit.fitness:
+            self.top_character = max_fit
         self.max_fitness_character = max_fit
 
     def get_graph_data(self):
@@ -195,6 +197,5 @@ class GeneticAlgorithm:
 
 def pairwise(iterable):
     # Iterate by pairs
-    a, b = itertools.tee(iterable)
-    next(b, None)
-    return zip(a, b)
+    a = iter(iterable)
+    return zip(a, a)
