@@ -1,5 +1,6 @@
 import math
 import random
+from copy import copy
 from enum import Enum
 
 from TP2.config import Config
@@ -106,6 +107,7 @@ class Character:
 
         self.fitness = self.calculate_fitness()
 
+
     def calculate_fitness(self):
         return self.role.attack_coefficient * self.attack + self.role.defense_coefficient * self.defense
 
@@ -155,6 +157,7 @@ class Character:
             configs = Config()
             multiplier = 10 ** configs.precision
             self.height = random.randint(configs.min_height * multiplier, configs.max_height * multiplier) / multiplier
+            # self.height = random.uniform(configs.min_height, configs.max_height)
         elif allele == Character.Allele.WEAPON:
             self.gear.weapon = dl.get_random_item(DatasetLibrary.DatasetType.WEAPON)
         elif allele == Character.Allele.ARMOUR:
@@ -226,3 +229,7 @@ class Character:
 
     def __hash__(self):
         return hash((self.fitness, self.height, self.gear))
+
+    def __deepcopy__(self, memo):
+        gear_copy = copy(self.gear)
+        return Character(self.role, self.height, gear_copy, self.lastname)

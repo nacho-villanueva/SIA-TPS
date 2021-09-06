@@ -1,13 +1,13 @@
 import random
-from copy import copy
+from copy import copy, deepcopy
 
 from TP2.character import Character
 
 
 def one_point_crossover():
     def _one_point_crossover(father: Character, mother: Character):
-        child_a = copy(father)
-        child_b = copy(mother)
+        child_a = deepcopy(father)
+        child_b = deepcopy(mother)
 
         if father.fitness > mother.fitness:
             child_b.lastname = father.lastname
@@ -29,8 +29,8 @@ def one_point_crossover():
 
 def two_point_crossover():
     def _two_point_crossover(father: Character, mother: Character):
-        child_a = copy(father)
-        child_b = copy(mother)
+        child_a = deepcopy(father)
+        child_b = deepcopy(mother)
 
         if father.fitness > mother.fitness:
             child_b.lastname = father.lastname
@@ -52,8 +52,8 @@ def two_point_crossover():
 
 def annular_crossover():
     def _annular_crossover(father: Character, mother: Character):
-        child_a = copy(father)
-        child_b = copy(mother)
+        child_a = deepcopy(father)
+        child_b = deepcopy(mother)
 
         if father.fitness > mother.fitness:
             child_b.lastname = father.lastname
@@ -75,8 +75,8 @@ def annular_crossover():
 
 def uniform_crossover():
     def _uniform_crossover(father: Character, mother: Character):
-        child_a = copy(father)
-        child_b = copy(mother)
+        child_a = deepcopy(father)
+        child_b = deepcopy(mother)
 
         if father.fitness > mother.fitness:
             child_b.lastname = father.lastname

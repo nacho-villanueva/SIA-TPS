@@ -10,12 +10,7 @@ class Item:
         self.item_id = item_id
 
     def __str__(self):
-        return "[" + self.item_type + ", Fu=" + str(self.strength) + ", Ag=" + str(self.agility) + \
-            ", Ex=" + str(self.intelligence) + ", Re=" + str(self.endurance) + ", Vi=" + str(self.vitality) + "]"
-
-    def __repr__(self):
-        return "[" + self.item_type + ", Fu=" + str(self.strength) + ", Ag=" + str(self.agility) + \
-               ", Ex=" + str(self.intelligence) + ", Re=" + str(self.endurance) + ", Vi=" + str(self.vitality) + "]"
+        return f"Item: {self.item_id}"
 
     def __eq__(self, other):
         if isinstance(other, Item) and self.item_id == other.item_id:
