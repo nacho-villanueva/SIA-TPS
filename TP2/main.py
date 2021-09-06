@@ -16,11 +16,35 @@ from TP2.genetic_algorithm import GeneticAlgorithm
 output_results = []
 
 
+def load_generation_from_file(role: CharacterRole):
+    generation_zero = []
+    f = open(os.path.join("results", f"initial_population.txt"), "r")
+    lines = f.readlines()
+    dl = DatasetLibrary()
+    for line in lines:
+        line = line.replace("\n", "")
+        line = line.split(",")
+        lastname = line[0]
+        height = float(line[1])
+        weapon = dl.get_item(DatasetLibrary.DatasetType.WEAPON, int(line[2]))
+        armour = dl.get_item(DatasetLibrary.DatasetType.ARMOUR, int(line[3]))
+        boots = dl.get_item(DatasetLibrary.DatasetType.BOOTS, int(line[4]))
+        gloves = dl.get_item(DatasetLibrary.DatasetType.GLOVES, int(line[5]))
+        helmet = dl.get_item(DatasetLibrary.DatasetType.HELMET, int(line[6]))
+        character = Character(role, height, Gear(weapon=weapon, armour=armour, boots=boots, gloves=gloves, helmet=helmet), lastname)
+        generation_zero.append(character)
+    f.close()
+
+    return generation_zero
+
+
 def create_generation_zero(k: int, role: CharacterRole, precision: int):
     generation_zero = []
     multiplier = 10 ** precision
     dl = DatasetLibrary()
     fake = Faker()
+
+    f = open(os.path.join("results", f"initial_population.txt"), "w")
 
     for i in range(k):
         height = random.randint(MIN_HEIGHT * multiplier, MAX_HEIGHT * multiplier) / multiplier
@@ -38,6 +62,11 @@ def create_generation_zero(k: int, role: CharacterRole, precision: int):
         character = Character(role, height, gear, last_name)
         generation_zero.append(character)
 
+        f.write(
+            f"{last_name},{height},{weapon.item_id},{armour.item_id},{boots.item_id},{gloves.item_id},{helmet.item_id}\n")
+
+    f.close()
+
     return generation_zero
 
 
@@ -46,6 +75,8 @@ def run(run_number=None):
     print("Creating generation zero...")
     initial_population = create_generation_zero(config.population_size,
                                                 CharacterRole.get_role_by_role_name(config.role), config.precision)
+
+    # initial_population = load_generation_from_file(CharacterRole.get_role_by_role_name(config.role))
 
     print("Setting up Genetic Algorithm...")
     algorithm = GeneticAlgorithm(
@@ -64,8 +95,9 @@ def run(run_number=None):
     )
 
     print("Running...")
+    print(f"{algorithm.max_fitness_character.lastname}")
     max_fit = algorithm.run()
-    output_results[run_number] = max_fit.fitness
+    output_results[run_number] = max_fit
 
 
 def main():
@@ -111,7 +143,8 @@ def main():
 
     f = open(os.path.join("results", f"results.txt"), "w")
     for r in output_results:
-        f.write(f"{r}\n")
+        if isinstance(r, Character):
+            f.write(f"{r.lastname}:{r.fitness}\n")
     f.close()
 
 

@@ -68,7 +68,7 @@ class RealTimeGraphDrawer:
         self.fitness_ax.legend()
 
         # Set ticks
-        self.fitness_ax.set(xlim=(self.x[0], self.x[0] + self.max_len * self.gen_step), ylim=(0, 35))
+        self.fitness_ax.set(xlim=(self.x[0], self.x[0] + self.max_len * self.gen_step), ylim=(0, 45))
 
         # Titles
         self.fitness_ax.set_xlabel("Generation", fontsize=15)
