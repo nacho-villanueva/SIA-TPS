@@ -7,5 +7,3 @@ Para correr esto:
 - Correr ```different_data_graph.py```
 
 **Nota: los graficos tendran el nombre de las carpetas como label de las lineas**
-
-
