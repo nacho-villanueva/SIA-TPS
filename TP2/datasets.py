@@ -43,4 +43,4 @@ class DatasetLibrary(metaclass=Singleton):
     def get_item(self, dataset_type, index: int):
         dataset = self.datasets[dataset_type]
         row = dataset.iloc[index]
-        return dataset_type.value(row["Fu"], row["Ag"], row["Ex"], row["Re"], row["Vi"])
+        return dataset_type.value(row["Fu"], row["Ag"], row["Ex"], row["Re"], row["Vi"], int(row["id"]))
