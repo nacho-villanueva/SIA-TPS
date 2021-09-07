@@ -1,0 +1,44 @@
+{
+  "role": "archer",
+  "population_size": 100,
+  "K": 50,
+
+  "implementation": "fill-all",
+  "real_time_graphics": true,
+  "float_precision": 2,
+  "mutation_probability": 0.5,
+
+  "crossover": "annular",
+
+  "mutation": {
+    "method": "complete"
+  },
+
+  "stop_condition": {
+    "method": "generation",
+    "generation": 200
+  },
+
+  "A": 1,
+  "selection_1": {
+    "method": "elite"
+  },
+
+  "selection_2": {
+    "method": "elite"
+  },
+
+  "B": 1,
+  "replacement_1": {
+    "method": "elite"
+  },
+  "replacement_2": {
+    "method": "elite"
+  },
+
+  "weapons_dataset_path": "./dataset/armas.tsv",
+  "boots_dataset_path":   "./dataset/botas.tsv",
+  "helmets_dataset_path": "./dataset/cascos.tsv",
+  "gloves_dataset_path":  "./dataset/guantes.tsv",
+  "armours_dataset_path": "./dataset/pecheras.tsv"
+}
