@@ -1,3 +1,7 @@
+import os
+from TP3.constants import get_algorithm
+
+
 class Singleton(type):
     _instances = {}
 
@@ -12,4 +16,5 @@ class Config(metaclass=Singleton):
         pass
 
     def setup_config(self, config_dict):
-       pass
+       self.algorithm = get_algorithm(config_dict["algorithm"])
+       self.training_set_path = config_dict["training_set_path"] if "training_set_path" in config_dict else os.path.join("data","conjuntoDeEntrenamiento.txt")

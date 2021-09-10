@@ -1,1 +1,4 @@
-{}
+{
+    "algorithm":"perceptron_simple",
+    "training_set_path":"data/perceptronSimpleY.csv"
+}
