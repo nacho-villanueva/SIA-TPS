@@ -17,7 +17,7 @@ class PerceptronSimple:
         self.w = self.w + self.learning_rate * (zeta - theta) * xi
 
     def __repr__(self) -> str:
-        return f"{{w:{self.w}}}"
+        return f"{{\"w\":{list(self.w)}}}"
 
     def calculate_error(self, x, y):
         error = 0

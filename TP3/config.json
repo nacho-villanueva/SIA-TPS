@@ -1,4 +1,5 @@
 {
     "algorithm":"simple_stair_perceptron",
-    "training_set_path":"data/perceptronSimpleY.csv"
+    "training_set_path":"data/perceptronSimpleY.csv",
+    "save_perceptron":true
 }

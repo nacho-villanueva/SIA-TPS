@@ -1,3 +1,4 @@
+import os
 import json
 from os import sep
 import sys
@@ -24,6 +25,12 @@ def main():
     perceptron = config.algorithm(training_set.drop("y", axis=1), training_set.loc[:, "y"])
     print(perceptron.calculate_error(training_set.drop("y", axis=1), training_set.loc[:, "y"]))
 
+    if config.save_perceptron:
+        if not os.path.isdir(os.path.dirname(config.save_perceptron_path)):
+            os.makedirs(os.path.dirname(config.save_perceptron_path))
+        save_perceptron_file = open(config.save_perceptron_path,"w")
+        save_perceptron_file.write(f"{perceptron}")
+        save_perceptron_file.close()
 
 if __name__ == "__main__":
     main()
