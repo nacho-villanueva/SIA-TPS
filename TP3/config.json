@@ -1,4 +1,4 @@
 {
-    "algorithm":"perceptron_simple_escalon",
+    "algorithm":"simple_stair_perceptron",
     "training_set_path":"data/perceptronSimpleY.csv"
 }

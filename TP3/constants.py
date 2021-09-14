@@ -1,16 +1,19 @@
-from TP3.perceptronSimple import PerceptronSimple
+from TP3.simple_perceptron import PerceptronSimple
+
 
 def get_algorithm(algorithm):
-    if algorithm == "perceptron_simple_escalon":
+    if algorithm == "simple_stair_perceptron":
         perceptron = PerceptronSimple()
-        def escalon(h,w0):
+
+        def stair(h, w0):
             if h > w0:
                 return 1
             else:
                 return -1
-        perceptron.act_fun = escalon
+
+        perceptron.act_fun = stair
         return perceptron.run
-    if algorithm == "perceptron_simple_lineal":
+    if algorithm == "simple_lineal_perceptron":
         perceptron = PerceptronSimple()
-        perceptron.act_fun = lambda h,w0: h
+        perceptron.act_fun = lambda h, w0: h
         return perceptron.run

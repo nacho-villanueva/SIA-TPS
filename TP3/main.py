@@ -20,10 +20,10 @@ def main():
     config = Config()
     config.setup_config(config_dict)
 
-    training_set = pd.read_csv(config.training_set_path,sep=";")
-    perceptron = config.algorithm(training_set.drop("y",axis=1),training_set.loc[:,"y"])
-    print(perceptron.calculate_error(training_set.drop("y",axis=1),training_set.loc[:,"y"]))
-    
+    training_set = pd.read_csv(config.training_set_path, sep=";")
+    perceptron = config.algorithm(training_set.drop("y", axis=1), training_set.loc[:, "y"])
+    print(perceptron.calculate_error(training_set.drop("y", axis=1), training_set.loc[:, "y"]))
+
 
 if __name__ == "__main__":
     main()

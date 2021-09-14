@@ -13,8 +13,12 @@ class Singleton(type):
 
 class Config(metaclass=Singleton):
     def __init__(self):
+        self.algorithm = None
+        self.training_set_path = None
         pass
 
     def setup_config(self, config_dict):
-       self.algorithm = get_algorithm(config_dict["algorithm"])
-       self.training_set_path = config_dict["training_set_path"] if "training_set_path" in config_dict else os.path.join("data","conjuntoDeEntrenamiento.txt")
+        self.algorithm = get_algorithm(config_dict["algorithm"])
+        self.training_set_path = config_dict[
+            "training_set_path"] if "training_set_path" in config_dict else os.path.join("data",
+                                                                                         "conjuntoDeEntrenamiento.txt")
