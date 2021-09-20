@@ -1,12 +1,13 @@
+from TP3.constants import get_activation_function
 import numpy as np
-from TP3.simple_perceptron import PerceptronSimple
+from TP3.simple_perceptron import SimplePerceptron
 from TP3.config import Config
 import matplotlib.pyplot as plt
 import pandas as pd
 import sys
 import json
 
-def get_perceptron_hiperplane(perceptron: PerceptronSimple):
+def get_perceptron_hiperplane(perceptron: SimplePerceptron):
     def hiperplane(x):
         return (perceptron.w[0]*x - perceptron.w0) / (-perceptron.w[1])
     return hiperplane
@@ -15,7 +16,7 @@ def get_color(y):
     return y.map({1: "red", -1: "black"})
 
 
-def draw_2d_simple_perceptron(perceptron: PerceptronSimple, dataframe: pd.DataFrame):
+def draw_2d_simple_perceptron(perceptron: SimplePerceptron, dataframe: pd.DataFrame):
     plt.scatter(dataframe["x1"], dataframe["x2"],
                 color=get_color(dataframe["y"]))
     hiperplane = get_perceptron_hiperplane(perceptron)
@@ -39,7 +40,11 @@ def main():
     config.setup_config(config_dict)
     
     training_set = pd.read_csv(config.training_set_path, sep=";")
-    perceptron = config.algorithm(pd.DataFrame([]),pd.DataFrame([]),upper_bound=0)
+    perceptron = SimplePerceptron(
+            act_func=get_activation_function(config.activation),
+            w0=config.w0,
+            learning_rate=config.learning_rate
+        )
 
     save_perceptron_file = open(config.save_perceptron_path)
     perceptron_data = json.load(save_perceptron_file)

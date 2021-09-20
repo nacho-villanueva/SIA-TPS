@@ -17,7 +17,7 @@ class SimplePerceptron:
         self.w = self.w + self.learning_rate * (zeta - act_state) * xi
 
     def __str__(self) -> str:
-        return f"w:{self.w}"
+        return f"{{\"w\":{list(self.w)}}}"
 
     def calculate_error(self, x, y):
         error = 0

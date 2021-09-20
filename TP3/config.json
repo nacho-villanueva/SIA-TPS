@@ -1,10 +1,11 @@
 {
     "algorithm":"simple",
-    "activation":"lineal",
+    "activation":"stair",
 
     "learning_rate": 0.5,
-    "w0": 0,
+    "w0": 0.5,
 
     "training_set_path":"data/perceptronSimpleY.csv",
-    "save_perceptron":true
+    "save_perceptron":true,
+    "save_perceptron_path":"./results/perceptron.txt"
 }
