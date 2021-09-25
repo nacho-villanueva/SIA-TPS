@@ -103,13 +103,13 @@ class Perceptron:
 
     def train(self, x, y, batch_size=1, epochs=100, learning_rate=0.01):
         for e in range(epochs):
-            if e % 100 == 0:
+            if e % 1000 == 0:
                 print(f"Epoch: {e}")
             i = 0
             while i < len(y):
-                x_batch = x[:, i:batch_size].reshape(self.layers[0], -1)
-                y_batch = y[:, i:batch_size].reshape(self.layers[-1], -1)
-                i = i + 1
+                x_batch = x[:, i:i+batch_size].reshape(self.layers[0], -1)
+                y_batch = y[:, i:i+batch_size].reshape(self.layers[-1], -1)
+                i = i + batch_size
                 self.feedforward(x_batch)
                 dw, db = self.backpropagate(y_batch)
                 self.weights = [w + learning_rate * d_weight for w, d_weight in zip(self.weights, dw)]
