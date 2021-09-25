@@ -35,7 +35,7 @@ while line:
 Y = np.diag(np.ones(10))
 
 
-nn = Perceptron(layers, Function(lineal, d_lineal), Function(error, d_error))
+nn = Perceptron(layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
 
 nn.train(X, Y, epochs=100000, batch_size=5, learning_rate=.1)
 
