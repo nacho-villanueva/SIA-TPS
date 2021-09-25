@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import random
 
+from TP3.config import Config
+
 
 class SimplePerceptron:
     def __init__(self, w=None, act_func=lambda h, w0: h, learning_rate=0.5, w0=0) -> None:
@@ -32,7 +34,10 @@ class SimplePerceptron:
         self.w = np.zeros(len(x.columns))
         error = 1
         min_error = p * 2
+        config = Config()
         while error > 0 and i < limit:
+            if config.logging and i % config.logging_epoch == 0:
+                print(f"Epoch: {i}")
             ix = random.randint(0, p - 1)
             act_state = self.fire(x.iloc[ix])
             self.update(x.iloc[ix], y.iloc[ix], act_state)

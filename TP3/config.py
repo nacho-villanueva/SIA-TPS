@@ -22,12 +22,23 @@ class Config(metaclass=Singleton):
         pass
 
     def setup_config(self, config_dict):
-        self.algorithm = get_parameter(config_dict, "algorithm")
-        self.activation = get_parameter(config_dict, "activation")
+        perceptron = get_parameter(config_dict, "perceptron")
+        self.algorithm = get_parameter(perceptron, "algorithm")
+        self.activation = get_parameter(perceptron, "activation", False)
 
         self.learning_rate = get_parameter(config_dict, "learning_rate", False, 0.5)
         self.w0 = get_parameter(config_dict, "w0", False, 0)
+        self.epochs = get_parameter(config_dict, "epochs")
 
         self.training_set_path = get_parameter(config_dict, "training_set_path")
         self.save_perceptron = get_parameter(config_dict, "save_perceptron", False, False)
         self.save_perceptron_path = get_parameter(config_dict, "save_perceptron_path", self.save_perceptron)
+
+        self.height = get_parameter(config_dict, "picture_height", False, 7)
+        self.width = get_parameter(config_dict, "picture_width", False, 5)
+
+        self.layers = get_parameter(config_dict, "layers", False, None)
+
+        self.logging = get_parameter(config_dict, "logging_activated")
+        self.logging_epoch = get_parameter(config_dict, "logging_every_N_epochs", False)
+

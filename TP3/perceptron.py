@@ -4,6 +4,7 @@ from typing import Tuple, List, Callable
 import numpy as np
 from line_profiler_pycharm import profile
 
+from TP3.config import Config
 from TP3.function import Function
 
 Dataset = List[Tuple[np.ndarray, np.ndarray]]
@@ -102,8 +103,9 @@ class Perceptron:
         return dw, db
 
     def train(self, x, y, batch_size=1, epochs=100, learning_rate=0.01):
+        config = Config()
         for e in range(epochs):
-            if e % 1000 == 0:
+            if config.logging and e % config.logging_epoch == 0:
                 print(f"Epoch: {e}")
             i = 0
             while i < len(y):
