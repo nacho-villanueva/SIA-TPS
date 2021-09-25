@@ -66,7 +66,7 @@ class Perceptron:
         self.layers = layers
 
         self.layers_a = init_layers(self.layers)
-        self.layers_z = init_layers(self.layers[:-1])
+        self.layers_h = init_layers(self.layers[:-1])
         self.weights = init_weights(self.layers)
         self.biases = init_biases(self.layers)
 
@@ -75,27 +75,26 @@ class Perceptron:
 
     def feedforward(self, inputs: np.ndarray):
         current_layer = np.copy(inputs)
-        self.layers_a[0] = current_layer
 
-        layers_z = []
+        layers_h = []
         layers_a = [current_layer]
 
         for i, (w, b) in enumerate(zip(self.weights, self.biases), 1):
-            layers_z.append(np.dot(w, current_layer) + b)
-            current_layer = self.activation.f(layers_z[-1])
+            layers_h.append(np.dot(w, current_layer) + b)
+            current_layer = self.activation.f(layers_h[-1])
             layers_a.append(current_layer)
 
         self.layers_a = layers_a
-        self.layers_z = layers_z
+        self.layers_h = layers_h
         return current_layer
 
     def backpropagate(self, y):
         delta = [0] * (len(self.layers) - 1)
-        delta[-1] = self.error.df(y, self.layers_a[-1]) * self.activation.df(self.layers_z[-1])
+        delta[-1] = self.error.df(y, self.layers_a[-1]) * self.activation.df(self.layers_h[-1])
 
         for i in range(len(delta) - 2, -1, -1):
             delta[i] = self.weights[i + 1].T.dot(delta[i + 1]) * (
-                self.activation.df(self.layers_z[i]))
+                self.activation.df(self.layers_h[i]))
 
         batch_size = y.shape[1]
         db = [np.dot(d, np.ones((batch_size, 1))) / float(batch_size) for d in delta]
