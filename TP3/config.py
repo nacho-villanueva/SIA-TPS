@@ -38,6 +38,7 @@ class Config(metaclass=Singleton):
 
         self.height = get_parameter(config_dict, "picture_height", False, 7)
         self.width = get_parameter(config_dict, "picture_width", False, 5)
+        self.image_noise = get_parameter(config_dict, "image_noise", False, 0)
 
         self.layers = get_parameter(config_dict, "layers", False, None)
 

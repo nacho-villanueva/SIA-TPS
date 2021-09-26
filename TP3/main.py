@@ -15,11 +15,11 @@ from TP3.simple_perceptron import SimplePerceptron
 
 
 def main():
-    config_file = "./config/ejercicio_3_imagenes_v1.json"
+    config_file = "./config/ejercicio_3_imagenes_v2.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
-        print("Using default config file (./config/ejercicio_1_XOR.json)")
+        print(f"Using default config file {config_file}")
 
     file = open(config_file)
     config_dict = json.load(file)
@@ -78,19 +78,14 @@ def main():
         Y = np.diag(np.ones(10))
 
         nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
-        nn.train(X, Y, epochs=config.epochs, batch_size=5, learning_rate=config.learning_rate)
-        prediction = nn.feedforward(X)
+        nn.train(X, Y, epochs=config.epochs, batch_size=10, learning_rate=config.learning_rate)
 
-        print(np.argmax(prediction[0]))
-        print(np.argmax(prediction[1]))
-        print(np.argmax(prediction[2]))
-        print(np.argmax(prediction[3]))
-        print(np.argmax(prediction[4]))
-        print(np.argmax(prediction[5]))
-        print(np.argmax(prediction[6]))
-        print(np.argmax(prediction[7]))
-        print(np.argmax(prediction[8]))
-        print(np.argmax(prediction[9]))
+        X_test = np.copy(X)
+        X_test = np.vectorize(lambda v: 1 - v if np.random.choice(a=[False, True], p=[1 - config.image_noise, config.image_noise]) else v)(X_test)
+        prediction = nn.feedforward(X_test, softmax=True)
+
+        for i, p in enumerate(prediction):
+            print(f"{i} is {np.argmax(p)} with {np.max(p) * 100:.2f}% certainty")
 
 
 if __name__ == "__main__":

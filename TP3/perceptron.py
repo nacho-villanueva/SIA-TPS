@@ -74,7 +74,7 @@ class Perceptron:
         self.activation = activation
         self.error = error
 
-    def feedforward(self, inputs: np.ndarray):
+    def feedforward(self, inputs: np.ndarray, softmax=False):
         current_layer = np.copy(inputs)
 
         layers_h = []
@@ -87,6 +87,11 @@ class Perceptron:
 
         self.layers_a = layers_a
         self.layers_h = layers_h
+
+        if softmax:
+            totals = np.sum(np.exp(current_layer), axis=1)
+            current_layer = np.exp(current_layer) / totals
+
         return current_layer
 
     def backpropagate(self, y):
