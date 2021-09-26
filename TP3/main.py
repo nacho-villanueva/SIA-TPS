@@ -15,11 +15,11 @@ from TP3.simple_perceptron import SimplePerceptron
 
 
 def main():
-    config_file = "./config.json"
+    config_file = "./config/ejercicio_3_imagenes_v1.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
-        print("Using default config file (./config.json)")
+        print("Using default config file (./config/ejercicio_1_XOR.json)")
 
     file = open(config_file)
     config_dict = json.load(file)
@@ -30,7 +30,17 @@ def main():
 
     # Vemos cuál perceptron vamos a usar
     if config.algorithm == "simple":
-        training_set = pd.read_csv(config.training_set_path, sep=";")
+
+        if config.activation == "non-linear" or config.activation == "linear":
+            # Ejercicio 2) : función
+            x = pd.read_csv(config.training_set_path, sep=";", header=None)
+            y = pd.read_csv(config.output_data_path, sep=";", header=None).loc[:, 0]
+        else:
+            # Escalón
+            # Ejercicio 1) : XOR & Y
+            training_set = pd.read_csv(config.training_set_path, sep=";")
+            x = training_set.drop("y", axis=1)
+            y = training_set.loc[:, "y"]
 
         perceptron = SimplePerceptron(
             act_func=get_activation_function(config.activation),
@@ -38,10 +48,10 @@ def main():
             learning_rate=config.learning_rate
         )
 
-        perceptron.train(training_set.drop("y", axis=1), training_set.loc[:, "y"], limit=config.epochs)
+        perceptron.train(x, y, limit=config.epochs)
         # plot_perceptron(perceptron, training_set) # No funca todavia
 
-        print(perceptron.calculate_error(training_set.drop("y", axis=1), training_set.loc[:, "y"]))
+        print(perceptron.calculate_error(x, y))
 
         if config.save_perceptron:
             if not os.path.isdir(os.path.dirname(config.save_perceptron_path)):

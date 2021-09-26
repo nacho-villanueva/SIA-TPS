@@ -31,6 +31,8 @@ class Config(metaclass=Singleton):
         self.epochs = get_parameter(config_dict, "epochs")
 
         self.training_set_path = get_parameter(config_dict, "training_set_path")
+        self.output_data_path = get_parameter(config_dict, "output_data_path", False)
+
         self.save_perceptron = get_parameter(config_dict, "save_perceptron", False, False)
         self.save_perceptron_path = get_parameter(config_dict, "save_perceptron_path", self.save_perceptron)
 

@@ -1,4 +1,4 @@
 *
 !.gitignore
-!perceptronSimpleY.csv
-!perceptronSimpleXOR.csv
+!Y.csv
+!XOR.csv
