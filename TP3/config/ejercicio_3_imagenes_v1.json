@@ -1,0 +1,21 @@
+{
+    "perceptron": {
+        "algorithm":"multi-layer"
+    },
+
+    "learning_rate": 0.5,
+    "epochs": 50000,
+
+    "training_set_path":"data/pixelMap.txt",
+
+    "save_perceptron":true,
+    "save_perceptron_path":"./results/perceptron.txt",
+
+    "picture_height": 7,
+    "picture_width": 5,
+
+    "layers": [35, 50, 50, 10],
+
+    "logging_activated": true,
+    "logging_every_N_epochs": 1000
+}

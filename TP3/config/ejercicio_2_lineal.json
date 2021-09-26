@@ -1,0 +1,18 @@
+{
+    "perceptron": {
+        "algorithm":"simple",
+        "activation": "linear"
+    },
+
+    "learning_rate": 0.5,
+    "epochs": 500,
+
+    "training_set_path":"data/function_input.csv",
+    "output_data_path": "data/function_output.csv",
+
+    "save_perceptron":true,
+    "save_perceptron_path":"./results/perceptron.txt",
+
+    "logging_activated": true,
+    "logging_every_N_epochs": 10
+}

@@ -1,0 +1,18 @@
+{
+    "perceptron": {
+        "algorithm":"simple",
+        "activation": "stair"
+    },
+
+    "learning_rate": 0.5,
+    "w0": 0.5,
+    "epochs": 5000,
+
+    "training_set_path":"data/XOR.csv",
+
+    "save_perceptron":true,
+    "save_perceptron_path":"./results/perceptron.txt",
+
+    "logging_activated": true,
+    "logging_every_N_epochs": 1000
+}
