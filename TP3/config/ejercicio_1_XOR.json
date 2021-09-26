@@ -4,7 +4,7 @@
         "activation": "stair"
     },
 
-    "learning_rate": 0.5,
+    "learning_rate": 0.01,
     "w0": 0.5,
     "epochs": 5000,
 

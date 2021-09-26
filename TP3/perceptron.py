@@ -2,7 +2,6 @@ from copy import copy, deepcopy
 from typing import Tuple, List, Callable
 
 import numpy as np
-from line_profiler_pycharm import profile
 
 from TP3.config import Config
 from TP3.function import Function
@@ -107,8 +106,18 @@ class Perceptron:
         dw = [np.dot(d, self.layers_a[i].T) / float(batch_size) for i, d in enumerate(delta)]
         return dw, db
 
+    def get_accuracy(self, actual, expected):
+        # matrix = [[0] * self.layers[-1]] * self.layers[-1]
+        # for a, e in zip(actual, expected):
+        #     matrix[e][a] += 1
+        #
+        # # diagonal = # Suma de la diagonal
+        # return 0 #diagonal / total
+        pass
+
     def train(self, x, y, batch_size=1, epochs=100, learning_rate=0.01):
         config = Config()
+        k = 0
         for e in range(epochs):
             if config.logging and e % config.logging_epoch == 0:
                 print(f"Epoch: {e}")
@@ -116,8 +125,17 @@ class Perceptron:
             while i < len(y):
                 x_batch = x[:, i:i+batch_size].reshape(self.layers[0], -1)
                 y_batch = y[:, i:i+batch_size].reshape(self.layers[-1], -1)
+                result = self.feedforward(x_batch)
+                aadsadsdasdsd = np.argmax(result, 1)
+                if i == batch_size * k:
+                    self.get_accuracy(aadsadsdasdsd, y_batch)
+                else:
+                    dw, db = self.backpropagate(y_batch)
+                    self.weights = [w + learning_rate * d_weight for w, d_weight in zip(self.weights, dw)]
+                    self.biases = [w + learning_rate * d_bias for w, d_bias in zip(self.biases, db)]
+                    # result = self.feedforward(x_batch)
+                    # aadsadsdasdsd = np.argmax(result, 1)
+                    self.get_accuracy(aadsadsdasdsd, y_batch)
                 i = i + batch_size
-                self.feedforward(x_batch)
-                dw, db = self.backpropagate(y_batch)
-                self.weights = [w + learning_rate * d_weight for w, d_weight in zip(self.weights, dw)]
-                self.biases = [w + learning_rate * d_bias for w, d_bias in zip(self.biases, db)]
+            k = (k + 1) % (len(x) // batch_size)
+

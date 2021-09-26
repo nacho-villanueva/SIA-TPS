@@ -4,8 +4,10 @@
         "activation": "non-linear"
     },
 
-    "learning_rate": 0.5,
+    "learning_rate": 0.01,
     "epochs": 500,
+
+    "k": 20,
 
     "training_set_path":"data/function_input.csv",
     "output_data_path": "data/function_output.csv",

@@ -1,5 +1,6 @@
 import os
 import json
+import random
 import sys
 
 import numpy as np
@@ -48,10 +49,22 @@ def main():
             learning_rate=config.learning_rate
         )
 
-        perceptron.train(x, y, limit=config.epochs)
-        # plot_perceptron(perceptron, training_set) # No funca todavia
+        if config.activation == "non-linear" or config.activation == "linear":
+            k = config.k
+            group_size = int(x.shape[0] / k)
+            random_test_group = random.randint(0, k - 1)
 
-        print(perceptron.calculate_error(x, y))
+            test_x = x.iloc[random_test_group * group_size: (random_test_group * group_size) + group_size]
+            test_y = y.iloc[random_test_group * group_size: (random_test_group * group_size) + group_size]
+            train_x = x.drop(range(random_test_group * group_size, (random_test_group * group_size) + group_size))
+            train_y = y.drop(range(random_test_group * group_size, (random_test_group * group_size) + group_size))
+
+            perceptron.train(train_x, train_y, limit=config.epochs)
+            print(perceptron.calculate_error(train_x, train_y) / len(train_x))
+            print(perceptron.calculate_error(test_x, test_y) / len(test_x))
+        else:
+            perceptron.train(x, y, limit=config.epochs)
+            print(perceptron.calculate_error(x, y) / len(x))
 
         if config.save_perceptron:
             if not os.path.isdir(os.path.dirname(config.save_perceptron_path)):
@@ -61,6 +74,15 @@ def main():
             save_perceptron_file.close()
 
     elif config.algorithm == "multi-layer":
+        # if config.problem_to_solve == "csv":
+        #     training_set = pd.read_csv(config.training_set_path, sep=";")
+        #     X = training_set.drop("y", axis=1)
+        #     Y = training_set.loc[:, "y"]
+        #     nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
+        #     nn.train(X, Y, epochs=config.epochs, batch_size=1, learning_rate=config.learning_rate)
+        #
+        # elif config.problem_to_solve == "picture":
+
         f = open(config.training_set_path)
         X = np.empty((config.width * config.height, 0))
 
@@ -76,6 +98,16 @@ def main():
             X = np.append(X, image, 1)
 
         Y = np.diag(np.ones(10))
+        # f.close()
+        # f = open(config.output_data_path)
+        # auxY = []
+        # line = f.readline()
+        # while line:
+        #     line = line.replace("\n", "").split(" ")
+        #     line = [int(char) for char in line]
+        #     auxY.append(line)
+        #     line = f.readline()
+        # Y = np.array(auxY)
 
         nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
         nn.train(X, Y, epochs=config.epochs, batch_size=10, learning_rate=config.learning_rate)

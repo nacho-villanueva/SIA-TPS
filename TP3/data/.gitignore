@@ -2,3 +2,6 @@
 !.gitignore
 !Y.csv
 !XOR.csv
+!function_output.csv
+!function_input.csv
+!pixelMap.txt

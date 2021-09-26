@@ -3,7 +3,7 @@
         "algorithm":"multi-layer"
     },
 
-    "learning_rate": 0.5,
+    "learning_rate": 0.01,
     "epochs": 500000,
 
     "training_set_path":"data/pixelMap.txt",

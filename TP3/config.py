@@ -33,6 +33,9 @@ class Config(metaclass=Singleton):
         self.training_set_path = get_parameter(config_dict, "training_set_path")
         self.output_data_path = get_parameter(config_dict, "output_data_path", False)
 
+        self.k = get_parameter(config_dict, "k", False)
+        self.problem_to_solve = get_parameter(config_dict, "problem_to_solve", False)
+
         self.save_perceptron = get_parameter(config_dict, "save_perceptron", False, False)
         self.save_perceptron_path = get_parameter(config_dict, "save_perceptron_path", self.save_perceptron)
 

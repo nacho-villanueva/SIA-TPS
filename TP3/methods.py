@@ -28,7 +28,7 @@ def stair():
 
 
 def d_stair(x):
-    return 0
+    return 1
 
 
 def lineal(x):
