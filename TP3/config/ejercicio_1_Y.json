@@ -5,7 +5,7 @@
     },
 
     "learning_rate": 0.01,
-    "w0": 0.5,
+    "w0": 0.01,
     "epochs": 5000,
 
     "training_set_path":"data/Y.csv",
