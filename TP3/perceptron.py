@@ -139,6 +139,8 @@ class Perceptron:
                 actual = np.argmax(result, 1)
                 expected = np.argmax(y_batch, 1)  # TODO: puede llegar a estar mal a futuro !
 
+                # TODO: esto es el error acumulado. No sirve. Cambiar a las diferencias de error.
+                #  El archivo error_visualization.py lo arregla, pero mejor hacerlo bien desde acá
                 error += np.sum((expected - np.max(result, axis=1)) ** 2) / len(result)
 
                 if i == batch_size * k:
