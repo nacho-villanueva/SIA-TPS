@@ -11,7 +11,6 @@ from TP3.constants import *
 from TP3.function import Function
 from TP3.methods import sigmoid, d_sigmoid, d_error, error
 from TP3.perceptron import Perceptron
-from TP3.perceptron_visualization import plot_perceptron
 from TP3.simple_perceptron import SimplePerceptron
 
 
