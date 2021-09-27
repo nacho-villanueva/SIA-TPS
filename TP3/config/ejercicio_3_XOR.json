@@ -6,8 +6,7 @@
     "learning_rate": 0.01,
     "epochs": 50000,
 
-    "training_set_path":"data/XOR.txt",
-    "output_data_path": "data/XOR_output.txt",
+    "training_set_path":"data/XOR.csv",
 
     "problem_to_solve": "csv",
 

@@ -16,7 +16,7 @@ from TP3.simple_perceptron import SimplePerceptron
 
 
 def main():
-    config_file = "./config/ejercicio_3_imagenes_v2.json"
+    config_file = "./config/ejercicio_3_XOR.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
@@ -74,50 +74,40 @@ def main():
             save_perceptron_file.close()
 
     elif config.algorithm == "multi-layer":
-        # if config.problem_to_solve == "csv":
-        #     training_set = pd.read_csv(config.training_set_path, sep=";")
-        #     X = training_set.drop("y", axis=1)
-        #     Y = training_set.loc[:, "y"]
-        #     nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
-        #     nn.train(X, Y, epochs=config.epochs, batch_size=1, learning_rate=config.learning_rate)
-        #
-        # elif config.problem_to_solve == "picture":
+        if config.problem_to_solve == "csv":
+            training_set = pd.read_csv(config.training_set_path, sep=";")
+            X = training_set.drop("y", axis=1).to_numpy().reshape(config.layers[0], -1)
+            Y = training_set.loc[:, "y"].to_numpy().reshape(config.layers[-1], -1)
 
-        f = open(config.training_set_path)
-        X = np.empty((config.width * config.height, 0))
+            nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
+            nn.train(X, Y, epochs=config.epochs, batch_size=1, learning_rate=config.learning_rate)
 
-        line = f.readline()
-        while line:
-            image = []
-            for i in range(config.height):
-                line = line.replace("\n", "").split(" ")
-                line = [int(char) for char in line]
-                image += line
-                line = f.readline()
-            image = np.array(image).reshape(-1, 1)
-            X = np.append(X, image, 1)
+        elif config.problem_to_solve == "picture":
+            f = open(config.training_set_path)
+            X = np.empty((config.width * config.height, 0))
 
-        Y = np.diag(np.ones(10))
-        # f.close()
-        # f = open(config.output_data_path)
-        # auxY = []
-        # line = f.readline()
-        # while line:
-        #     line = line.replace("\n", "").split(" ")
-        #     line = [int(char) for char in line]
-        #     auxY.append(line)
-        #     line = f.readline()
-        # Y = np.array(auxY)
+            line = f.readline()
+            while line:
+                image = []
+                for i in range(config.height):
+                    line = line.replace("\n", "").split(" ")
+                    line = [int(char) for char in line]
+                    image += line
+                    line = f.readline()
+                image = np.array(image).reshape(-1, 1)
+                X = np.append(X, image, 1)
 
-        nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
-        nn.train(X, Y, epochs=config.epochs, batch_size=10, learning_rate=config.learning_rate)
+            Y = np.diag(np.ones(10))
 
-        X_test = np.copy(X)
-        X_test = np.vectorize(lambda v: 1 - v if np.random.choice(a=[False, True], p=[1 - config.image_noise, config.image_noise]) else v)(X_test)
-        prediction = nn.feedforward(X_test, softmax=True)
+            nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
+            nn.train(X, Y, epochs=config.epochs, batch_size=10, learning_rate=config.learning_rate)
 
-        for i, p in enumerate(prediction):
-            print(f"{i} is {np.argmax(p)} with {np.max(p) * 100:.2f}% certainty")
+            X_test = np.copy(X)
+            X_test = np.vectorize(lambda v: 1 - v if np.random.choice(a=[False, True], p=[1 - config.image_noise, config.image_noise]) else v)(X_test)
+            prediction = nn.feedforward(X_test, softmax=True)
+
+            for i, p in enumerate(prediction):
+                print(f"{i} is {np.argmax(p)} with {np.max(p) * 100:.2f}% certainty")
 
 
 if __name__ == "__main__":
