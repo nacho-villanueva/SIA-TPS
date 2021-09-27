@@ -106,12 +106,17 @@ class Perceptron:
         dw = [np.dot(d, self.layers_a[i].T) / float(batch_size) for i, d in enumerate(delta)]
         return dw, db
 
-    def get_accuracy(self, actual, expected):
+    def get_accuracy(self, actual_t, expected_t):
+        DELTA = 0.25
+        actual = actual_t.transpose()
+        expected = expected_t.transpose()
         if len(expected) != 1:
             total = 0
             diagonal = 0
             for a, e in zip(actual, expected):
-                if a == e:
+                dif = np.abs(a - e)
+                is_equal = dif < DELTA
+                if np.all(is_equal):
                     diagonal += 1
                 total += 1
             return diagonal / total
@@ -142,7 +147,7 @@ class Perceptron:
                 error += np.sum((expected - np.max(result, axis=1)) ** 2) / len(result)
 
                 if i == batch_size * k:
-                    test_accuracy = np.append(test_accuracy, self.get_accuracy(actual, expected))
+                    test_accuracy = np.append(test_accuracy, self.get_accuracy(result, y_batch))
                 else:
                     dw, db = self.backpropagate(y_batch)
                     self.weights = [w + learning_rate * d_weight for w, d_weight in zip(self.weights, dw)]
@@ -150,7 +155,7 @@ class Perceptron:
                     # result = self.feedforward(x_batch)
                     # actual = np.argmax(result, 1)
                     # expected = np.argmax(y_batch, 1)
-                    train_accuracy = np.append(train_accuracy, self.get_accuracy(actual, expected))
+                    train_accuracy = np.append(train_accuracy, self.get_accuracy(result, y_batch))
                 i = i + batch_size
             k = (k + 1) % (x.shape[1] // batch_size)
             if config.problem_to_solve == "picture":

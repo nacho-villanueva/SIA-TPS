@@ -3,8 +3,8 @@
         "algorithm":"multi-layer"
     },
 
-    "learning_rate": 0.001,
-    "epochs": 50000,
+    "learning_rate": 0.1,
+    "epochs": 2000,
 
     "training_set_path":"data/pixelMap.txt",
 
@@ -16,7 +16,7 @@
     "picture_height": 7,
     "picture_width": 5,
 
-    "layers": [35, 50, 50, 10],
+    "layers": [35, 10, 10],
     "batch_size": 2,
 
     "softmax": true,
