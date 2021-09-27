@@ -88,7 +88,7 @@ class Perceptron:
         self.layers_h = layers_h
 
         if softmax:
-            totals = np.sum(np.exp(current_layer), axis=1)
+            totals = np.sum(np.exp(current_layer), axis=0)
             current_layer = np.exp(current_layer) / totals
 
         return current_layer

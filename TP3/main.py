@@ -9,13 +9,13 @@ import pandas as pd
 from TP3.config import Config
 from TP3.constants import *
 from TP3.function import Function
-from TP3.methods import sigmoid, d_sigmoid, d_error, error
+from TP3.methods import sigmoid, d_sigmoid, d_error, error, tanh, d_tanh
 from TP3.perceptron import Perceptron
 from TP3.simple_perceptron import SimplePerceptron
 
 
 def main():
-    config_file = "./config/ejercicio_1_XOR.json"  # Si no especifica archivo, corre el ejercicio simplón
+    config_file = "./config/ejercicio_3_imagenes_v1.json"  # Si no especifica archivo, corre el ejercicio simplón
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
@@ -99,17 +99,36 @@ def main():
             if config.problem_to_solve == "picture":
                 Y = np.diag(np.ones(10))
             else:
-                Y = [] # TODO nacho M
+                Y = np.empty((10, 2))
+                # Y[::2] = 1
+                # Y[1::2] = -1
+                # Y = Y.reshape(1, -1)
+                Y[0, ::2] = 1
+                Y[0, 1::2] = -1
 
-            nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
+                Y[1, ::2] = 1
+                Y[1, 1::2] = -1
+
+            nn = Perceptron(config.layers, Function(tanh, d_tanh), Function(error, d_error))
             nn.train(X, Y, epochs=config.epochs, batch_size=config.batch_size, learning_rate=config.learning_rate)
 
             X_test = np.copy(X)
-            X_test = np.vectorize(lambda v: 1 - v if np.random.choice(a=[False, True], p=[1 - config.image_noise, config.image_noise]) else v)(X_test)
+            if config.problem_to_solve == "picture":
+                X_test = np.vectorize(lambda v: 1 - v if np.random.choice(a=[False, True], p=[1 - config.image_noise, config.image_noise]) else v)(X_test)
             prediction = nn.feedforward(X_test, softmax=config.softmax)
 
-            for i, p in enumerate(prediction):
-                print(f"{i} is {np.argmax(p)} with {np.max(p) * 100:.2f}% certainty")
+            # from PIL import Image
+            #
+            # for i in range(10):
+            #     image = Image.fromarray(X_test[:, i].reshape(7, 5) * 255)
+            #     if image.mode != 'RGB':
+            #         image = image.convert('RGB')
+            #     image.save(f"results/test_image_{i}.jpg")
+
+            # for i, p in enumerate(prediction):
+            #     print(f"{i} is {'Pair' if np.argmax(p) else 'Odd'} with {np.max(p) * 100:.2f}% certainty")
+            # print(prediction < 0.5)
+            print(np.argmax(prediction, 0))
 
 
 if __name__ == "__main__":
