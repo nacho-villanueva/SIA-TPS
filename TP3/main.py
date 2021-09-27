@@ -16,7 +16,7 @@ from TP3.simple_perceptron import SimplePerceptron
 
 
 def main():
-    config_file = "./config/ejercicio_3_XOR.json"
+    config_file = "./config/ejercicio_1_XOR.json"  # Si no especifica archivo, corre el ejercicio simplón
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
@@ -60,11 +60,11 @@ def main():
             train_y = y.drop(range(random_test_group * group_size, (random_test_group * group_size) + group_size))
 
             perceptron.train(train_x, train_y, limit=config.epochs)
-            print(perceptron.calculate_error(train_x, train_y) / len(train_x))
-            print(perceptron.calculate_error(test_x, test_y) / len(test_x))
+            print(f"Training error = {perceptron.calculate_error(train_x, train_y) / len(train_x)}")
+            print(f"Testing error = {perceptron.calculate_error(test_x, test_y) / len(test_x)}")
         else:
             perceptron.train(x, y, limit=config.epochs)
-            print(perceptron.calculate_error(x, y) / len(x))
+            print(f"Error = {perceptron.calculate_error(x, y) / len(x)}")
 
         if config.save_perceptron:
             if not os.path.isdir(os.path.dirname(config.save_perceptron_path)):
@@ -82,7 +82,7 @@ def main():
             nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
             nn.train(X, Y, epochs=config.epochs, batch_size=1, learning_rate=config.learning_rate)
 
-        elif config.problem_to_solve == "picture":
+        elif config.problem_to_solve == "picture" or config.problem_to_solve == "parity":
             f = open(config.training_set_path)
             X = np.empty((config.width * config.height, 0))
 
@@ -97,14 +97,17 @@ def main():
                 image = np.array(image).reshape(-1, 1)
                 X = np.append(X, image, 1)
 
-            Y = np.diag(np.ones(10))
+            if config.problem_to_solve == "picture":
+                Y = np.diag(np.ones(10))
+            else:
+                Y = [] # TODO nacho M
 
             nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
-            nn.train(X, Y, epochs=config.epochs, batch_size=10, learning_rate=config.learning_rate)
+            nn.train(X, Y, epochs=config.epochs, batch_size=config.batch_size, learning_rate=config.learning_rate)
 
             X_test = np.copy(X)
             X_test = np.vectorize(lambda v: 1 - v if np.random.choice(a=[False, True], p=[1 - config.image_noise, config.image_noise]) else v)(X_test)
-            prediction = nn.feedforward(X_test, softmax=True)
+            prediction = nn.feedforward(X_test, softmax=config.softmax)
 
             for i, p in enumerate(prediction):
                 print(f"{i} is {np.argmax(p)} with {np.max(p) * 100:.2f}% certainty")

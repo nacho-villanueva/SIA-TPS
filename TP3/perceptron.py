@@ -107,35 +107,74 @@ class Perceptron:
         return dw, db
 
     def get_accuracy(self, actual, expected):
-        # matrix = [[0] * self.layers[-1]] * self.layers[-1]
-        # for a, e in zip(actual, expected):
-        #     matrix[e][a] += 1
-        #
-        # # diagonal = # Suma de la diagonal
-        # return 0 #diagonal / total
-        pass
+        if len(expected) != 1:
+            total = 0
+            diagonal = 0
+            for a, e in zip(actual, expected):
+                if a == e:
+                    diagonal += 1
+                total += 1
+            return diagonal / total
+        return 0
 
     def train(self, x, y, batch_size=1, epochs=100, learning_rate=0.01):
         config = Config()
-        k = 0
+        k = 1
+        epoch_train_accuracy = []
+        epoch_test_accuracy = []
+        error = 0
+        error_file = open(f"./results/error_{config.epochs}.csv", "a")
+
         for e in range(epochs):
             if config.logging and e % config.logging_epoch == 0:
                 print(f"Epoch: {e}")
             i = 0
+            train_accuracy = np.array([])
+            test_accuracy = np.array([])
+
             while i < len(y):
                 x_batch = x[:, i:i+batch_size].reshape(self.layers[0], -1)
                 y_batch = y[:, i:i+batch_size].reshape(self.layers[-1], -1)
                 result = self.feedforward(x_batch)
-                aadsadsdasdsd = np.argmax(result, 1)
+                actual = np.argmax(result, 1)
+                expected = np.argmax(y_batch, 1)  # TODO: puede llegar a estar mal a futuro !
+
+                error += np.sum((expected - np.max(result, axis=1)) ** 2) / len(result)
+
                 if i == batch_size * k:
-                    self.get_accuracy(aadsadsdasdsd, y_batch)
+                    test_accuracy = np.append(test_accuracy, self.get_accuracy(actual, expected))
                 else:
                     dw, db = self.backpropagate(y_batch)
                     self.weights = [w + learning_rate * d_weight for w, d_weight in zip(self.weights, dw)]
                     self.biases = [w + learning_rate * d_bias for w, d_bias in zip(self.biases, db)]
                     # result = self.feedforward(x_batch)
-                    # aadsadsdasdsd = np.argmax(result, 1)
-                    self.get_accuracy(aadsadsdasdsd, y_batch)
+                    # actual = np.argmax(result, 1)
+                    # expected = np.argmax(y_batch, 1)
+                    train_accuracy = np.append(train_accuracy, self.get_accuracy(actual, expected))
                 i = i + batch_size
-            k = (k + 1) % (len(x) // batch_size)
+            k = (k + 1) % (x.shape[1] // batch_size)
+            if config.problem_to_solve == "picture":
+                epoch_train_accuracy.append(np.mean(train_accuracy))
+                epoch_test_accuracy.append(np.mean(test_accuracy))
+
+            # Dumpeamos el error a archivo
+            error_file.write(f"{error};")
+        error_file.write("\n")
+
+        # Dumpeamos a archivo los valores (solo en el ejercicio de las imagenes)
+        if config.problem_to_solve == "picture":
+            accuracy_train_file = open(f"./results/accuracy_train_{config.epochs}.csv", "a")
+            accuracy_train_file.write(f"{epoch_train_accuracy[0]}")
+            for i in range(1, len(epoch_train_accuracy)):
+                accuracy_train_file.write(f";{epoch_train_accuracy[i]}")
+            accuracy_train_file.write("\n")
+            accuracy_train_file.close()
+
+            accuracy_test_file = open(f"./results/accuracy_test_{config.epochs}.csv", "a")
+            accuracy_test_file.write(f"{epoch_test_accuracy[0]}")
+            for i in range(1, len(epoch_test_accuracy)):
+                accuracy_test_file.write(f";{epoch_test_accuracy[i]}")
+            accuracy_test_file.write("\n")
+            accuracy_test_file.close()
+
 

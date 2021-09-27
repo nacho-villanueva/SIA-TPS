@@ -4,9 +4,11 @@
     },
 
     "learning_rate": 0.01,
-    "epochs": 500000,
+    "epochs": 50000,
 
     "training_set_path":"data/pixelMap.txt",
+
+    "problem_to_solve": "picture",
 
     "save_perceptron":true,
     "save_perceptron_path":"./results/perceptron.txt",
@@ -16,6 +18,9 @@
     "image_noise": 0.2,
 
     "layers": [35, 50, 50, 10],
+    "batch_size": 2,
+
+    "softmax": true,
 
     "logging_activated": true,
     "logging_every_N_epochs": 1000

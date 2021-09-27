@@ -44,6 +44,8 @@ class Config(metaclass=Singleton):
         self.image_noise = get_parameter(config_dict, "image_noise", False, 0)
 
         self.layers = get_parameter(config_dict, "layers", False, None)
+        self.softmax = get_parameter(config_dict, "softmax", False, False)
+        self.batch_size = get_parameter(config_dict, "batch_size", False)
 
         self.logging = get_parameter(config_dict, "logging_activated")
         self.logging_epoch = get_parameter(config_dict, "logging_every_N_epochs", False)
