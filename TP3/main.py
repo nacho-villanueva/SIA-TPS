@@ -99,17 +99,17 @@ def main():
             if config.problem_to_solve == "picture":
                 Y = np.diag(np.ones(10))
             else:
-                Y = np.empty((10, 2))
+                Y = np.empty((2, 10))
                 # Y[::2] = 1
                 # Y[1::2] = -1
                 # Y = Y.reshape(1, -1)
                 Y[0, ::2] = 1
-                Y[0, 1::2] = -1
+                Y[0, 1::2] = 0
 
-                Y[1, ::2] = 1
-                Y[1, 1::2] = -1
+                Y[1, ::2] = 0
+                Y[1, 1::2] = 1
 
-            nn = Perceptron(config.layers, Function(tanh, d_tanh), Function(error, d_error))
+            nn = Perceptron(config.layers, Function(sigmoid, d_sigmoid), Function(error, d_error))
             nn.train(X, Y, epochs=config.epochs, batch_size=config.batch_size, learning_rate=config.learning_rate)
 
             X_test = np.copy(X)
@@ -125,10 +125,8 @@ def main():
             #         image = image.convert('RGB')
             #     image.save(f"results/test_image_{i}.jpg")
 
-            # for i, p in enumerate(prediction):
-            #     print(f"{i} is {'Pair' if np.argmax(p) else 'Odd'} with {np.max(p) * 100:.2f}% certainty")
-            # print(prediction < 0.5)
-            print(np.argmax(prediction, 0))
+            for i, p in enumerate(prediction.transpose()):
+                print(f"{i} is {np.argmax(p)} with {np.max(p) * 100:.2f}% certainty")
 
 
 if __name__ == "__main__":
