@@ -44,6 +44,7 @@ class SimplePerceptron:
         error = 1
         min_error = p * 2
         config = Config()
+        w_min = self.w
         while error > 0 and i < limit:
             if config.logging and i % config.logging_epoch == 0:
                 print(f"Epoch: {i}")
@@ -55,6 +56,7 @@ class SimplePerceptron:
                 min_error = error
                 w_min = self.w
             i = i + 1
+        self.w = w_min
 
     def get_h(self, xi):
         return float(np.sum(self.w * xi))
