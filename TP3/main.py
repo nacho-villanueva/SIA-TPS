@@ -59,11 +59,11 @@ def main():
             train_y = y.drop(range(random_test_group * group_size, (random_test_group * group_size) + group_size))
 
             perceptron.train(train_x, train_y, limit=config.epochs)
-            print(f"Training error = {perceptron.calculate_error(train_x, train_y) / len(train_x)}")
-            print(f"Testing error = {perceptron.calculate_error(test_x, test_y) / len(test_x)}")
+            print(f"Training error = {2 * perceptron.calculate_error(train_x, train_y) / len(train_x)}")
+            print(f"Testing error = {2 * perceptron.calculate_error(test_x, test_y) / len(test_x)}")
         else:
             perceptron.train(x, y, limit=config.epochs)
-            print(f"Error = {perceptron.calculate_error(x, y) / len(x)}")
+            print(f"Error = {2 * perceptron.calculate_error(x, y) / len(x)}")
 
         if config.save_perceptron:
             if not os.path.isdir(os.path.dirname(config.save_perceptron_path)):
