@@ -53,18 +53,12 @@ python main.py "./config/ejercicio_3_XOR.json"
 ```
 
 ### Ejercicio 3.2
-Resuelve el problema de la paridad de los numeros con el perceptrón multicapa.
-```bash
-python main.py "./config/ejercicio_3_paridad.json"
-```
-
-### Ejercicio 3.3
 Resuelve el problema de las imágenes de los números con el perceptrón multicapa.
 ```bash
 python main.py "./config/ejercicio_3_imagenes_v1.json"
 ```
 
-### Ejercicio 3.4
+### Ejercicio 3.3
 Resuelve el problema de las imágenes de los números con el perceptrón multicapa, pero con ruido añadido.
 ```bash
 python main.py "./config/ejercicio_3_imagenes_v2.json"
