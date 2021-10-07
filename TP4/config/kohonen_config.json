@@ -1,0 +1,10 @@
+{
+    "k": 4,
+
+    "R": 2,
+    "R_updates": true,
+
+    "learning_rate": 0.5,
+
+    "data_path": "./data/europe.csv"
+}
