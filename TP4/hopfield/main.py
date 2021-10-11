@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 
 from TP4.hopfield.hopfield_network import HopfieldNetwork
@@ -48,8 +49,11 @@ hn.train(symbols)
 # test_digit = np.random.choice([-1, 1], 25)
 test_digit = np.vectorize(lambda v: -v if np.random.choice(a=[False, True], p=[1 - 0.2, 0.2]) else v)(symbols[1])
 
-S = hn.predict(test_digit)
+S, energy = hn.predict(test_digit)
 
 print_symbol(test_digit)
 print("---------")
 print_symbol(S)
+
+plt.plot(range(0, len(energy)), energy)
+plt.show()

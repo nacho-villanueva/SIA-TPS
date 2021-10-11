@@ -34,9 +34,20 @@ class HopfieldNetwork:
         prev_S = None
         S = X.copy()
 
+        energies = [self.energy(S)]
+
         i = 0
         while (not np.array_equal(prev_S, S)) and i < max_iter:
             prev_S = S
             S = np.sign(np.dot(self.weights, S)).astype(int)
+            energies.append(self.energy(S))
             i += 1
-        return S
+        print(i)
+        return S, energies
+
+    def energy(self, X):
+        e = 0
+        for j, row in enumerate(self.weights):
+            for i, w in enumerate(row):
+                e += w * X[i] * X[j]
+        return -e

@@ -9,9 +9,8 @@ from TP4.hopfield.hopfield_network import HopfieldNetwork
 SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 300
 
-RECT_WIDTH = 50
-RECT_HEIGHT = 50
-
+triangle_file = "triangle.txt"
+square_file = "square.txt"
 
 class MyApplication(arcade.Window):
     """ Main application class. """
@@ -29,6 +28,18 @@ class MyApplication(arcade.Window):
         self.dataset = np.empty((0, (height // self.cell_size) * (width // self.cell_size)))
 
         self.hn = HopfieldNetwork()
+
+    def load_figure(self, file_name):
+        file = open(file_name)
+        lines = file.readlines()
+        file.close()
+        lines = [line.replace("\n", "") for line in lines]
+        matrix = np.full((self.height // self.cell_size, self.width // self.cell_size), -1)
+        for j, line in enumerate(lines):
+            for i, v in enumerate(line):
+                if v == "1":
+                    matrix[matrix.shape[1] - j -1, i] = 1
+        return matrix
 
     def draw_grid(self):
         for i in range(self.cell_size, self.width, self.cell_size):
@@ -59,7 +70,7 @@ class MyApplication(arcade.Window):
         Render the screen.
         """
         arcade.start_render()
-        self.draw_grid()
+        # self.draw_grid()
         self.draw_active_cells()
         curr_cell = self.get_pointing_cell(self.x, self.y)
 
@@ -70,7 +81,8 @@ class MyApplication(arcade.Window):
         self.draw_cell(map(add, curr_cell, (0, -1)))
 
     def activate_cell(self, cell):
-        self.grid[cell[1], cell[0]] = 1
+        if 0 <= cell[1] < self.grid.shape[1] and 0 <= cell[0] < self.grid.shape[0]:
+            self.grid[cell[1], cell[0]] = 1
 
     def on_mouse_motion(self, x, y, dx, dy):
         """
@@ -93,6 +105,13 @@ class MyApplication(arcade.Window):
         if button == arcade.MOUSE_BUTTON_LEFT:
             self.left_down = True
 
+            cell = self.get_pointing_cell(x, y)
+            self.activate_cell(cell)
+            self.activate_cell(tuple(map(add, cell, (1, 0))))
+            self.activate_cell(tuple(map(add, cell, (-1, 0))))
+            self.activate_cell(tuple(map(add, cell, (0, 1))))
+            self.activate_cell(tuple(map(add, cell, (0, -1))))
+
     def on_mouse_release(self, x, y, button, modifiers):
         """
         Called when a user releases a mouse button.
@@ -101,18 +120,20 @@ class MyApplication(arcade.Window):
             self.left_down = False
 
     def on_key_press(self, symbol: int, modifiers: int):
-        if symbol == 65293: # ENTER
+        if symbol == 65293:  # ENTER
             self.dataset = np.vstack((self.dataset, self.grid.flatten()))
             self.grid = np.full((self.height // self.cell_size, self.width // self.cell_size), -1)
-        if symbol == 32: # SPACE
+        if symbol == 32:  # SPACE
             self.hn.train(self.dataset.astype(int))
-        if symbol == 112: # P
-            result:np.ndarray = self.hn.predict(self.grid.flatten())
+        if symbol == 112:  # P
+            result, _ = self.hn.predict(self.grid.flatten())
             self.grid = result.reshape((self.height // self.cell_size, self.width // self.cell_size))
-        if symbol == 65307: # ESC
+        if symbol == 65307:  # ESC
             self.grid = np.full((self.height // self.cell_size, self.width // self.cell_size), -1)
-
-
+        if symbol == 49:    # 1
+            self.grid = self.load_figure(triangle_file)
+        if symbol == 50:    # 2
+            self.grid = self.load_figure(square_file)
 
 
 def main():
