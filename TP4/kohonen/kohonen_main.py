@@ -4,8 +4,8 @@ import sys
 import numpy as np
 import pandas as pd
 
-from TP4.kohonen.kohonen import plot_matrix, plot_matrix_u
-from TP4.kohonen.kohonen import KohonenConfig
+from TP4.kohonen.heatmap import plot_matrix_u, plot_matrix
+from TP4.kohonen.kohonen_config import KohonenConfig
 from TP4.kohonen.kohonen import Kohonen, find_neighbours
 
 
