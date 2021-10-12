@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from TP4.kohonen_main import standarize_data
+from TP4.kohonen.kohonen_main import standarize_data
 
 data = pd.read_csv("./data/europe.csv", sep=",")
 data = standarize_data(data)

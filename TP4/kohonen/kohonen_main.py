@@ -4,9 +4,9 @@ import sys
 import numpy as np
 import pandas as pd
 
-from TP4.heatmap import plot_matrix, plot_matrix_u
-from TP4.kohonen_config import KohonenConfig
-from TP4.kohonen import Kohonen, find_neighbours
+from TP4.kohonen.kohonen import plot_matrix, plot_matrix_u
+from TP4.kohonen.kohonen import KohonenConfig
+from TP4.kohonen.kohonen import Kohonen, find_neighbours
 
 
 def standarize_data(data):
@@ -35,7 +35,7 @@ def get_matrix_u(weight_matrix):
 
 
 def main():
-    config_file = "./config/kohonen_config.json"
+    config_file = "../config/kohonen_config.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:

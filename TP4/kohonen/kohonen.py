@@ -3,7 +3,7 @@ import random
 import numpy as np
 import pandas as pd
 
-from TP4.kohonen_config import KohonenConfig
+from TP4.kohonen.kohonen import KohonenConfig
 
 
 # Returns all neighbours that are a distance <= R from position [i][j]
