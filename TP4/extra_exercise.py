@@ -12,6 +12,7 @@ data = data.transpose()
 
 covMatrix = np.cov(data, bias=True)  # Hacer la covarianza de los datos estandarizados, es lo mismo que hacer directamente la correlacion
 auto_vals, auto_vecs = np.linalg.eig(covMatrix)
+print(f"First Vector: {auto_vecs.transpose()[0]}")
 
 pares_vals_vecs = [(np.abs(auto_vals[i]), auto_vecs[:, i]) for i in range(len(auto_vals))]
 
