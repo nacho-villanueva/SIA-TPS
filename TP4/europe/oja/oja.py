@@ -1,6 +1,3 @@
-import time
-import random
-
 import numpy as np
 import pandas as pd
 
@@ -14,19 +11,16 @@ class Oja:
         self.learning_rate = config.learning_rate
         self.iter = config.iter
 
-        # Inicializamos todos los pesos W
-        self.W = np.linspace(1,data.shape[1],data.shape[1], dtype=np.ndarray)  # Matriz, cada elemento será un vector de pesos w
+        self.W = np.random.rand(data.shape[1])
 
     def train(self):
-        starttime = time.time()
-        def iter_funct(row):
-            x = row.to_numpy()
+        def iter_funct(row,iteration):
+            x = row
             y = self.W.dot(x)
-            self.W += self.learning_rate * y * ( x - y * self.W)
-        for _ in range(self.iter):
-            self.data.apply(iter_funct,axis=1)
-        endtime = time.time()
-        print(endtime - starttime)
+            self.W += (self.learning_rate/iteration) * ( y * x - y*y * self.W)
+        for i in range(self.iter):
+            self.data.apply(iter_funct,args=[i+1],raw=True,axis=1)
         return self.W
+
     def get_w(self):
-        pass
+        return self.W
