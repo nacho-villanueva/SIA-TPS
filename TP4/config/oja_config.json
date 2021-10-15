@@ -3,5 +3,5 @@
 
     "iter": 300,
 
-    "data_path": "./data/europe.csv"
+    "data_path": "../data/europe.csv"
 }

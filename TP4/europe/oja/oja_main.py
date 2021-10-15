@@ -18,7 +18,7 @@ def standarize_data(data):
 
 
 def main():
-    config_file = "../../config/kohonen_config.json"
+    config_file = "../../config/oja_config.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
