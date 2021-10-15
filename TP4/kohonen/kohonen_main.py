@@ -35,7 +35,7 @@ def get_matrix_u(weight_matrix):
 
 
 def main():
-    config_file = "../config/kohonen_config.json"
+    config_file = "./config/kohonen_config.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:
