@@ -51,7 +51,19 @@ python ./hopfield/hopfield_main.py "./config/hopfield_config.json"
 --------------
 ## Cómo correr Oja
 ```bash
-python 
+python ./europe/oja/oja_main.py "./config/oja_config.json"
+```
+### Configuración para Oja
+```json
+{
+    "learning_rate": 0.1,
+
+    "iter": 300,
+
+    "data_path": "../data/europe.csv"
+}
 ```
 
-### Configuración para Oja
+* `learning_rate`: numero que se dividira por el numero de iteracion para obtener el learning rate en cada iteracion
+* `iter`: cantidad de iteraciones a realizar sobre el dataset
+* `data_path`: path al csv con los datos
