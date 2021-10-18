@@ -32,8 +32,22 @@ python ./kohonen/kohonen_main.py "./config/kohonen_config.json"
 --------------
 ## Cómo correr Hopfield
 ```bash
-python 
+python ./hopfield/hopfield_main.py "./config/hopfield_config.json"
 ```
+## Configuración para Kohonen
+```json
+{
+  "load_symbols": ["A", "O", "K", "F"],
+  "test_symbol": "F",
+  "noise": 0.2,
+  "letters_bitmap": "./data/letters.txt"
+}
+```
+
+* `load_symbols`: son las letras el cual la red de Hopfield aprenderá a reconocer
+* `test_symbol`: la letra que se usara para probar la red
+* `noise`: la cantidad de ruido que se le aplicara a la letra de prueba
+* `letter_bitmap`: archivo que contiene los bitmap de las letras
 --------------
 ## Cómo correr Oja
 ```bash

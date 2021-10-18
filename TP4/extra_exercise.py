@@ -6,11 +6,13 @@ from TP4.kohonen.kohonen_main import standarize_data
 
 data = pd.read_csv("./data/europe.csv", sep=",")
 data = standarize_data(data)
+
+
 data = data.iloc[:, 1:]
 data = data.to_numpy()
 data = data.transpose()
 
-covMatrix = np.cov(data, bias=True)  # Hacer la covarianza de los datos estandarizados, es lo mismo que hacer directamente la correlacion
+covMatrix = np.cov(data, bias=True)                 # Hacer la covarianza de los datos estandarizados, es lo mismo que hacer directamente la correlacion
 auto_vals, auto_vecs = np.linalg.eig(covMatrix)
 
 pares_vals_vecs = [(np.abs(auto_vals[i]), auto_vecs[:, i]) for i in range(len(auto_vals))]
@@ -38,4 +40,5 @@ with plt.style.context('seaborn-pastel'):
 
 
 Y = np.dot([sorted_pair[1] for sorted_pair in pares_vals_vecs], data)
+print(Y)
 

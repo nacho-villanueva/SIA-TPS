@@ -42,7 +42,6 @@ class HopfieldNetwork:
             S = np.sign(np.dot(self.weights, S)).astype(int)
             energies.append(self.energy(S))
             i += 1
-        print(i)
         return S, energies
 
     def energy(self, X):
