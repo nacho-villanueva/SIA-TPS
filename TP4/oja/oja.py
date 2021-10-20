@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from TP4.europe.oja.oja_config import OjaConfig
+from TP4.oja.oja_config import OjaConfig
 
 class Oja:
     def __init__(self, data: pd.DataFrame):

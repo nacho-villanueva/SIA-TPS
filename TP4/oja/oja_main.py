@@ -3,8 +3,8 @@ import sys
 
 import numpy as np
 import pandas as pd
-from TP4.europe.oja.oja import Oja
-from TP4.europe.oja.oja_config import OjaConfig
+from TP4.oja.oja import Oja
+from TP4.oja.oja_config import OjaConfig
 
 
 def standarize_data(data):
@@ -18,7 +18,7 @@ def standarize_data(data):
 
 
 def main():
-    config_file = "../../config/oja_config.json"
+    config_file = "./config/oja_config.json"
     if len(sys.argv) >= 2:
         config_file = sys.argv[1]
     else:

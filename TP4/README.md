@@ -51,7 +51,7 @@ python ./hopfield/hopfield_main.py "./config/hopfield_config.json"
 --------------
 ## Cómo correr Oja
 ```bash
-python ./europe/oja/oja_main.py "./config/oja_config.json"
+python ./oja/oja_main.py "./config/oja_config.json"
 ```
 ### Configuración para Oja
 ```json
@@ -60,7 +60,7 @@ python ./europe/oja/oja_main.py "./config/oja_config.json"
 
     "iter": 300,
 
-    "data_path": "../data/europe.csv"
+    "data_path": "./data/europe.csv"
 }
 ```
 
