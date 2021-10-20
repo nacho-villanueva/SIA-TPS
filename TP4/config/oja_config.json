@@ -1,7 +1,7 @@
 {
     "learning_rate": 0.1,
 
-    "iter": 300,
+    "iter": 1000,
 
     "data_path": "./data/europe.csv"
 }
