@@ -41,7 +41,7 @@ def choose_symbols(symbols, chosen):
     for s in chosen:
         return_symbols = np.vstack((return_symbols, symbols[ord(s.upper()) - 65]))
     return return_symbols.astype(int)
-
+    # return symbols
 
 def main():
     config_file = "./config/hopfield_config.json"
@@ -69,11 +69,12 @@ def main():
 
     S, energy = hn.predict(test_symbol)
 
-    print_symbol(test_symbol)
-    print("---------")
-    print_symbol(S)
+    # print_symbol(test_symbol)
+    # print("---------")
+    # print_symbol(S)
 
-    plt.plot(range(0, len(energy)), energy)
+    plt.plot(range(0, len(energy)), energy, linestyle="--", marker="o", ms=10)
+    plt.xticks(range(0, len(energy)))
     plt.show()
 
 

@@ -1,6 +1,6 @@
 {
-  "load_symbols": ["A", "O", "K", "F"],
-  "test_symbol": "F",
-  "noise": 0.2,
+  "load_symbols": ["K", "P", "U", "Z"],
+  "test_symbol": "K",
+  "noise": 0.9,
   "letters_bitmap": "./data/letters.txt"
 }
