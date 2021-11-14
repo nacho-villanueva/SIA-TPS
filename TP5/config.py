@@ -27,18 +27,23 @@ class Config(metaclass=Singleton):
     noise: float
     training_dataset: str
     learning_rate: float
+    learning_rate_decay: float
     epochs: int
     batch_size: int
+    momentum: float
+    labels: list[str]
 
     def __init__(self):
         pass
 
     def setup_config(self, config_dict):
-        self.learning_rate = get_parameter(config_dict, "learning_rate", False, 0.01)
+        self.learning_rate = get_parameter(config_dict, "learning_rate", False, 0.0001)
+        self.learning_rate_decay = get_parameter(config_dict, "learning_rate_decay", False, 0.01)
         self.epochs = get_parameter(config_dict, "epochs", False, 5000)
         self.batch_size = get_parameter(config_dict, "batch_size")
 
         self.training_dataset = get_parameter(config_dict, "training_dataset")
+        self.labels = get_parameter(config_dict, "labels", False, [])
         self.noise = get_parameter(config_dict, "noise", False, 0)
 
         self.width = get_parameter(config_dict, "width")
@@ -46,6 +51,7 @@ class Config(metaclass=Singleton):
 
         self.layers = get_parameter(config_dict, "layers")
         self.latent_layer = get_parameter(config_dict, "latent_layer")
+        self.momentum = get_parameter(config_dict, "momentum", False, 0)
 
         self.log = get_parameter(config_dict, "log", False, False)
         self.log_epoch = get_parameter(config_dict, "log_epoch", False, 100)

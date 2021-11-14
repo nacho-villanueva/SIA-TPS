@@ -83,7 +83,7 @@ class Autoencoder:
     def feedforward(self, inputs: np.ndarray, layer=0, output=None):
         assert inputs.shape[0] == self.layers[layer], f"Input size invalid. Expected: {self.layers[layer]}. Actual: {inputs.shape[0]}"
 
-        current_layer = np.copy(inputs)
+        current_layer = np.copy(inputs, order="C")
 
         layers_h = []
         layers_a = [current_layer]
@@ -135,17 +135,20 @@ class Autoencoder:
                 y_batch = y[:, i:i+batch_size].reshape(self.layers[-1], -1)
                 result = self.feedforward(x_batch)
 
-                momentum = 0.5 # TODO
-
                 dw, db = self.backpropagate(y_batch)
-                self.weights = [w + learning_rate * d_weight + prev_dw * momentum for w, d_weight, prev_dw in zip(self.weights, dw, self.dw)]
-                self.biases = [w + learning_rate * d_bias + prev_db * momentum for w, d_bias, prev_db in zip(self.biases, db, self.db)]
+                lr = config.learning_rate * (1 / (1 + config.learning_rate_decay * epochs))
+                self.weights = [w + lr * d_weight + prev_dw * config.momentum for w, d_weight, prev_dw in zip(self.weights, dw, self.dw)]
+                self.biases = [w + lr * d_bias + prev_db * config.momentum for w, d_bias, prev_db in zip(self.biases, db, self.db)]
 
                 self.dw = dw
                 self.db = db
 
                 error += np.sum(self.error.f(y_batch, result)) / result.shape[1]
                 i = i + batch_size
+
+            if error < 1.2:
+                print("GOT IT!")
+                break
 
             error_file.write(f"{error}\n")
             error_file.flush()

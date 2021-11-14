@@ -1,16 +1,19 @@
 {
     "learning_rate": 0.0001,
-    "epochs": 10000,
+    "learning_rate_decay": 0.1,
+    "epochs": 50000,
 
     "training_dataset":"data/parsed_letters.txt",
+    "labels": ["@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","_"],
     "noise": 0,
 
     "width": 5,
     "height": 7,
 
-    "layers": [35, 15, 2, 15, 35],
+    "layers": [35, 25, 2, 25, 35],
     "latent_layer": 2,
-    "batch_size": 32,
+    "batch_size": 8,
+    "momentum": 0.8,
 
     "log": true,
     "log_epoch": 1000
