@@ -80,6 +80,8 @@ class Autoencoder:
         self.dw = init_weights(self.layers, False)
         self.db = init_biases(self.layers, False)
 
+        self.min_error = -1
+
     def feedforward(self, inputs: np.ndarray, layer=0, output=None):
         assert inputs.shape[0] == self.layers[layer], f"Input size invalid. Expected: {self.layers[layer]}. Actual: {inputs.shape[0]}"
 
@@ -132,6 +134,10 @@ class Autoencoder:
 
             while i < y.shape[1]:
                 x_batch = x[:, i:i+batch_size].reshape(self.layers[0], -1)
+
+                if config.noise > 0:
+                    x_batch = np.vectorize(lambda v: 1 - v if np.random.choice(a=[False, True], p=[1 - config.noise, config.noise]) else v)(x_batch)
+
                 y_batch = y[:, i:i+batch_size].reshape(self.layers[-1], -1)
                 result = self.feedforward(x_batch)
 
@@ -146,11 +152,16 @@ class Autoencoder:
                 error += np.sum(self.error.f(y_batch, result)) / result.shape[1]
                 i = i + batch_size
 
-            if error < 1.2:
-                print("GOT IT!")
-                break
+            # if error < 1:
+            #     print("GOT IT!")
+            #     break
+
+            if self.min_error < 0 or self.min_error > error:
+                self.min_error = error
 
             error_file.write(f"{error}\n")
             error_file.flush()
+
+        print("Minimum Error:", self.min_error)
 
 

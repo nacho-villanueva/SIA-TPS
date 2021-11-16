@@ -130,3 +130,15 @@ dmypy.json
 
 # IDE
 .idea/
+
+TP5/data/stfts/
+
+TP5/data/stfts2/
+
+TP5/data/stfts3/
+
+TP5/results/sounds/
+
+TP5/results/sounds2/
+
+TP5/results/sound_autoencoder/
